@@ -86,8 +86,8 @@ a:active {
 	height: 35px;
 	border-radius: 50%;
 	position: fixed;
-	left: 135px;
-    bottom: 20px;
+	left: 134px;
+    bottom: 22px;
 }
 
 .arrow-up {
@@ -96,12 +96,16 @@ a:active {
 	border-top: 10px solid transparent;
 	border-bottom: 10px solid white;
 	position: fixed;
-	left: 143px;
-    bottom: 33px;
+	left: 142px;
+    bottom: 35px;
 }
 
-h5 {
-	z-index: 100;
+#ref {
+	font-size: .95rem;
+	color: white;
+	position: fixed;
+	left: 114px;
+	bottom: 1px;
 }
 
 
