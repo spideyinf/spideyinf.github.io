@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
+* {
+	font-family: "Open Sans";
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+p {
+	padding: 15px;
+}
+
+a:link, a:visited {
+	color: black;
+	text-decoration: none;
+}
+
+a:active {
+	font-weight: : bold;
+}
+
+#banner {
+	background: linear-gradient(-90deg, #0192e1, #6bcbfe);
+	margin: 5px 0 5px 0;
+	padding: 25px;
+}
+
+.wrap {
+	max-width: 1200px;
+	max-height: auto;
+	margin: auto;
+}
+
+.content {
+	position: relative;
+	height: auto;
+}
+
+#side-menu {
+	background: linear-gradient(#0192e1, #6bcbfe);
+	width: 110px;
+	height: 100%;
+	padding: 0.1%;
+	position: absolute;
+}
+
+#side-menu ul {
+	list-style-type: none;
+	text-align: left;
+}
+
+#side-menu li {
+	margin: 1em 0;
+	padding: 20px;
+}
+
+#side-menu a {
+	color: white;
+}
+
+#main-content {
+	float: left;
+	margin-left: 110px;
+	padding: 0;
+}
+
+#box {
+	width: 33.33%;
+	max-height: auto;
+	float: left;
+	padding: 0.1%;
+}
+
+#box:hover {
+	border-radius: 30px;
+}
+#cover img {
+	width: 100%;
+	margin: auto;
+}
+
+.circle {
+	background: #0192e1;
+	width: 35px;
+	height: 35px;
+	border-radius: 50%;
+	position: fixed;
+	left: 135px;
+    bottom: 20px;
+}
+
+.arrow-up {
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	border-top: 10px solid transparent;
+	border-bottom: 10px solid white;
+	position: fixed;
+	left: 143px;
+    bottom: 33px;
+}
+
+h5 {
+	z-index: 100;
+}
+
+
