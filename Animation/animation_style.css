@@ -1,0 +1,157 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
+* {
+	font-family: "Open Sans";
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+@keyframes title {
+	0%  {color: #7cd1fe;}
+	20% {color: #017cbf;}
+	40% {color: #015b8c;}
+	60% {color: #002f49;}
+	80% {color: #015b8c;}
+	100%{color: #017cbf;}
+}
+
+p {
+	padding: 15px;
+}
+
+a:link, a:visited {
+	color: black;
+	text-decoration: none;
+}
+
+a:active {
+	font-weight: : bold;
+}
+
+h1 {
+	margin: 20px 0 10px 0;
+	font-size: 2.5rem;
+	text-transform: uppercase;
+	letter-spacing: 0.2rem;
+	color: white;
+	text-align: center;
+	animation: title 10s linear infinite;
+
+}
+
+#banner {
+	background: linear-gradient(-90deg, #0192e1, #6bcbfe);
+	margin: 5px 0 5px 0;
+	padding: 5px;
+}
+
+.wrap {
+	max-width: 1200px;
+	max-height: auto;
+	margin: auto;
+}
+
+.content {
+	position: relative;
+	height: auto;
+}
+
+#side-menu {
+	background: linear-gradient(#0192e1, #6bcbfe);
+	width: 110px;
+	height: 100%;
+	padding: 0.1%;
+	position: absolute;
+}
+
+#side-menu ul {
+	list-style-type: none;
+	text-align: left;
+}
+
+#side-menu li {
+	margin: 1em 0;
+	padding: 20px;
+}
+
+#side-menu a {
+	color: white;
+}
+
+#main-content {
+	float: left;
+	margin-left: 110px;
+	padding: 0;
+}
+
+#box {
+	width: 33.33%;
+	max-height: auto;
+	float: left;
+	padding: 0.1%;
+}
+
+#box:hover {
+	border-radius: 30px;
+}
+#cover img {
+	width: 100%;
+	margin: auto;
+}
+
+.circle {
+	background: #0192e1;
+	width: 35px;
+	height: 35px;
+	border-radius: 50%;
+	position: fixed;
+	left: 134px;
+    bottom: 22px;
+}
+
+.arrow-up {
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	border-top: 10px solid transparent;
+	border-bottom: 10px solid white;
+	position: fixed;
+	left: 142px;
+    bottom: 35px;
+}
+
+#ref {
+	font-size: .95rem;
+	color: white;
+	position: fixed;
+	left: 114px;
+	bottom: 1px;
+}
+
+@keyframes fadeInOut {
+  0%   { opacity:1; right: 0px;}
+  50%  { opacity:0; right: 150px;}
+  100% { opacity:1; right: 0px;}
+}
+@-o-keyframes fadeInOut{
+  0%   { opacity:1; right: 0px;}
+  50%  { opacity:0; right: 150px;}
+  100% { opacity:1; right: 0px;}
+}
+@-moz-keyframes fadeInOut{
+  0%   { opacity:1; right: 0px;}
+  50%  { opacity:0; right: 150px;}
+  100% { opacity:1; right: 0px;}
+}
+@-webkit-keyframes fadeInOut{
+  0%   { opacity:1; right: 0px;}
+  50%  { opacity:0; right: 150px;}
+  100% { opacity:1; right: 0px;}
+}
+.animate {
+	padding: 25px;
+   -webkit-animation: fadeInOut 5s linear infinite;
+   -moz-animation: fadeInOut 5s linear infinite;
+   -o-animation: fadeInOut 5s linear infinite;
+    animation: fadeInOut 5s linear infinite;
+}
