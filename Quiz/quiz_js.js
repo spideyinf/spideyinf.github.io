@@ -3,26 +3,26 @@
 		question: "Who did the Mona Lisa paint?",
 		choices: ["Picasso", "Michelangelo", "Leonardo Da Vinci", "Van Gogh"],
 		correctAnswer: 2
-	// }, {	
-	// 	question: "What is the world's longest river?",
-	// 	choices: ["Mekong", "Yangtze", "Amazon", "Nile"],
-	// 	correctAnswer: 2
-	// }, {	
-	// 	question: "What is the biggest country?",
-	// 	choices: ["Canada", "China", "USA", "Russia"],
-	// 	correctAnswer: 3
-	// }, {	
-	// 	question: "What is the capital city of Spain?",
-	// 	choices: ["Madrid", "Barcelona", "Valencia", "Sevilla"],
-	// 	correctAnswer: 0
-	// }, {	
-	// 	question: "Who played Neo in The Matrix?",
-	// 	choices: ["Keanu Reeves", "Tom Cruise", "Brad Pitt", "Matt Demon"],
-	// 	correctAnswer: 0
-	// }, {
-	// 	question: "Who is Marvel hero character?",
-	// 	choices: ["Wonder Women", "Batman", "Aquaman", "Ironman"],
-	// 	correctAnswer: 3
+	}, {	
+		question: "What is the world's longest river?",
+		choices: ["Mekong", "Yangtze", "Amazon", "Nile"],
+		correctAnswer: 2
+	}, {	
+		question: "What is the biggest country?",
+		choices: ["Canada", "China", "USA", "Russia"],
+		correctAnswer: 3
+	}, {	
+		question: "What is the capital city of Spain?",
+		choices: ["Madrid", "Barcelona", "Valencia", "Sevilla"],
+		correctAnswer: 0
+	}, {	
+		question: "Who played Neo in The Matrix?",
+		choices: ["Keanu Reeves", "Tom Cruise", "Brad Pitt", "Matt Demon"],
+		correctAnswer: 0
+	}, {
+		question: "Who is Marvel hero character?",
+		choices: ["Wonder Women", "Batman", "Aquaman", "Ironman"],
+		correctAnswer: 3
 	}];
 
 var questionCounter = 0; //Tracks the question.
@@ -35,7 +35,7 @@ function createField(index) {
 		id: 'question'
 	});
 
-	var header = $('<h2>Question ' + (index + 1) + ':</h2>');
+	var header = $('<h2>Question ' + (index + 1) + '\/' + questions.length + ':</h2>');
 	qElement.append(header);
 
 	var body = $('<p>', {id: 'question'}).append(questions[index].question);
