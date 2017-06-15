@@ -27,6 +27,7 @@ input[type="radio"] {
 p#question {
     padding: 8px;
     font-size: 1.4rem;
+    color: white;
 }
 
 h1 {
