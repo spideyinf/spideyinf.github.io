@@ -17,7 +17,7 @@ li {
     list-style-type: none;
     margin: 0 20px;
     padding: 8px;
-    cursor: pointer;
+/*    cursor: pointer;*/
     text-align: left !important
 }
 
@@ -65,6 +65,11 @@ ul {
     border: 1px solid #99f4fd;
     border-radius: 7px;
     height: 240px;
+}
+
+label {
+  width: 100%;
+  cursor: pointer;
 }
 
 .button a {

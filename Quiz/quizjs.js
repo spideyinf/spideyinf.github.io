@@ -53,8 +53,7 @@ function createRadios(index) {
 	var input = '';
 	for (var i = 0; i < questions[index].choices.length; i ++) {
 		item = $('<li>');
-		input = '<input type="radio" class="option-input radio" name="answer" value=' + i + ' />';
-		input += questions[index].choices[i];
+		input = '<label><input type="radio" class="option-input radio" name="answer" value=' + i + ' />' + questions[index].choices[i] + '</label>';
 		item.append(input);
 		radioList.append(item);
 	}
@@ -173,14 +172,17 @@ $('#prev').on('click', function (e) {
     $(this).removeClass('active');
   });
 
+ // Click on the answer also activating the radio button.
+// function clickRadio() 
+// {	
+// 	$('li').click(function() {
+// 		$('input[name="answer"]', this).prop("checked", true);
+// 	});
+// }
+
 })();
 
-// Click on the answer also activating the radio button.
-$('li').click(function() {
-	$('input[name="answer"]', this).prop("checked", true);
-	$('li').removeClass('hli');
-	$(this).addClass('hli');
-});
+
 
 
 
