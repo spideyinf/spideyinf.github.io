@@ -19,10 +19,10 @@
 		question: "Who played Neo in The Matrix?",
 		choices: ["Keanu Reeves", "Tom Cruise", "Brad Pitt", "Matt Demon"],
 		correctAnswer: 0
-	}, {
-		question: "Who is Marvel hero character?",
-		choices: ["Wonder Women", "Batman", "Aquaman", "Ironman"],
-		correctAnswer: 3
+	// }, {
+	// 	question: "Who is Marvel hero character?",
+	// 	choices: ["Wonder Women", "Batman", "Aquaman", "Ironman"],
+	// 	correctAnswer: 3
 	}];
 
 var questionCounter = 0; //Tracks the question.
@@ -35,7 +35,7 @@ function createField(index) {
 		id: 'question'
 	});
 
-	var header = $('<h2>Question ' + (index + 1) + '\/' + questions.length + ':</h2>');
+	var header = $('<h2 class="white">Question ' + (index + 1) + '\/' + questions.length + ':</h2>');
 	qElement.append(header);
 
 	var body = $('<p>', {id: 'question'}).append(questions[index].question);
@@ -112,8 +112,7 @@ function displayScore()
 			score.append('You got ' + numCorrect + ' questions out of ' + questions.length + ' right!');
 			return score;
 		} else {
-			score.append('<a href="congrats.html">You\'ve completed the Quiz with 100% correct answers!!! Click here</a>');
-			return score;
+			window.location = "congrats.html";
 		}
 	}
 
@@ -175,6 +174,13 @@ $('#prev').on('click', function (e) {
   });
 
 })();
+
+// Click on the answer also activating the radio button.
+$('li').click(function() {
+	$('input[name="answer"]', this).prop("checked", true);
+	$('li').removeClass('hli');
+	$(this).addClass('hli');
+});
 
 
 

@@ -8,10 +8,10 @@
 
 	.congrats {
 		position: absolute;
-		top: 140px;
+		top: 250px;
 		width: 550px;
 		height: 100px;
-		padding: 20px 10px;
+		padding: 45px 10px;
 		text-align: center;
 		margin: 0 auto;
 		left: 0;
@@ -28,6 +28,11 @@
 		top: 0;
 		text-align: center;
 		width: 100%;
+	}
+	
+	h1.sub {
+		font-size: 19px;
+		top: 90px;
 	}
 
 	.blob {

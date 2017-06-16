@@ -17,6 +17,7 @@ li {
     list-style-type: none;
     margin: 0 20px;
     padding: 8px;
+    cursor: pointer;
     text-align: left !important
 }
 
@@ -27,7 +28,6 @@ input[type="radio"] {
 p#question {
     padding: 8px;
     font-size: 1.4rem;
-    color: white;
 }
 
 h1 {
@@ -37,10 +37,11 @@ h1 {
 }
 
 #wrap {
+    min-width: 470px;
     padding: 15px;
     margin: 30px 0;
     background-color: #74e3ef;
-    border: 1px solid #05b4c6;
+    border: 1px solid white;
     border-radius: 5px;
     clear: both;
 }
@@ -49,6 +50,10 @@ h2 {
     margin: 10px 0;
     text-align: center;
     font-size: 1.5rem;
+}
+
+h2.white {
+    color: white;
 }
 
 ul {
