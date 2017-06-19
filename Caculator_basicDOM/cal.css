@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:100');
+@font-face {
+	font-family: "HelveticaNeueLTStd-UltLt";
+	src: url("HelveticaNeueLTStd-UltLt.otf");
+}
+
+* {
+	box-sizing: border-box;
+	font-weight: lighter;
+}
+
+body {
+	font-family: 'HelveticaNeueLTStd-UltLt', 'Roboto', sans-serif;
+	background-color: #dddddd;
+}
+
+h1.cal {
+	text-align: center;
+	text-transform: uppercase;
+	margin: 60px;
+}
+
+.wrap {
+	position: relative;
+	width: 360px;
+	height: auto;
+	margin: auto;
+
+}
+
+.display {
+
+}
+
+.display input {
+	font-size: 2.8rem;
+	padding: 10px;
+	width: 360px;
+	height: 75px;
+	color: white;
+	text-align: right;
+	border: 0.5px solid rgba(0,0,0,.15);
+	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
+	background-color: black;}
+
+.buttons {
+	position: absolute;
+}
+
+.row {
+  clear:both;
+}
+
+.row.button:first-child {
+	margin-left: 0px;
+}
+
+.button {
+	font-family: 'HelveticaNeueLTStd-UltLt', 'Roboto', sans-serif;
+	border: 0.5px solid rgba(0,0,0,.15);
+	color: white;
+	background-color: #7F7F7F;
+	font-size: 2rem;
+	float:left;
+	margin: 0;
+	width: 90px;
+	height: 55px;
+}
+
+.button.func {
+	background-color: #ff8c00;
+}
+
+.button.num.zero {
+	width: 180px;
+	border-bottom-left-radius: 8px;
+}
+
+.button.func.equal {
+	position: absolute;
+	height: 110px;
+	border-bottom-right-radius: 8px;
+}
+
+.button:hover {
+	border: 0.5px solid rgba(0,0,0,.45);
+}
+
+.button.func:hover {
+	background-color: #BF680C;
+}
+
+.button.num:hover {
+	background-color: #525252;
+} 
+
+.button.misc:hover {
+	background-color: #525252;
+}
