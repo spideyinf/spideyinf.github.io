@@ -148,7 +148,7 @@ h2.theme-name {
 }
 
 .new-theme .func {
-	background-color: #525252;
+	background-color: #7F7F7F;
 }
 
 .new-theme .button.num.zero {
@@ -161,8 +161,8 @@ h2.theme-name {
 
 .new-theme .change {
 	width: 340px;
-	background-color: #7F7F7F;
-	color: white;
+/*	background-color: #7F7F7F;
+	color: white;*/
 }
 
 
