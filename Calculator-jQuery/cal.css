@@ -1,0 +1,171 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:100');
+@font-face {
+	font-family: "HelveticaNeueLTStd-UltLt";
+	src: url("HelveticaNeueLTStd-UltLt.otf");
+}
+
+* {
+	box-sizing: border-box;
+	font-weight: lighter;
+}
+
+body {
+	font-family: 'HelveticaNeueLTStd-UltLt', 'Roboto', sans-serif;
+	background-color: #dddddd;
+}
+
+h1.cal {
+	text-align: center;
+	text-transform: uppercase;
+	margin: 50px 10px 8px;
+}
+
+h2.theme-name {
+	text-align: center;
+	text-transform: uppercase;
+}
+
+.clearfix {
+    zoom: 1;
+}
+
+.clearfix:after {
+	visibility: hidden;
+	height: 0;
+	content: "";
+    clear: both;
+	display: table;
+}   
+
+.wrap {
+	position: relative;
+	width: 360px;
+	margin: auto;
+}
+
+.display input {
+	font-size: 2.8rem;
+	padding: 10px;
+	width: 360px;
+	height: 75px;
+	color: white;
+	text-align: right;
+	border: 0.5px solid rgba(0,0,0,.15);
+	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
+	background-color: black;
+}
+
+.buttons {
+	position: absolute;
+}
+
+.row {
+	 clear:both;
+	 height: auto;
+}
+
+.row.button:first-child {
+	margin-left: 0px;
+}
+
+.button {
+	font-family: 'HelveticaNeueLTStd-UltLt', 'Roboto', sans-serif;
+	border: 0.5px solid rgba(0,0,0,.15);
+	color: white;
+	background-color: #7F7F7F;
+	font-size: 2rem;
+	float:left;
+	margin: 0;
+	width: 90px;
+	height: 55px;
+}
+
+.button.func {
+	background-color: #ff8c00;
+}
+
+.button.num.zero {
+	width: 180px;
+	border-bottom-left-radius: 8px;
+}
+
+.button.func.equal {
+	position: absolute;
+	height: 110px;
+	border-bottom-right-radius: 8px;
+}
+
+.button:hover {
+	border: 0.5px solid rgba(0,0,0,.45);
+}
+
+.button.func:hover {
+	background-color: #BF680C;
+}
+
+.button.num:hover {
+	background-color: #525252;
+} 
+
+.button.misc:hover {
+	background-color: #525252;
+}
+
+/*New theme style*/
+.change {
+	font-family: 'HelveticaNeueLTStd-UltLt', 'Roboto', sans-serif;
+	position: absolute;
+	text-transform: uppercase;
+	top: 475px;
+	width: 360px;
+	height: auto;
+	font-size: 1.2rem;
+	padding: 10px;
+	color: black;
+	border: 1px solid rgba(0,0,0,.15);
+	background-color: white;
+	border-radius: 8px;
+}
+
+.new-theme {
+	background-color: #fffbf4;
+}
+
+.new-theme .display input {
+	margin: 10px;
+	width: 340px;
+	border-radius: 5px !important;
+}
+
+.new-theme .button {
+	width: 70px;
+	height: 45px;
+	margin: 5px 10px;
+	background-color: #ff8c00;
+	border-radius: 5px !important;
+	font-size: 1.5rem;
+}
+
+.new-theme .func {
+	background-color: #525252;
+}
+
+.new-theme .button.num.zero {
+	width: 160px;
+}
+
+.new-theme .button.func.equal {
+	height: 100px;
+}
+
+.new-theme .change {
+	width: 340px;
+	background-color: #7F7F7F;
+	color: white;
+}
+
+
+
+
+
