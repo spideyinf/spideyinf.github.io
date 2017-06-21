@@ -1,0 +1,117 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+@import url("https://fonts.googleapis.com/css?family=Roboto:100");
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline; }
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block; }
+
+body {
+  line-height: 1; }
+
+ol, ul {
+  list-style: none; }
+
+blockquote, q {
+  quotes: none; }
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none; }
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+@font-face {
+  font-family: "HelveticaNeueLTStd-UltLt";
+  src: url("HelveticaNeueLTStd-UltLt.otf"); }
+html {
+  height: 100%; }
+
+body {
+  font-family: "HelveticaNeueLTStd-UltLt", "Roboto", sans-serif;
+  background: linear-gradient(to top, #014287, #3596fd, #89c2fe) no-repeat;
+  margin: 60px;
+  box-sizing: border-box; }
+
+h1 {
+  text-align: center; }
+  h1.form {
+    text-transform: uppercase;
+    margin: 15px 0;
+    font-size: 1.4rem; }
+
+.wrap-content {
+  padding: 25px;
+  border: 1px solid lightgray;
+  border-radius: 8px;
+  background-color: white;
+  width: 320px;
+  height: auto;
+  margin: auto; }
+
+input {
+  font-family: "HelveticaNeueLTStd-UltLt", "Roboto", sans-serif; }
+  input[type=text], input[type=email], input[type=password] {
+    box-sizing: border-box;
+    font-size: .85rem;
+    width: 100%;
+    padding: 8px;
+    margin: 8px 0;
+    border: 1px solid lightgray;
+    border-radius: 5px; }
+  input[type=submit] {
+    width: 100%;
+    font-size: 1rem;
+    padding: 6px;
+    color: white;
+    background-color: #3596FD;
+    border: 1px solid #0C80FF;
+    border-radius: 5px;
+    margin: 20px 0; }
+  input[type=radio] {
+    margin: 8px;
+    display: inline; }
+
+select {
+  font-family: "HelveticaNeueLTStd-UltLt", "Roboto", sans-serif;
+  width: 100%;
+  font-size: .8rem;
+  margin: 10px 0;
+  padding: 2px 2px 2px 2px; }
+
+label {
+  padding: 0 4px;
+  font-size: .9rem; }
+
+ul#info {
+  margin: 40px 5px; }
+ul li {
+  padding: 5px;
+  margin: 5px; }
+
+/*# sourceMappingURL=base.css.map */

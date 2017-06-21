@@ -1,0 +1,85 @@
+//base.scss
+
+@import 'reset';
+@import 'typography';
+@import 'color';
+
+html {
+	height: 100%;
+}
+body {
+	font-family: $font-stack;
+	background: $color-bg-main;
+	margin: 60px;
+	box-sizing: border-box;
+}
+
+h1 {
+	text-align: center;
+	&.form {
+		text-transform: uppercase;
+		margin: 15px 0;
+		font-size: 1.4rem;
+	}
+}
+
+.wrap-content {
+	padding: 25px;
+	border: 1px solid $color-border-input;
+	border-radius: 8px;
+	background-color: white;
+	width: 320px;
+	height: auto;
+	margin: auto;
+}
+
+input {
+	font-family: $font-stack;
+	&[type=text], &[type=email], &[type=password] {
+		box-sizing: border-box;
+		font-size: .85rem;
+		width: 100%;
+		padding: 8px;
+		margin: 8px 0;
+		border: 1px solid $color-border-input;
+		border-radius: 5px;
+	}
+	&[type=submit] {
+		width: 100%;
+		font-size: 1rem;
+		padding: 6px;
+		color: white;
+		background-color: $color-button;
+		border: 1px solid $color-border-button;
+		border-radius: 5px;
+		margin: 20px 0;
+	}
+	&[type=radio] {
+		margin: 8px;
+		display: inline;
+	}
+}
+
+select {
+	font-family: $font-stack;
+	width: 100%;
+	font-size: .8rem;
+	margin: 10px 0;
+	padding: 2px 2px 2px 2px;
+}
+
+label {
+	padding: 0 4px;
+	font-size: .9rem;
+}
+
+ul {
+	&#info {
+	margin: 40px 5px;	
+	}
+	li {
+		padding: 5px;
+		margin: 5px;
+	}
+}
+

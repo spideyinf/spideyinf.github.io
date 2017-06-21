@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Register form</title>
+		<link rel="stylesheet" href="css/base.css">
+	</head>
+
+	<body>
+		<div class="wrap-content">
+			<h1 class="form">Demo register form</h1>
+
+			<form action="result.html">	
+				<input type="text" name="Fullname" placeholder="Full name"/><br>
+				<input type="text" name="Address" placeholder="Address"/><br>
+				<input type="text" name="Phone" placeholder="Phone number"/><br>
+				<input type="email" name="Email" placeholder="Email"/><br>
+				<input type="password" name="Password" id="password" placeholder="Password" required><br>
+				<input type="password" name="Confirm-password" id="confirm-password" placeholder="Confirm password" required><br>
+
+				<select name="Birth-year" id="year">
+					<option>Select your birth year...</option>
+				</select>
+				<br>
+				<label for="">Gender: </label>
+				<input type="radio" name="Gender" id="Male" value="male"><label for="male">Male</label>
+				<input type="radio" name="Gender" id="Female" value="female"><label for="female">Female</label>
+				<input type="radio" name="Gender" id="Other" value="other"><label for="other">Others</label>
+				<br>
+
+				<input type="submit" value="Register">
+			</form>		
+		</div>
+		
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script type="text/javascript" src="main.js"></script>	
+	</body>
+</html>

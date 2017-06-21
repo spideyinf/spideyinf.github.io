@@ -57,7 +57,7 @@ $('.change').click(function() {
 	$('body').toggleClass('new-theme');
 });
 
-//Toggle text of Change button and h1
+//Toggle text of Change button and h2
 $(function() {
 	$('.change').click(function () {
 		$(this).text(function(i, text) {

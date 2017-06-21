@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Register status</title>
+		<link rel="stylesheet" href="css/base.css">
+	</head>
+
+	<body>
+		<div class="wrap-content">
+			<h1 class="form">Signup successfully!</h1>
+			<ul id="info"></ul>
+			<h1>Welcome to the Jungle!</h1>
+		</div>
+		
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script>
+		//Result information - temporary rule
+
+		var infoList = $('#info');
+		var add = window.location.search;
+		var decode = decodeURIComponent(add);
+			decode = decode.replace('?', '');
+			decode = decode.replace(/\+/g, ' ');
+			decode = decode.replace(/=/g,': ');
+			decode = decode.split('&');
+		var input = '';
+		console.log(decode.length);
+
+(function createInfo() {
+		for (var i = 0; i < decode.length; i ++) {
+			input = '<li>' + decode[i] + '</li>';
+			infoList.append(input);
+		}
+		return infoList;
+})();
+
+	</script>	
+	</body>
+</html>
