@@ -9,14 +9,16 @@
 	<body>
 		<div class="wrap-content">
 			<h1 class="form">Demo register form</h1>
-
-			<form action="result.html">	
-				<input type="text" name="Fullname" placeholder="Full name"/><br>
+			<h5>(The field marked with '*' is required)</h5>
+			<form id="form-register" action="result.html">	
+				<input type="text" name="Fullname" id="fullname" placeholder="Full name*"/>
+				<span id="error"></span>
+				<input type="email" name="Email" id="email" placeholder="Email*"/>
+				<span id="error"></span>
 				<input type="text" name="Address" placeholder="Address"/><br>
 				<input type="text" name="Phone" placeholder="Phone number"/><br>
-				<input type="email" name="Email" placeholder="Email"/><br>
-				<input type="password" name="Password" id="password" placeholder="Password" required><br>
-				<input type="password" name="Confirm-password" id="confirm-password" placeholder="Confirm password" required><br>
+				<input type="password" name="Password" id="password" placeholder="Password*" required><br>
+				<input type="password" name="Confirm-password" id="confirm-password" placeholder="Confirm password*" required><br>
 
 				<select name="Birth-year" id="year">
 					<option>Select your birth year...</option>

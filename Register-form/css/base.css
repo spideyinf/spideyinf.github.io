@@ -62,8 +62,12 @@ h1 {
   text-align: center; }
   h1.form {
     text-transform: uppercase;
-    margin: 15px 0;
+    margin: 15px 0 5px;
     font-size: 1.4rem; }
+
+h5 {
+  text-align: center;
+  font-size: .9rem; }
 
 .wrap-content {
   padding: 25px;
@@ -81,7 +85,7 @@ input {
     font-size: .85rem;
     width: 100%;
     padding: 8px;
-    margin: 8px 0;
+    margin: 14px 0 5px;
     border: 1px solid lightgray;
     border-radius: 5px; }
   input[type=submit] {
@@ -89,13 +93,20 @@ input {
     font-size: 1rem;
     padding: 6px;
     color: white;
-    background-color: #3596FD;
+    background: linear-gradient(to top, #014287, #3596fd);
     border: 1px solid #0C80FF;
     border-radius: 5px;
     margin: 20px 0; }
   input[type=radio] {
     margin: 8px;
     display: inline; }
+
+span {
+  display: block;
+  padding: 0 6px; }
+  span#error {
+    font-size: .7rem;
+    color: red; }
 
 select {
   font-family: "HelveticaNeueLTStd-UltLt", "Roboto", sans-serif;
