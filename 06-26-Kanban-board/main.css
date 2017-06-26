@@ -4,6 +4,8 @@
 }
 
 .add-item {
+	margin-top: 3px;
+	border-radius: 4px !important;
 	width: 100%;
 }
 
@@ -30,21 +32,7 @@ a:hover > .glyphicon.glyphicon-trash {
 	display: block;
 }
 
-h4.card-todo {
-	padding: 8px 12px;
-	background-color: #F8F8F8;
-	border: 1px solid none;
-	border-radius: 3px;
-}
-
-h4.card-doing {
-	padding: 8px 12px;
-	background-color: #F8F8F8;
-	border: 1px solid none;
-	border-radius: 3px;
-}
-
-h4.card-done {
+h4.card {
 	padding: 8px 12px;
 	background-color: #F8F8F8;
 	border: 1px solid none;
