@@ -2,3 +2,51 @@
 	margin: 0; 
 	padding: 0;
 }
+
+.add-item {
+	width: 100%;
+}
+
+.logo {
+	width: 30px;
+	height: auto;
+	margin: 8px 15px;
+}
+
+.navbar-brand {
+	color: #007BC3 !important;
+	font-size: 2.2rem;
+}
+
+sup {
+	font-size: 1.2rem;
+}
+
+.glyphicon.glyphicon-trash {
+	display: none;
+}
+
+a:hover > .glyphicon.glyphicon-trash {
+	display: block;
+}
+
+h4.card-todo {
+	padding: 8px 12px;
+	background-color: #F8F8F8;
+	border: 1px solid none;
+	border-radius: 3px;
+}
+
+h4.card-doing {
+	padding: 8px 12px;
+	background-color: #F8F8F8;
+	border: 1px solid none;
+	border-radius: 3px;
+}
+
+h4.card-done {
+	padding: 8px 12px;
+	background-color: #F8F8F8;
+	border: 1px solid none;
+	border-radius: 3px;
+}
