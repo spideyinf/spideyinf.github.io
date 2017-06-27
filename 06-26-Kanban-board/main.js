@@ -1,6 +1,4 @@
-﻿var COMLUMN_TYPE = ['todo', 'doing', 'done'];
-
-
+﻿var COLUMN_TYPE = ['todo', 'doing', 'done'];
 
 var DB = {
 	getData: function () {
@@ -20,7 +18,9 @@ var DB = {
 		localStorage.setItem('list', JSON.stringify(data));
 
 	}
-}
+};
+
+var list = DB.getData();
 
 
 var app = {
@@ -29,6 +29,11 @@ var app = {
 		var event = window.event || e;
 
 		if (event.keyCode === 13 && taskName.trim() !== '') {
+			//Add local storage info to the list
+			if (!list[type]) list[type] = [];
+			list[type].push(taskName);
+			DB.setData(list);
+
 			//Update DOM - add task to the list
 			this.addTaskToList(type, taskName);
 			//Reset input
@@ -51,7 +56,8 @@ var app = {
 		});
 
 		//Remove task
-		$('#btn-delete').click(function () {
+		$('#btn-delete').on('click', function () {
+			console.log("Log call");
 			item.remove();
 			modal.modal('hide');
 		});
@@ -68,7 +74,14 @@ var app = {
 
 
 
-$(function() { //Initiate sorttable for .sort-list - A jQueryUI feature
+$(function() { //Initiate sorttable for .sort-list - A jQueryUI feature + Add local storage info
+    COLUMN_TYPE.forEach(function(type) {
+    	var columnType = list[type] || [];
+    	columnType.forEach(function(taskName) {
+    		app.addTaskToList(type, taskName);
+    	})
+    });
+
     $( ".sort-list" ).sortable({
       connectWith: ".sort-list",
       placeholder: 'ui-state-highlight',

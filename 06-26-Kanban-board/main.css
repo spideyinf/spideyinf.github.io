@@ -33,7 +33,7 @@ a.list-group-item:hover {
 	cursor: move;
 }
 
-span:hover {
+span.glyphicon.glyphicon-trash:hover {
 	cursor: pointer !important;
 }
 
@@ -50,7 +50,7 @@ h4.card {
 
 .ui-state-highlight {
 	background-color: #d4dade;
-	height: calc(1.5rem + 20px);
+	height: calc(1.5rem + 22px);
 	display: block;
 }
 
@@ -58,6 +58,13 @@ h4.card {
 	-ms-transform: rotate(0.3deg);
 	-webkit-transform: rotate(0.3deg);
 	transform: rotate(0.3deg);
+}
+
+.sort-list {
+	min-height: calc(1.5rem + 20px);
+	background-color: #fafbfb; 
+	border: 1px solid none;
+	border-radius: 3px;
 }
 
 
