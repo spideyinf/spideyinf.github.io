@@ -27,26 +27,24 @@
 					<div class="col-sm-4">
 						<div class="card">
 							<div class="list-group">
-								<a href="#" class="list-group-item-heading list-group-item-danger"><h4 class="card">TO DO (4)</h4></a>
-								<div class="sort-list">
-								<a href="#" class="list-group-item">Demo task</a>
-								<a href="#" class="list-group-item">Demo task</a>
-								<a href="#" class="list-group-item">Demo task</a>		
+								<a href="#" class="list-group-item-heading list-group-item-danger"><h4 class="card">TO DO (3)</h4></a>
+								<div class="sort-list" id="todo">
+								<a href="#" class="list-group-item">Demo task<span class="glyphicon glyphicon-trash pull-right" onclick="app.deleteTask(this)"></span></a>
+								<a href="#" class="list-group-item">Demo task<span class="glyphicon glyphicon-trash pull-right" onclick="app.deleteTask(this)"></span></a>
+								<a href="#" class="list-group-item">Demo task<span class="glyphicon glyphicon-trash pull-right" onclick="app.deleteTask(this)"></span></a>		
 								</div> <!-- End of list-group and sort-list -->
-								<input type="text" placeholder="Add item..." class="list-group-item add-item"></input>	
+								<input id="add-new-task" onkeydown="app.newTask(event, 'todo', this)" type="text" placeholder="Add item..." class="list-group-item add-item"></input>	
 							</div> <!-- End of sort-list -->
 						</div> <!-- End of card -->
 					</div> <!-- End of col-sm-4 -->
 					<div class="col-sm-4">
 						<div class="card">
 							<div class="list-group">
-								<a href="#" class="list-group-item-heading list-group-item-info"><h4 class="card">DOING (4)</h4></a>
-								<div class="sort-list">
-								<a href="#" class="list-group-item">Demo task</a>
-								<a href="#" class="list-group-item">Demo task</a>
-								<a href="#" class="list-group-item">Demo task</a>		
+								<a href="#" class="list-group-item-heading list-group-item-info"><h4 class="card">DOING (1)</h4></a>
+								<div class="sort-list" id="doing">
+								<a href="#" class="list-group-item">Demo task<span class="glyphicon glyphicon-trash pull-right" onclick="app.deleteTask(this)"></span></a>	
 								</div> <!-- End of list-group and sort-list -->
-								<input type="text" placeholder="Add item..." class="list-group-item add-item"></input>	
+								<input id="add-new-task" onkeydown="app.newTask(event, 'doing', this)" type="text" placeholder="Add item..." class="list-group-item add-item"></input>	
 							</div> <!-- End of sort-list -->
 						</div> <!-- End of card -->
 					</div> <!-- End of col-sm-4 -->
@@ -54,17 +52,36 @@
 						<div class="card">
 							<div class="list-group">
 								<a href="#" class="list-group-item-heading list-group-item-success"><h4 class="card">DONE (4)</h4></a>
-								<div class="sort-list">
-								<a href="#" class="list-group-item">Demo task</a>
-								<a href="#" class="list-group-item">Demo task</a>
-								<a href="#" class="list-group-item">Demo task</a>		
+								<div class="sort-list" id="done">
+								<a href="#" class="list-group-item">Demo task<span class="glyphicon glyphicon-trash pull-right" onclick="app.deleteTask(this)"></span></a>
+								<a href="#" class="list-group-item">Demo task<span class="glyphicon glyphicon-trash pull-right" onclick="app.deleteTask(this)"></span></a>
+								<a href="#" class="list-group-item">Demo task<span class="glyphicon glyphicon-trash pull-right" onclick="app.deleteTask(this)"></span></a>
+								<a href="#" class="list-group-item">Demo task<span class="glyphicon glyphicon-trash pull-right" onclick="app.deleteTask(this)"></span></a>	
 								</div> <!-- End of list-group and sort-list -->
-								<input type="text" placeholder="Add item..." class="list-group-item add-item"></input>	
+								<input id="add-new-task" onkeydown="app.newTask(event, 'done', this)" type="text" placeholder="Add item..." class="list-group-item add-item"></input>	
 							</div> <!-- End of sort-list -->
 						</div> <!-- End of card -->
 					</div> <!-- End of col-sm-4 -->
 				</div> <!-- End of row -->		
 			</div> <!-- End of container -->
+
+			<div id="modal-confirm" class="modal fade" tabindex="-1" role="dialog">
+			  <div class="modal-dialog" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        <h4 class="modal-title">Are you sure to delete?</h4>
+			      </div>
+			      <div class="modal-body">
+			        <p>The task will be removed from your list&hellip;</p>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			        <button type="button" class="btn btn-danger" id="btn-delete">Remove</button>
+			      </div>
+			    </div><!-- /.modal-content -->
+			  </div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
 	
 	<!-- jQuery -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

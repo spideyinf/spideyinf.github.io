@@ -4,7 +4,7 @@
 }
 
 .add-item {
-	margin-top: 3px;
+	margin-top: 5px;
 	border-radius: 4px !important;
 	width: 100%;
 }
@@ -21,6 +21,7 @@
 }
 
 sup {
+	color: #c0c9d0;
 	font-size: 1.2rem;
 }
 
@@ -28,13 +29,36 @@ sup {
 	display: none;
 }
 
-a:hover > .glyphicon.glyphicon-trash {
+a.list-group-item:hover {
+	cursor: move;
+}
+
+span:hover {
+	cursor: pointer !important;
+}
+
+.list-group-item:hover > .glyphicon.glyphicon-trash {
 	display: block;
 }
 
 h4.card {
-	padding: 8px 12px;
-	background-color: #F8F8F8;
+	padding: 10px 14px;
+	background-color: #d4dade;
 	border: 1px solid none;
 	border-radius: 3px;
 }
+
+.ui-state-highlight {
+	background-color: #d4dade;
+	height: calc(1.5rem + 20px);
+	display: block;
+}
+
+.dragging {
+	-ms-transform: rotate(0.3deg);
+	-webkit-transform: rotate(0.3deg);
+	transform: rotate(0.3deg);
+}
+
+
+
