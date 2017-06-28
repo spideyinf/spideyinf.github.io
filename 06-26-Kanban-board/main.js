@@ -49,15 +49,20 @@ var app = {
 	deleteTask: function (span) {
 		var modal = $('#modal-confirm');
 		var item = $(span).parent();
+		var btn = $('#btn-delete');
 		
 		//Trigger the modal when clicking in span
 		$('span').click(function () {
   			modal.modal('show');
 		});
 
-		//Remove task
-		$('#btn-delete').on('click', function () {
-			console.log("Log call");
+		btn.off('click');
+		//Remove task at UI and local storage info
+		btn.on('click', function () {
+			var columnType = item.parent().attr('id');
+			var itemPosition = $('#' + columnType + ' .list-group-item').index(item);
+			list[columnType].splice(itemPosition, 1);
+			DB.setData(list);
 			item.remove();
 			modal.modal('hide');
 		});
