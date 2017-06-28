@@ -27,8 +27,9 @@
 					<div class="col-sm-4">
 						<div class="card">
 							<div class="list-group">
-								<a href="#" class="list-group-item-heading list-group-item-danger"><h4 class="card">TO DO <span class="badge count pull-right">0</span></h4></a>
-								<div class="sort-list" id="todo">		
+								<a href="#" class="list-group-item-heading list-group-item-danger"><h4 class="card">TO DO</h4></a>
+								<span id="count" class="badge pull-right">0</span>
+								<div class="sort-list" id="todo">
 								</div>
 								<input id="add-new-task" onkeydown="app.newTask(event, 'todo', this)" type="text" placeholder="Add task..." class="list-group-item add-item"></input>	
 							</div> <!-- End of sort-list -->
@@ -37,7 +38,8 @@
 					<div class="col-sm-4">
 						<div class="card">
 							<div class="list-group">
-								<a href="#" class="list-group-item-heading list-group-item-info"><h4 class="card">DOING <span class="badge count pull-right">0</span></h4></a>
+								<a href="#" class="list-group-item-heading list-group-item-info"><h4 class="card">DOING</h4></a>
+								<span id="count" class="badge pull-right">0</span>
 								<div class="sort-list" id="doing">
 								</div>
 								<input id="add-new-task" onkeydown="app.newTask(event, 'doing', this)" type="text" placeholder="Add task..." class="list-group-item add-item"></input>	
@@ -47,7 +49,8 @@
 					<div class="col-sm-4">
 						<div class="card">
 							<div class="list-group">
-								<a href="#" class="list-group-item-heading list-group-item-success"><h4 class="card">DONE <span class="badge count pull-right">0</span></h4></a>
+								<a href="#" class="list-group-item-heading list-group-item-success"><h4 class="card">DONE</h4></a>
+								<span id="count" class="badge pull-right">0</span>
 								<div class="sort-list" id="done">	
 								</div>
 								<input id="add-new-task" onkeydown="app.newTask(event, 'done', this)" type="text" placeholder="Add task..." class="list-group-item add-item"></input>	
@@ -70,6 +73,23 @@
 			      <div class="modal-footer">
 			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			        <button type="button" class="btn btn-danger" id="btn-delete">Remove</button>
+			      </div>
+			    </div><!-- /.modal-content -->
+			  </div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+
+			<div id="modal-limit" class="modal fade" tabindex="-1" role="dialog">
+			  <div class="modal-dialog" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        <h4 class="modal-title">You should not have more than <span class="limit-count"></span> tasks in <span class="limit-list"></span> list</h4>
+			      </div>
+			      <div class="modal-body">
+			        <p>Action will be withdrawn&hellip;</p>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			      </div>
 			    </div><!-- /.modal-content -->
 			  </div><!-- /.modal-dialog -->

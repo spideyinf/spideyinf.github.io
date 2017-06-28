@@ -27,6 +27,7 @@ sup {
 
 .glyphicon.glyphicon-trash {
 	display: none;
+	padding: 0 6px;
 }
 
 a.list-group-item:hover {
@@ -67,5 +68,12 @@ h4.card {
 	border-radius: 3px;
 }
 
+span#count {
+	margin: -38px 12px;
+}
+
+#count.badge {
+	padding: 4px 12px;
+}
 
 
