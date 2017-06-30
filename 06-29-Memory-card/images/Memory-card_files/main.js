@@ -32,7 +32,7 @@ $(function () {
 	cardFront = shuffle(cardFront);
 
 	for (var i = 0; i < cardFront.length; i ++) {
-		var cardHS = '<div class="col-xs-3"><div class="card-hs" data-name="' + cardFront[i] + '" onclick="flip(this)"><div class="front"><img class="img-responsive" src=' + cardFront[i] + '></div><div class="back"><img class="img-responsive" src=' + cardBack + '></div></div></div>';
+		var cardHS = '<div class="col-xs-3"><div class="card-hs" data-name="' + cardFront + '" onclick="flip(this)"><div class="front"><img class="img-responsive" src=' + cardFront[i] + '></div><div class="back"><img class="img-responsive" src=' + cardBack + '></div></div></div>';
 		$('.row').append(cardHS);
 	};
 
@@ -48,23 +48,17 @@ function flip(card) {
 		current = $(card);
 	} else {
 		if (current.attr('data-name') != $(card).attr('data-name')) {
-			
-			//Wrong cards
 			setTimeout(function() {
+				console.log('Khac nhau');
 				current.toggleClass('flipped');
 				$(card).toggleClass('flipped');
 				current = null;
 			}, 800);
 
-		//Correct
+
 		} else {
-
-			setTimeout(function() {
-			$(card).css('opacity', '0');
-			current.css('opacity', '0');		
-			current = null;		
-			}, 300);
-
+			console.log('Giong nhau');
+			current = null;
 		}
 	}
 }
