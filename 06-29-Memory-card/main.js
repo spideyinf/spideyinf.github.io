@@ -142,7 +142,6 @@ function flip(card) {
 				current.toggleClass('flipped');
 				$(card).toggleClass('flipped');
 				current = null;
-				$('.card-hs.flipped').css('pointer-events', 'none');
 				$('.card-hs').css('pointer-events', 'auto');
 			}, 500);
 
@@ -154,12 +153,12 @@ function flip(card) {
 			current.css('opacity', '0');		
 			current = null;	
 			count ++;
-			$('.card-hs').css('pointer-events', 'auto');
-			$('.card-hs.flipped').css('pointer-events', 'none');	
+			$('.card-hs').css('pointer-events', 'auto');	
 			}, 500);
 
 		}
 	}
+	$('.card-hs.flipped').css('pointer-events', 'none');
 }
 
 function replay() {
