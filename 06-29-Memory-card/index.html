@@ -2,30 +2,111 @@
 <html lang="en"><head>
 	<title>Memory-card</title>
 	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">  
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<link rel="stylesheet" href="vendor/font-awesome.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- bower:css -->
+	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+	<!-- endbower -->
  	<link rel="stylesheet" href="main.css">
 </head>
 <body>
+<!-- Start game modal -->
+		<div class="modal fade" id="startGame" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h2 class="modal-title text-center">Memory card game</h2>
+					</div>
+					<div class="modal-body">
+						<img class="img-modal img-responsive" src="images/welcome.jpg" alt="welcome">
+						<h3 class="text-center">Choose your game mode</h3>
+					</div>
+					<div class="modal-footer">
+					<div class="btn-group btn-group-justified">
+						<div class="btn-group">
+						<button type="button" id="normal" value="normal" class="btn-mode btn btn-warning btn-lg" data-dismiss="modal">Normal</button>							
+						</div>
+						<div class="btn-group">
+						<button type="button" id="hard" value="hard" class="btn-mode btn btn-danger btn-lg" data-dismiss="modal">Insane</button></div>							
+						</div>							
+					</div> <!-- end of btn-group -->
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+
+<!-- Main field -->
 	<div class="container">
+		<div class="progress">
+		  <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+		  </div>
+		</div>
 		<div class="row">
 		</div>
 	</div>
 	
-	<audio autoplay loop>
-	  <source src="musics/Main_Title.ogg" type="audio/mpeg">
+	<audio id="soundBackground" autoplay loop>
+	  <source src="sounds/Main_Title.ogg" type="audio/mpeg">
 	</audio>
-	<audio id="wrong">
-		<source src="musics/wrong.ogg" type="audio/mpeg">
-	</audio>
-	<audio id="correct">
-		<source src="musics/correct.ogg" type="audio/mpeg">
-	</audio>
-	<!-- jQuery -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<!-- Bootstrap 3-->
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<!-- Modal for the victory -->
+			<div class="modal modal-victory fade" id="modal-1">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h3 class="modal-title text-center">You are victory!</h3>
+							<p class="text-center">Wellplayed, my lord...</p>
+						</div>
+						<div class="modal-body">
+							<p><img class="img-modal img-responsive" src="images/victory.png" alt="victory"></p>
+						</div>
+						<div class="modal-footer">
+							<div class="btn-group btn-group-justified">
+								<div class="btn-group">
+								<button type="button" class="btn btn-primary btn-lg" data-dismiss="modal" onclick="showReward()">Take your reward</button>
+								</div>
+								
+								<div class="btn-group">
+								<button type="button" class="btn btn-danger btn-lg" onclick="replay()">New game</button>
+								</div>
+							</div>
+						</div>
+					</div><!-- /.modal-content -->
+				</div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+
+<!-- Modal for the loser -->
+			<div class="modal modal-defeated fade" id="modal-1">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h3 class="modal-title text-center">You are DEFEATED!</h3>
+							<p class="text-center">Mission is not accomplished...</p>
+						</div>
+						<div class="modal-body">
+							<p><img class="img-modal img-responsive" src="images/defeated.png" alt="Defeated"></p>
+						</div>
+						<div class="modal-footer">
+							<div class="text-center">
+								<button type="button" class="btn btn-danger btn-block btn-lg" onclick="replay()">Replay</button>	
+							</div>
+						</div>
+					</div><!-- /.modal-content -->
+				</div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+
+<div class="reward-container">
+	<div class="row">
+		<div class="col-xs-4 col-xs-push-4">
+				<button type="button" class="btn btn-danger btn-block btn-lg reward" onclick="remove()">Enjoy this Background artwork!</button>	
+		</div>
+	</div>	
+</div>
+
+	<!-- bower:js -->
+	<script src="bower_components/jQuery/dist/jquery.js"></script>
+	<script src="bower_components/jquery/dist/jquery.js"></script>
+	<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+	<!-- endbower -->
 	<script type="text/javascript" src="main.js"></script>
 
 </body>
