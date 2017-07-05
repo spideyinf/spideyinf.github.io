@@ -72,12 +72,16 @@ var cardFront = [];
 	};
 
 var amount = 100/timeMode;
-console.log(amount);
+
 	//Prepare the field
 	var counterBack = setInterval(function() {
 		progressPercent -= amount;
 		if (progressPercent > 25) {
-			$('.progress-bar').css('width', progressPercent + '%');
+			$('.progress-bar').css({
+				'transition': 'width 1s linear',
+				'width': progressPercent + '%',
+				'transition-duration': '1000ms'
+			});
 		} else if (progressPercent <=25) {
 			$('.progress-bar').removeClass('progress-bar-warning');
 			$('.progress-bar').addClass('progress-bar-danger')
@@ -114,7 +118,7 @@ console.log(amount);
 			$('.card-hs').css('pointer-events', 'none');
 		}
 		//Time out
-		if (timeMode == 0) {
+		if (timeMode == -1) {
 			//Game is over
 			clearInterval(run);
 			clearInterval(counterBack);
