@@ -100,7 +100,7 @@ var amount = 100/timeMode;
 	cardFront = shuffle(cardFront);
 
 	for (var i = 0; i < cardFront.length; i ++) {
-		var cardHS = '<div class="col-xs-2"><div class="card-hs" data-name="' + cardFront[i] + '" onclick="flip(this)"><div class="front"><img class="img-responsive" src=' + cardFront[i] + '></div><div class="back"><img class="img-responsive" src=' + cardBack + '></div></div></div>';
+		var cardHS = `<div class="col-xs-2"><div class="card-hs" data-name=${cardFront[i]} onclick="flip(this)"><div class="front"><img class="img-responsive" src=${cardFront[i]} ></div><div class="back"><img class="img-responsive" src=${cardBack} ></div></div></div>`;
 		$('.container .row').append(cardHS);
 	};
 
