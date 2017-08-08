@@ -1,0 +1,47 @@
+////////////////////////////////////////
+// Required
+////////////////////////////////////////
+
+var gulp = require('gulp'),
+	sass = require('gulp-sass'),
+	cssnano = require('gulp-cssnano');
+
+
+
+
+////////////////////////////////////////
+//Tasks
+////////////////////////////////////////
+
+//Sass
+
+gulp.task('sass', function() {
+	return gulp.src('scss/styles.scss')
+		.pipe(sass())
+		.pipe(gulp.dest('css'))
+});
+
+//Cssnano
+
+gulp.task('cssnano', function() {
+	return gulp.src('css/*.css')
+		.pipe(cssnano())
+		.pipe(gulp.dest('out'))
+});
+
+
+
+
+
+////////////////////////////////////////
+// Watch Tasks
+////////////////////////////////////////
+
+
+
+
+////////////////////////////////////////
+// Default Task
+////////////////////////////////////////
+
+gulp.task('default', ['sass', 'cssnano']);
