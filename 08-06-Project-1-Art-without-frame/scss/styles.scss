@@ -1,3 +1,71 @@
-.testing {
-  width: percentage(5/7);
+@import 'https://fonts.googleapis.com/css?family=Oswald:300,400,500&subset=vietnamese';
+
+
+//Variables
+$red: #FF555C;
+$blue: #236ED4;
+$lightgray: #EDEDED;
+$gray: #B5B5B5;
+
+//Fonts
+$Oswald: 'Oswald', sans-serif;
+@font-face {
+    font-family: 'Deadstock';
+    src: url('fonts/Dead Stock - Demo.ttf');
 }
+@font-face {
+    font-family: 'Streamster';
+    src: url('fonts/Streamster.ttf');
+}
+//Colors
+
+//Imports
+@import 'reset';
+@import 'typography';
+
+#test {
+	color: $red;
+}
+
+//Home page
+
+.home-brands {
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+	background-color: $lightgray;
+	margin-top: 3rem;
+	padding: 2rem 0 2rem 0;
+}
+
+.home-brands-holder {
+	justify-self: center;
+	align-self: center;
+	padding: 6px 0 6px 0;
+}
+
+.home-brand {
+	padding: 3px 6px;
+}
+
+.home-infographic-holder {
+	margin: 0 30px 0 30px;
+	padding: 3rem 0 3rem 0;
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+}
+
+.home-infographic {
+	justify-self: center;
+	align-self: center;
+}
+
+.home-infographic > * {
+	text-align: center;
+}
+
+.home-infographic-footer {
+	padding: 1rem 0 1rem 0;
+	background-color: $red;
+}
+
+

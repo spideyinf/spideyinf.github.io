@@ -1,2 +1,132 @@
-.testing {
-  width: 71.42857%; }
+@import 'https://fonts.googleapis.com/css?family=Oswald:300,400,500&subset=vietnamese';
+@font-face {
+  font-family: 'Deadstock';
+  src: url("fonts/Dead Stock - Demo.ttf"); }
+
+@font-face {
+  font-family: 'Streamster';
+  src: url("fonts/Streamster.ttf"); }
+
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline; }
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block; }
+
+body {
+  line-height: 1; }
+
+ol, ul {
+  list-style: none; }
+
+blockquote, q {
+  quotes: none; }
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none; }
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+* {
+  font-family: "Oswald", sans-serif; }
+
+body {
+  font-family: "Oswald", sans-serif;
+  font-size: 16px;
+  line-height: 1.4; }
+
+h1, h2, h3, h4, h5, h6 {
+  text-transform: uppercase;
+  font-weight: 500; }
+
+h1 {
+  font-size: 2.5rem; }
+
+h2 {
+  font-size: 2.25rem; }
+
+h3 {
+  font-size: 2rem; }
+
+h4 {
+  font-size: 1.875rem; }
+
+h5 {
+  font-size: 1.5rem; }
+
+h6 {
+  font-size: 1.25rem; }
+
+p {
+  font-weight: 300; }
+
+.white {
+  color: white; }
+
+.red {
+  color: #FF555C; }
+
+.center {
+  text-align: center; }
+
+#test {
+  color: #FF555C; }
+
+.home-brands {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  background-color: #EDEDED;
+  margin-top: 3rem;
+  padding: 2rem 0 2rem 0; }
+
+.home-brands-holder {
+  justify-self: center;
+  align-self: center;
+  padding: 6px 0 6px 0; }
+
+.home-brand {
+  padding: 3px 6px; }
+
+.home-infographic-holder {
+  margin: 0 30px 0 30px;
+  padding: 3rem 0 3rem 0;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); }
+
+.home-infographic {
+  justify-self: center;
+  align-self: center; }
+
+.home-infographic > * {
+  text-align: center; }
+
+.home-infographic-footer {
+  padding: 1rem 0 1rem 0;
+  background-color: #FF555C; }
