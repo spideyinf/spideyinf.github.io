@@ -1,11 +1,11 @@
-@import 'https://fonts.googleapis.com/css?family=Oswald:300,400,500&subset=vietnamese';
+@import 'https://fonts.googleapis.com/css?family=Oswald:200,300,400,500&subset=vietnamese';
 @font-face {
   font-family: 'Deadstock';
-  src: url("fonts/Dead Stock - Demo.ttf"); }
+  src: url("../fonts/Dead Stock - Demo.ttf"); }
 
 @font-face {
   font-family: 'Streamster';
-  src: url("fonts/Streamster.ttf"); }
+  src: url("../fonts/Streamster.ttf"); }
 
 /* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
@@ -67,25 +67,31 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 500; }
 
 h1 {
-  font-size: 2.5rem; }
-
-h2 {
   font-size: 2.25rem; }
 
-h3 {
+h2 {
   font-size: 2rem; }
 
-h4 {
+h3 {
   font-size: 1.875rem; }
 
-h5 {
+h4 {
   font-size: 1.5rem; }
 
-h6 {
+h5 {
   font-size: 1.25rem; }
+
+h6 {
+  font-size: 1.15rem; }
 
 p {
   font-weight: 300; }
+
+li, span, select {
+  font-weight: 200; }
+
+span {
+  font-size: 0.85rem; }
 
 .white {
   color: white; }
@@ -98,6 +104,15 @@ p {
 
 #test {
   color: #FF555C; }
+
+.btn-danger {
+  background-color: #FF555C;
+  border-radius: 100px;
+  border: none;
+  font-weight: 200;
+  text-transform: uppercase;
+  font-size: 1.25rem;
+  padding: 0.75rem 2.5rem; }
 
 .home-brands {
   display: grid;
@@ -130,3 +145,169 @@ p {
 .home-infographic-footer {
   padding: 1rem 0 1rem 0;
   background-color: #FF555C; }
+
+#home-art-panels {
+  margin: 4rem 0;
+  min-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  padding: 0 8rem; }
+
+.home-panel {
+  background: #FF555C;
+  box-shadow: inset 0 0 0 5px rgba(255, 255, 255, 0.1);
+  color: white;
+  text-align: center;
+  align-items: center;
+  transition: font-size 0.7s cubic-bezier(0.61, -0.19, 0.7, -0.11), flex 0.7s cubic-bezier(0.61, -0.19, 0.7, -0.11), background 0.2s;
+  font-size: 1rem;
+  background-size: cover;
+  background-position: center;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column; }
+  .home-panel p {
+    text-shadow: 0 0 4px rgba(0, 0, 0, 0.65), 0 0 10px rgba(0, 0, 0, 0.45); }
+  .home-panel p:nth-child(2) {
+    font-family: 'Deadstock';
+    font-size: 3rem; }
+
+.home-panel > * {
+  margin: 0;
+  width: 100%;
+  transition: transform 0.5s;
+  flex: 1 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+
+.panel1 {
+  background-image: url("../images/panels/panel1.jpg"); }
+
+.panel2 {
+  background-image: url("../images/panels/panel2.jpg"); }
+
+.panel3 {
+  background-image: url("../images/panels/panel3.jpg"); }
+
+.panel4 {
+  background-image: url("../images/panels/panel4.jpg"); }
+
+.panel5 {
+  background-image: url("../images/panels/panel5.jpg"); }
+
+.home-panel > *:first-child {
+  transform: translateY(-100%); }
+
+.home-panel.open-active > *:first-child {
+  transform: translateY(0); }
+
+.home-panel > *:last-child {
+  transform: translateY(100%); }
+
+.home-panel.open-active > *:last-child {
+  transform: translateY(0); }
+
+.home-panel.open {
+  font-size: 2rem;
+  flex: 5; }
+
+.home-best-sellers-holder {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); }
+
+#home-airbnb-feature {
+  min-height: 90vh;
+  display: flex;
+  flex-direction: column; }
+
+.home-airbnb-holder {
+  position: relative;
+  background-size: cover;
+  background-position: center; }
+  .home-airbnb-holder h3 {
+    font-family: 'Deadstock';
+    font-size: 4rem;
+    text-transform: none;
+    color: white;
+    text-align: center;
+    text-shadow: 0 0 8px rgba(0, 0, 0, 0.25), 0 0 10px rgba(0, 0, 0, 0.1); }
+  .home-airbnb-holder p {
+    text-align: center;
+    font-weight: 400;
+    font-size: 1.5rem; }
+  .home-airbnb-holder div {
+    width: 20%; }
+
+.home-airbnb-cover {
+  background-image: url("../images/airbnb-cover/airbnb-cover.jpg");
+  min-height: 100vh; }
+
+#home-airbnb-logo, #home-airbnb-art, #home-airbnb-button {
+  position: absolute;
+  bottom: 0;
+  margin: 0.5rem; }
+
+#home-airbnb-art {
+  right: 0; }
+
+#home-airbnb-button {
+  left: 45%;
+  bottom: -2rem; }
+
+#footer {
+  margin: 5rem 0;
+  background-color: #EDEDED; }
+  #footer hr {
+    margin: 0; }
+
+.footer-break {
+  background-color: #FF555C;
+  height: 3rem; }
+
+.footer-info {
+  display: grid;
+  grid-template-columns: repeat(4, 2fr) 3fr; }
+
+.footer-info__element {
+  padding: 3rem 2rem; }
+  .footer-info__element h6 {
+    text-transform: none;
+    text-decoration: underline;
+    color: #FF555C;
+    letter-spacing: -0.05rem; }
+  .footer-info__element li {
+    padding: 0 0.5rem 0;
+    color: #696969;
+    line-height: 2rem; }
+
+.footer-info__payments {
+  padding: 3rem 2rem;
+  display: flex;
+  flex-direction: column; }
+  .footer-info__payments select {
+    height: 2.2rem;
+    background: transparent;
+    color: #696969;
+    border: 1.2px solid white; }
+  .footer-info__payments > * {
+    margin: .2rem 0; }
+  .footer-info__payments > *:last-child {
+    margin: 1rem 0; }
+
+.footer-info__payments__icons {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr); }
+  .footer-info__payments__icons i {
+    color: #696969; }
+  .footer-info__payments__icons > * {
+    justify-self: center;
+    align-self: center; }
+
+.footer-info__bottom {
+  background-color: white;
+  padding: 1rem;
+  color: #696969;
+  text-align: center; }

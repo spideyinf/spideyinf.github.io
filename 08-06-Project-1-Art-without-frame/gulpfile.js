@@ -8,7 +8,8 @@ var gulp = require('gulp'),
 	uglify = require('gulp-uglify'),
 	browserSync = require('browser-sync').create(),
 	rename = require('gulp-rename'),
-	autoprefixer = require('gulp-autoprefixer');
+	autoprefixer = require('gulp-autoprefixer'),
+	babel = require('gulp-babel');
 
 
 ////////////////////////////////////////
@@ -35,10 +36,13 @@ gulp.task('cssnano', function() {
 		.pipe(browserSync.stream());
 });
 
-//Uglify + Rename
+//Uglify = Rename + translate to Babel + Uglify
 gulp.task('uglify', function() {
 	gulp.src('js/*.js')
 		.pipe(rename({suffix: '.min'}))
+		.pipe(babel({
+		  presets: ['es2015']
+		}))
 		.pipe(uglify())
 		.pipe(gulp.dest('dist'))
 		.pipe(browserSync.stream());
