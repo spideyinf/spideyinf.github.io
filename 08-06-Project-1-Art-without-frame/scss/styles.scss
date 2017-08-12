@@ -39,7 +39,9 @@ $Oswald: 'Oswald', sans-serif;
 	padding: 0.75rem 2.5rem;
 }
 
+////////////////////////////////////////////////////////////////
 //Home page
+////////////////////////////////////////////////////////////////
 
 .home-brands {
 	display: grid;
@@ -126,11 +128,11 @@ $Oswald: 'Oswald', sans-serif;
       align-items: center;
     }
 
-.panel1 { background-image:url('../images/panels/panel1.jpg'); }
-.panel2 { background-image:url('../images/panels/panel2.jpg'); }
-.panel3 { background-image:url('../images/panels/panel3.jpg'); }
-.panel4 { background-image:url('../images/panels/panel4.jpg'); }
-.panel5 { background-image:url('../images/panels/panel5.jpg'); }
+.panel1 { background-image: url('../images/panels/panel1.jpg'); }
+.panel2 { background-image: url('../images/panels/panel2.jpg'); }
+.panel3 { background-image: url('../images/panels/panel3.jpg'); }
+.panel4 { background-image: url('../images/panels/panel4.jpg'); }
+.panel5 { background-image: url('../images/panels/panel5.jpg'); }
 
 .home-panel > *:first-child {transform: translateY(-100%);}
 .home-panel.open-active > *:first-child {transform: translateY(0);}    
@@ -178,7 +180,7 @@ $Oswald: 'Oswald', sans-serif;
 }
 
 .home-airbnb-cover { 
-	background-image:url('../images/airbnb-cover/airbnb-cover.jpg');
+	background-image: url('../images/airbnb-cover/airbnb-cover.jpg');
 	min-height: 100vh;
 }
 
@@ -216,59 +218,77 @@ $Oswald: 'Oswald', sans-serif;
 .footer-info {
 	display: grid;
 	grid-template-columns: repeat(4, 2fr) 3fr;
-}
 
-.footer-info__element {
-	padding: 3rem 2rem;
-	h6 {
-		text-transform: none;
-		text-decoration: underline;
-		color: $red;
-		letter-spacing: -0.05rem;
+	&__element {
+		padding: 3rem 2rem;
+		h6 {
+			text-transform: none;
+			text-decoration: underline;
+			color: $red;
+			letter-spacing: -0.05rem;
+		}
+		li {
+			padding: 0 0.5rem 0;
+			color: $darkgray;
+			line-height: 2rem;
+		}	
 	}
-	li {
-		padding: 0 0.5rem 0;
+
+	&__payments {
+		padding: 3rem 2rem;
+		display: flex;
+		flex-direction: column;
+		select {
+			height: 2.2rem;
+			background: transparent;
+			color: $darkgray;
+			border: 1.2px solid white;
+		}
+		> * {
+			margin: .2rem 0;
+		}
+
+		> *:last-child {
+			margin: 1rem 0;
+		}
+
+		&__icons {
+			i {
+			color: $darkgray;
+				}
+			display: grid;
+			grid-template-columns: repeat(6, 1fr);
+			> * {
+			justify-self: center;
+			align-self: center;
+			}
+		}
+	}
+
+	&__bottom {
+		background-color: white;
+		padding: 1rem;
 		color: $darkgray;
-		line-height: 2rem;
-	}
-}
-
-.footer-info__payments {
-	padding: 3rem 2rem;
-	display: flex;
-	flex-direction: column;
-	select {
-		height: 2.2rem;
-		background: transparent;
-		color: $darkgray;
-		border: 1.2px solid white;
-	}
-	> * {
-		margin: .2rem 0;
+		text-align: center;
 	}
 
-	> *:last-child {
-		margin: 1rem 0;
-	}
-}
-
-.footer-info__payments__icons {
-	i {
-		color: $darkgray;
-	}
-	display: grid;
-	grid-template-columns: repeat(6, 1fr);
-	> * {
-		justify-self: center;
-		align-self: center;
-	}
-}
-
-.footer-info__bottom {
-	background-color: white;
-	padding: 1rem;
-	color: $darkgray;
-	text-align: center;
 }
 
 
+////////////////////////////////////////////////////////////////
+//About us
+////////////////////////////////////////////////////////////////
+
+.parallax {
+    /* The image used */
+    background-image: url('../images/covers/cover4.jpg');
+
+    /* Full height */
+    height: 75vh; 
+
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}

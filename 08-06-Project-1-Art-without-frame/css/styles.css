@@ -270,44 +270,51 @@ span {
 .footer-info {
   display: grid;
   grid-template-columns: repeat(4, 2fr) 3fr; }
-
-.footer-info__element {
-  padding: 3rem 2rem; }
-  .footer-info__element h6 {
-    text-transform: none;
-    text-decoration: underline;
-    color: #FF555C;
-    letter-spacing: -0.05rem; }
-  .footer-info__element li {
-    padding: 0 0.5rem 0;
+  .footer-info__element {
+    padding: 3rem 2rem; }
+    .footer-info__element h6 {
+      text-transform: none;
+      text-decoration: underline;
+      color: #FF555C;
+      letter-spacing: -0.05rem; }
+    .footer-info__element li {
+      padding: 0 0.5rem 0;
+      color: #696969;
+      line-height: 2rem; }
+  .footer-info__payments {
+    padding: 3rem 2rem;
+    display: flex;
+    flex-direction: column; }
+    .footer-info__payments select {
+      height: 2.2rem;
+      background: transparent;
+      color: #696969;
+      border: 1.2px solid white; }
+    .footer-info__payments > * {
+      margin: .2rem 0; }
+    .footer-info__payments > *:last-child {
+      margin: 1rem 0; }
+    .footer-info__payments__icons {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr); }
+      .footer-info__payments__icons i {
+        color: #696969; }
+      .footer-info__payments__icons > * {
+        justify-self: center;
+        align-self: center; }
+  .footer-info__bottom {
+    background-color: white;
+    padding: 1rem;
     color: #696969;
-    line-height: 2rem; }
+    text-align: center; }
 
-.footer-info__payments {
-  padding: 3rem 2rem;
-  display: flex;
-  flex-direction: column; }
-  .footer-info__payments select {
-    height: 2.2rem;
-    background: transparent;
-    color: #696969;
-    border: 1.2px solid white; }
-  .footer-info__payments > * {
-    margin: .2rem 0; }
-  .footer-info__payments > *:last-child {
-    margin: 1rem 0; }
-
-.footer-info__payments__icons {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr); }
-  .footer-info__payments__icons i {
-    color: #696969; }
-  .footer-info__payments__icons > * {
-    justify-self: center;
-    align-self: center; }
-
-.footer-info__bottom {
-  background-color: white;
-  padding: 1rem;
-  color: #696969;
-  text-align: center; }
+.parallax {
+  /* The image used */
+  background-image: url("../images/covers/cover4.jpg");
+  /* Full height */
+  height: 75vh;
+  /* Create the parallax scrolling effect */
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover; }
