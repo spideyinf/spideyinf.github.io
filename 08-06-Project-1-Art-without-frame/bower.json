@@ -21,7 +21,8 @@
     "Ionicons": "ionicons#^2.0.1",
     "bootstrap-css": "^3.3.7",
     "bootstrap-select": "^1.12.4",
-    "masonry": "^4.2.0"
+    "masonry": "^4.2.0",
+    "simple-line-icons": "^2.4.1"
   },
   "overrides": {
     "font-awesome": {
