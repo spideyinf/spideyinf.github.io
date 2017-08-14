@@ -1,6 +1,6 @@
 ﻿// Home -  Flex panel galery
 
-const panels = document.querySelectorAll('.home-panel');
+const panels = document.querySelectorAll('.home-art-panels__panel');
 
 function toggleOpen() {
   this.classList.toggle('open');

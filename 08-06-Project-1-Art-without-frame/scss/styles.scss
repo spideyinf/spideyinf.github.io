@@ -8,6 +8,15 @@ $lightgray: #EDEDED;
 $darkgray: #696969;
 $gray: #BDBDBD;
 
+$facebook: #3b5999;
+$twitter: #55acee;
+$google-plus: #dd4b39;
+$linkedin: #0077B5;
+$instagram: #e4405f;
+$pinterest: #bd081c;
+$deviantart: #00CE3E;
+$behance: #1769ff;
+
 //Fonts
 $Oswald: 'Oswald', sans-serif;
 @font-face {
@@ -40,6 +49,19 @@ $Oswald: 'Oswald', sans-serif;
 	font-size: 1rem;
 }
 
+//Font-Awesome on hover
+.fa {
+	&-facebook:hover { color: $facebook; }
+	&-twitter:hover { color: $twitter; }
+	&-google-plus:hover { color: $google-plus; }
+	&-instagram:hover { color: $instagram; }
+	&-pinterest:hover { color: $pinterest; }
+	&-deviantart:hover { color: $deviantart; }
+	&-linkedin:hover { color: $linkedin; }
+	&-behance:hover { color: $behance; }
+
+}
+
 ////////////////////////////////////////////////////////////////
 //Home page
 ////////////////////////////////////////////////////////////////
@@ -57,10 +79,10 @@ $Oswald: 'Oswald', sans-serif;
 		&__holder {
 			justify-self: center;
 			align-self: center;
-			padding: 6px 0 6px 0;
+			padding: .5rem 0 .5rem 0;
 
 			&__brand {
-				padding: 3px 6px;
+				padding: .25rem .5rem;
 			}
 		}
 	}
@@ -98,7 +120,6 @@ $Oswald: 'Oswald', sans-serif;
 	&__panel {
 		background: $red;
 		box-shadow: inset 0 0 0 5px rgba(255,255,255,0.1);
-		color: white;
 		text-align: center;
 		align-items: center;
 		transition:
@@ -115,6 +136,7 @@ $Oswald: 'Oswald', sans-serif;
 		flex-direction: column;
 
 		p {
+			color: white;
 			text-shadow: 0 0 4px rgba(0, 0, 0, 0.65), 0 0 10px rgba(0, 0, 0, 0.45);
 		}
 
@@ -212,76 +234,137 @@ $Oswald: 'Oswald', sans-serif;
  }
 
 //Footer
-#footer {
+.footer {
 	margin: 5rem 0;
 	background-color: $lightgray;
+
 	hr {
-		margin: 0;
-	}
-}
-
-.footer-break {
-	background-color: $red;
-	height: 3rem;
-}
-
-.footer-info {
-	display: grid;
-	grid-template-columns: repeat(4, 2fr) 3fr;
-
-	&__element {
-		padding: 3rem 2rem;
-		h6 {
-			text-transform: none;
-			text-decoration: underline;
-			color: $red;
-			letter-spacing: -0.05rem;
-		}
-		li {
-			padding: 0 0.5rem 0;
-			color: $darkgray;
-			line-height: 2rem;
-		}	
+		border-top: 1px solid $gray;
+		padding: 0;
 	}
 
-	&__payments {
-		padding: 3rem 2rem;
+	&__subscription {
+		background-color: $red;
+		height: auto;
+		padding: .5rem;
 		display: flex;
-		flex-direction: column;
-		select {
-			height: 2.2rem;
-			background: transparent;
-			color: $darkgray;
-			border: 1.2px solid white;
+		align-items: center;
+		justify-content: center;
+		
+		i {
+			flex: 1;
+			font-size: 2.5rem;
+			color: white;
+			padding-left: 2rem;
 		}
-		> * {
-			margin: .2rem 0;
+		div {
+			flex: 10;
+			> * { color: white;}
+		}
+		input {
+			flex: 8;
+			height: 2rem;
+			margin: .5rem;
 		}
 
-		> *:last-child {
-			margin: 1rem 0;
+		button {
+			flex: 2;
+			height: 2rem;
+			margin: .5rem 2rem .5rem .25rem;
+			padding: 0 .5rem;
+			border-radius: 5px;
+			font-size: 1.2rem;
+		}
+	}
+
+	&__info {
+		display: grid;
+		grid-template-columns: repeat(4, 2fr) 3fr;
+
+		&__element {
+			padding: 3rem 2rem 1rem;
+			h6 {
+				text-transform: none;
+				text-decoration: underline;
+				color: $red;
+				letter-spacing: -0.05rem;
+			}
+			li {
+				padding: 0 0.5rem 0;
+				color: $darkgray;
+				line-height: 2rem;
+			}	
 		}
 
-		&__icons {
-			i {
-			color: $darkgray;
-				}
-			display: grid;
-			grid-template-columns: repeat(6, 1fr);
+		&__payments {
+			padding: 3rem 2rem 1rem;
+			display: flex;
+			flex-direction: column;
+			select {
+				height: 2.2rem;
+				background: transparent;
+				color: $darkgray;
+				border: 1.3px solid $darkgray;
+			}
 			> * {
-			justify-self: center;
-			align-self: center;
+				margin: .2rem 0;
+			}
+
+			> *:last-child {
+				margin: 1rem 0;
+			}
+
+			&__icons {
+				i {
+					font-size: 1.5rem;
+					color: $darkgray;
+				}
+				i:hover {
+					color: black;
+				}
+				display: grid;
+				grid-template-columns: repeat(6, 1fr);
+				> * {
+				justify-self: center;
+				align-self: center;
+				}
 			}
 		}
 	}
 
+	&__socials {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		i {
+			font-size: 1.5rem;
+			color: $darkgray;
+			padding: 0 1rem;
+			cursor: pointer;
+		}
+	}
+
 	&__copyright {
-		background-color: white;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		img {
+		width: 9rem;
+		height: auto;
+		margin: 0 auto 1rem 2rem;
+		}
+
+		span {
 		padding: 1rem;
 		color: $darkgray;
-		text-align: center;
+		margin: 0 2rem 1rem auto;
+		}	
 	}
 }
+
+
 
 
 ////////////////////////////////////////////////////////////////
@@ -303,26 +386,27 @@ $Oswald: 'Oswald', sans-serif;
 }
 
 .about-intro {
+	h1 {
+		margin: 2rem;
+	}
+
 	&__article {
-		padding: 2rem 3rem;
+		padding: 1rem 3rem 3rem;
 		p {
 			font-size: 1.13rem;
 		}
 	}
 
 	&__feature {
-
+		h6 {
+			margin: 0 0 2rem;
+		}
 		&__brands {
 			background-color: $lightgray;
 			padding: 1.5rem 0;
 			display: flex;
 			align-items: center;
-			justify-content: center;
-
-			&__holder {
-				flex-grow: 1;
-
-			}
+			justify-content: space-around;
 		}
 	}
 
@@ -332,6 +416,10 @@ $Oswald: 'Oswald', sans-serif;
 	padding: 3rem 0;
 	display: flex;
 	flex-direction: column;
+	
+	h1 {
+		margin-bottom: 2rem;
+	}
 
 	&__agencies {
 		display: flex;
@@ -346,17 +434,11 @@ $Oswald: 'Oswald', sans-serif;
 			flex-direction: column;
 
 			&__overlay1 {
-				background-color: rgba(32, 32, 32, 0.5);
-				flex: 7;
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				justify-content: center;
-				flex-wrap: wrap;
+				display: none;
 
 				h6 {
 					margin: 1rem;
-					color: $gray;
+					color: $lightgray;
 				}
 
 				p {
@@ -377,13 +459,7 @@ $Oswald: 'Oswald', sans-serif;
 			}
 
 			&__overlay2 {
-				width: 100%;
-				background-color: $red;
-				flex: 3;
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				justify-content: center;
+				display: none;
 			}
 		}
 	}
@@ -410,6 +486,26 @@ $Oswald: 'Oswald', sans-serif;
 .agency3 { background-image: url('../images/agencies/agency3.jpg'); }
 .agency4 { background-image: url('../images/agencies/agency4.jpg'); }
 
+.about-core__agencies__agency:hover > .about-core__agencies__agency__overlay1 {
+	display: grid;
+	background-color: rgba(32, 32, 32, 0.5);
+	flex: 4;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+.about-core__agencies__agency:hover > .about-core__agencies__agency__overlay2 {
+	display: grid;
+	width: 100%;
+	background-color: $red;
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
 
 .about-videos {
 	margin: 6rem 0 8rem;
@@ -518,9 +614,52 @@ $Oswald: 'Oswald', sans-serif;
 }
 
 
+////////////////////////////////////////////////////////////////
+//User
+////////////////////////////////////////////////////////////////
 
+.user-summary {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	margin-left: 4rem;
+	h4 {
+		margin: .5rem 0 .5rem;
+	}
+	img {
+		margin: 1rem;
+	}
 
+	&__info {
+		display: flex;
+		flex-direction: column;
 
+		&__ele {
+
+			margin: .1rem;
+			display: flex;
+			align-items: center;
+			justify-content: flex-start;
+			div {
+				border: 1px solid $darkgray;
+				border-radius: 50%;
+				width: 1.5rem;
+				height: 1.5rem;
+				padding: .8rem;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+
+			p {
+				padding: 0 .5rem;
+				color: $darkgray;
+			}
+		}
+
+	}
+
+}
 
 
 
