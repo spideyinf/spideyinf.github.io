@@ -3,6 +3,7 @@
 //Variables
 $red: #FF555C;
 $blue: #236ED4;
+$black: #333;
 $lightgray: #EDEDED;
 $darkgray: #696969;
 $gray: #BDBDBD;
@@ -36,6 +37,7 @@ $Oswald: 'Oswald', sans-serif;
 //Form-control
 .form-control {
 	font-weight: 300;
+	font-size: 1rem;
 }
 
 ////////////////////////////////////////////////////////////////
@@ -300,18 +302,89 @@ $Oswald: 'Oswald', sans-serif;
     background-size: cover;
 }
 
-.about {
+.about-intro {
+	&__article {
+		padding: 2rem 3rem;
+		p {
+			font-size: 1.13rem;
+		}
+	}
+
+	&__feature {
+
+		&__brands {
+			background-color: $lightgray;
+			padding: 1.5rem 0;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+
+			&__holder {
+				flex-grow: 1;
+
+			}
+		}
+	}
+
+}
+
+.about-core {
 	padding: 3rem 0;
 	display: flex;
 	flex-direction: column;
+
 	&__agencies {
 		display: flex;
 		min-height: 90vh;
+
 		&__agency {
-			flex-direction: column;
 			flex: 1 0 auto;
+			width: 25%;
 			background-size: cover;
 			background-position: center;
+			display: flex;
+			flex-direction: column;
+
+			&__overlay1 {
+				background-color: rgba(32, 32, 32, 0.5);
+				flex: 7;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				flex-wrap: wrap;
+
+				h6 {
+					margin: 1rem;
+					color: $gray;
+				}
+
+				p {
+					padding: 1rem;
+					margin: 1rem 0;
+					overflow: hidden;
+				}
+
+				&__links {
+					margin: 3rem 0 0;
+					cursor: pointer;
+					i {
+						margin: 1rem;
+						font-size: 1.2rem;
+						color: white;
+					}
+				}
+			}
+
+			&__overlay2 {
+				width: 100%;
+				background-color: $red;
+				flex: 3;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+			}
 		}
 	}
 
@@ -345,7 +418,7 @@ $Oswald: 'Oswald', sans-serif;
 	&__bg-art {
 		font-family: 'DeadStock';
 		font-size: 18rem;
-		color: #e1e1e1;
+		color: $gray;
 		opacity: .2;
 		z-index: -99;
 		position: absolute;
@@ -362,7 +435,7 @@ $Oswald: 'Oswald', sans-serif;
 		}
 
 		iframe {
-			border-radius: .5rem;
+			border-radius: .8rem;
 			background-color: $red;
 		}
 	}
@@ -370,7 +443,7 @@ $Oswald: 'Oswald', sans-serif;
 	&__bg-without-frame {
 		font-family: 'Streamster';
 		font-size: 10.6rem;
-		color: #e1e1e1;
+		color: $gray;
 		opacity: .2;
 		z-index: -99;
 		position: absolute;
@@ -379,7 +452,70 @@ $Oswald: 'Oswald', sans-serif;
 	}
 }
 
+.contact-us {
+	margin: 3rem;
+	padding: 3rem;
+	border-radius: 1rem;
+	background-color: $lightgray;
+	box-shadow: 1px 2px 4px 0 rgba(170, 170, 170, 0.34);
+	display: flex;
+	flex-direction: column;
 
+	&__hr {
+		background-color: #fff;
+		border-top: 18px dashed #8c8b8b;
+		z-index: 10;
+	}
+
+	&__info {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+
+		&__ele {
+			display : grid;
+			grid-template-columns: 1fr 4fr;
+			div {
+				p {
+					font-weight: 300;
+					font-size: 1.13rem;
+				}
+			}
+	
+			&__symbol {
+				border: 1px solid $black;
+				border-radius: 50%;
+				padding: .6rem;
+				width: 56px;
+				height: 56px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+
+				i {
+					font-size: 1.5rem;
+				}
+			}
+		}
+	}
+
+	&__forms {
+		margin: 2rem 0 0;
+		> * {
+			margin: 1.2rem 0 0;
+			padding: 1.2rem;
+		}
+	}
+
+	button {
+		align-self: center;
+		margin-top: -1.5rem;
+		z-index: 5;
+	}
+}
+
+#contact-us__map {
+	height: 23.75rem;
+}
 
 
 

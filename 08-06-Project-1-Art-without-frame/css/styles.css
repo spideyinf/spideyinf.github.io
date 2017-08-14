@@ -55,7 +55,8 @@ table {
   border-spacing: 0; }
 
 * {
-  font-family: "Oswald", sans-serif; }
+  font-family: "Oswald", sans-serif;
+  color: #333; }
 
 body {
   font-family: "Oswald", sans-serif;
@@ -112,7 +113,8 @@ span {
   padding: 0.75rem 2.5rem; }
 
 .form-control {
-  font-weight: 300; }
+  font-weight: 300;
+  font-size: 1rem; }
 
 .home-intro {
   margin: 3rem 0; }
@@ -311,27 +313,73 @@ span {
   background-repeat: no-repeat;
   background-size: cover; }
 
-.about {
+.about-intro__article {
+  padding: 2rem 3rem; }
+  .about-intro__article p {
+    font-size: 1.13rem; }
+
+.about-intro__feature__brands {
+  background-color: #EDEDED;
+  padding: 1.5rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center; }
+  .about-intro__feature__brands__holder {
+    flex-grow: 1; }
+
+.about-core {
   padding: 3rem 0;
   display: flex;
   flex-direction: column; }
-  .about__agencies {
+  .about-core__agencies {
     display: flex;
     min-height: 90vh; }
-    .about__agencies__agency {
-      flex-direction: column;
+    .about-core__agencies__agency {
       flex: 1 0 auto;
+      width: 25%;
       background-size: cover;
-      background-position: center; }
-  .about__footer {
+      background-position: center;
+      display: flex;
+      flex-direction: column; }
+      .about-core__agencies__agency__overlay1 {
+        background-color: rgba(32, 32, 32, 0.5);
+        flex: 7;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap; }
+        .about-core__agencies__agency__overlay1 h6 {
+          margin: 1rem;
+          color: #BDBDBD; }
+        .about-core__agencies__agency__overlay1 p {
+          padding: 1rem;
+          margin: 1rem 0;
+          overflow: hidden; }
+        .about-core__agencies__agency__overlay1__links {
+          margin: 3rem 0 0;
+          cursor: pointer; }
+          .about-core__agencies__agency__overlay1__links i {
+            margin: 1rem;
+            font-size: 1.2rem;
+            color: white; }
+      .about-core__agencies__agency__overlay2 {
+        width: 100%;
+        background-color: #FF555C;
+        flex: 3;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center; }
+  .about-core__footer {
     height: 11.6rem;
     background-color: #FF555C;
     display: flex;
     justify-content: center;
     align-items: center; }
-    .about__footer h4 {
+    .about-core__footer h4 {
       color: white; }
-  .about button {
+  .about-core button {
     align-self: center;
     margin-top: -1.6rem; }
 
@@ -353,7 +401,7 @@ span {
   .about-videos__bg-art {
     font-family: 'DeadStock';
     font-size: 18rem;
-    color: #e1e1e1;
+    color: #BDBDBD;
     opacity: .2;
     z-index: -99;
     position: absolute;
@@ -365,14 +413,59 @@ span {
       display: flex;
       flex-direction: column; }
     .about-videos__video iframe {
-      border-radius: .5rem;
+      border-radius: .8rem;
       background-color: #FF555C; }
   .about-videos__bg-without-frame {
     font-family: 'Streamster';
     font-size: 10.6rem;
-    color: #e1e1e1;
+    color: #BDBDBD;
     opacity: .2;
     z-index: -99;
     position: absolute;
     bottom: -8rem;
     right: 0; }
+
+.contact-us {
+  margin: 3rem;
+  padding: 3rem;
+  border-radius: 1rem;
+  background-color: #EDEDED;
+  box-shadow: 1px 2px 4px 0 rgba(170, 170, 170, 0.34);
+  display: flex;
+  flex-direction: column; }
+  .contact-us__hr {
+    background-color: #fff;
+    border-top: 18px dashed #8c8b8b;
+    z-index: 10; }
+  .contact-us__info {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); }
+    .contact-us__info__ele {
+      display: grid;
+      grid-template-columns: 1fr 4fr; }
+      .contact-us__info__ele div p {
+        font-weight: 300;
+        font-size: 1.13rem; }
+      .contact-us__info__ele__symbol {
+        border: 1px solid #333;
+        border-radius: 50%;
+        padding: .6rem;
+        width: 56px;
+        height: 56px;
+        display: flex;
+        align-items: center;
+        justify-content: center; }
+        .contact-us__info__ele__symbol i {
+          font-size: 1.5rem; }
+  .contact-us__forms {
+    margin: 2rem 0 0; }
+    .contact-us__forms > * {
+      margin: 1.2rem 0 0;
+      padding: 1.2rem; }
+  .contact-us button {
+    align-self: center;
+    margin-top: -1.5rem;
+    z-index: 5; }
+
+#contact-us__map {
+  height: 23.75rem; }
