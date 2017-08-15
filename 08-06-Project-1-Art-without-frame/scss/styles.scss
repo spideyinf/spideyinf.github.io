@@ -40,7 +40,7 @@ $Oswald: 'Oswald', sans-serif;
 	font-weight: 200;
 	text-transform: uppercase;
 	font-size: 1.25rem;
-	padding: 0.75rem 2.5rem;
+	padding: 0.65rem 2rem;
 }
 
 //Form-control
@@ -62,9 +62,95 @@ $Oswald: 'Oswald', sans-serif;
 
 }
 
+hr {
+	border-top: 1.25px solid $darkgray;
+	padding: 0;
+}
+
+.price {
+	color: $blue;
+}
+
+
 ////////////////////////////////////////////////////////////////
 //Home page
 ////////////////////////////////////////////////////////////////
+
+//Navbar
+
+/* navbar */
+.navbar-default {
+    background-color: transparent;
+    border-color: transparent;
+    margin-bottom: 0px;
+    position: fixed;
+    width: 100%;
+    border-radius: 0px;
+    z-index: 10007;
+}
+.content-block-one {
+  padding: 30px;
+  margin-bottom: 0px;
+  color: inherit;
+  background-color: #eee;
+}
+.content-block-one h1,
+.content-block-one .h1 {
+  color: inherit;
+}
+.content-block-one p {
+  margin-bottom: 15px;
+  font-size: 21px;
+  font-weight: 200;
+}
+.content-block-one > hr {
+  border-top-color: #d5d5d5;
+}
+.container .content-block-one {
+  border-radius: 6px;
+}
+.content-block-one .container {
+  max-width: 100%;
+}
+
+@media screen and (min-width: 768px) {
+  .content-block-one {
+    padding-top: 48px;
+    padding-bottom: 48px;
+  }
+  .container .content-block-one {
+    padding-right: 60px;
+    padding-left: 60px;
+  }
+  .content-block-one h1,
+  .content-block-one .h1 {
+    font-size: 63px;
+  }
+}
+.content-space-one {
+  padding: 0px;
+  margin-bottom: 0px;
+  color: inherit;
+  background: url(http://placehold.it/1200x650/0033cc/ffffff) no-repeat center center fixed; 
+  background-size: cover;
+  padding-top: 100px;
+  padding-bottom: 100px;
+}
+.content-space-two {
+  padding: 0px;
+  margin-bottom: 0px;
+  color: inherit;
+  background: url(http://placehold.it/1200x650/cc0000/ffffff) no-repeat center center fixed; 
+  background-size: cover;
+  padding-top: 100px;
+  padding-bottom: 100px;
+}
+.page-break {
+    width: 50%;
+    height: 3px;
+    background-color: #fff;
+    margin: 0 auto;
+}
 
 .home-intro {
 	margin: 3rem 0;
@@ -238,11 +324,6 @@ $Oswald: 'Oswald', sans-serif;
 	margin: 5rem 0;
 	background-color: $lightgray;
 
-	hr {
-		border-top: 1px solid $gray;
-		padding: 0;
-	}
-
 	&__subscription {
 		background-color: $red;
 		height: auto;
@@ -300,12 +381,13 @@ $Oswald: 'Oswald', sans-serif;
 			padding: 3rem 2rem 1rem;
 			display: flex;
 			flex-direction: column;
-			select {
+			select.selectpicker {
 				height: 2.2rem;
-				background: transparent;
+				width: 100%;
 				color: $darkgray;
 				border: 1.3px solid $darkgray;
 			}
+
 			> * {
 				margin: .2rem 0;
 			}
@@ -363,8 +445,6 @@ $Oswald: 'Oswald', sans-serif;
 		}	
 	}
 }
-
-
 
 
 ////////////////////////////////////////////////////////////////
@@ -566,6 +646,7 @@ $Oswald: 'Oswald', sans-serif;
 	&__info {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
+		margin-top: 1rem;
 
 		&__ele {
 			display : grid;
@@ -623,19 +704,19 @@ $Oswald: 'Oswald', sans-serif;
 	align-items: center;
 	justify-content: flex-start;
 	margin-left: 4rem;
+	margin-bottom: 2rem;
 	h4 {
 		margin: .5rem 0 .5rem;
 	}
 	img {
-		margin: 1rem;
+		padding: 1rem;
 	}
 
 	&__info {
 		display: flex;
 		flex-direction: column;
 
-		&__ele {
-
+		&__element {
 			margin: .1rem;
 			display: flex;
 			align-items: center;
@@ -661,5 +742,89 @@ $Oswald: 'Oswald', sans-serif;
 
 }
 
+#user-info {
+	margin: 2rem;
+}
+
+.user-info {
+	margin: 2rem 0 3rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+
+	&__element {
+		h5 {
+			text-transform: none;
+		}
+
+		padding: .5rem 0;
+		display: grid;
+		grid-template-columns: 1fr 4fr;
+		align-items: center;
+
+		input {
+			width: 35rem;
+			height: 2.38rem;
+		}
+	}
+
+	button {
+		margin-top: 2rem;
+	}
+}
+
+.user-history {
+	width: 95vw;
+	margin: 3rem auto;
+
+	&__thead {
+		background-color: $gray;
+
+		tr {
+			border-radius: 1rem !important;
+			margin-bottom: .5rem !important;
+			th {
+				font-size: 1.25rem;
+				color: white;
+				text-transform: uppercase;
+				padding: 1.5rem .5rem !important;
+				border: none !important;
+			}	
+		}	
+	}
+
+	&__tbody {
+		tr {
+			td {
+				width: 45vw;
+				padding: 1rem .5rem !important;
+			}
+		}
+	}
+
+	&__product {
+		display: flex;
+
+		img {
+			width: 25%;
+			height: 25%;
+		}
+
+		div {
+			padding: 0 1rem;
+			display: flex;
+			flex-direction: column;
+
+			h5 {
+				margin-top: auto;
+			}
+		}	
+	}
+
+	td {
+		font-size: 1.1rem;
+	}
+}
 
 

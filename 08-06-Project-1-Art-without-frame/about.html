@@ -136,7 +136,8 @@
 <!-- End of About us -->
 
 <!-- About-videos -->
-	<section class="about-videos">
+	<section id="about-videos">
+	<div class="about-videos">
 		<div class="about-videos__bg-art">Art</div>
 		<div class="about-videos__video">
 			<div class="about-videos__video__title">
@@ -153,13 +154,15 @@
 			</div>
 		</div>
 		<div class="about-videos__bg-without-frame">without frame</div>
+	</div>
 	</section>
 <!-- End of About-videos -->
 
 <!-- Contact us -->
-	<section class="contact-us">
+	<section id="contact-us">
+	<div class="contact-us">
 		<h1>Liên hệ</h1>
-		<hr class="contact-us__hr">
+		<hr style="width: 100%;">
 		<div class="contact-us__info">
 			<div class="contact-us__info__ele">
 				<div class="contact-us__info__ele__symbol">
@@ -190,7 +193,7 @@
 			</div>
 		</div>
 		<div class="contact-us__forms">
-			<input type="text" class="form-control" placeholder="Tên của bạn…" aria-describedby="basic-addon1">
+			<input type="text" class="form-control" name="Name" placeholder="Tên của bạn…" aria-describedby="basic-addon1">
 			<span id="error"></span>
 			<input type="email" class="form-control" name="Email" id="email" placeholder="Email...*"/>
 			<span id="error"></span>
@@ -198,6 +201,7 @@
 		</div>
 		<button class="btn btn-info">Gửi nội dung</button>
 		<div id="contact-us__map"></div>
+	</div>
 	</section>
 <!-- End of Contact us -->
 	<div class="parallax"></div>
