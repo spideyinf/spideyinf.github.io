@@ -78,16 +78,54 @@ hr {
 
 //Navbar
 
-/* navbar */
 .navbar-default {
     background-color: transparent;
     border-color: transparent;
-    margin-bottom: 0px;
+    margin-bottom: 0;
     position: fixed;
     width: 100%;
     border-radius: 0px;
-    z-index: 10007;
+    z-index: 1000;
 }
+
+.navbar-default .navbar-nav>li>a {
+  	color: white;
+  	text-transform: uppercase;
+}
+@media (min-width: 768px) {
+	.navbar-nav>li>a {
+		padding: 1rem .75rem 1.35rem;
+	}
+	.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover {
+		color: white;
+		background-color: $lightgray;
+	}
+
+	.navbar-default .navbar-nav>li>a:focus, .navbar-default .navbar-nav>li>a:hover {
+		color: white;
+		background-color: $gray;
+	}
+}
+
+.logo-brand {
+	width: 180px; 
+	height: auto; 
+	padding: .1rem;
+	box-shadow: inset 0 0 0 5px rgba(255,255,255,0.1);
+}
+
+.dropdown-toggle__icon, .nav-link__icon {
+	font-size: 1.25rem;
+	color: white;
+}
+
+.dropdown-menu>li>a {
+    text-transform: uppercase;
+    line-height: 1.6;
+    color: $darkgray;
+    font-weight: 300;
+}
+
 .content-block-one {
   padding: 30px;
   margin-bottom: 0px;
@@ -152,6 +190,33 @@ hr {
     margin: 0 auto;
 }
 
+.full-screen {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.gradient {
+	background-image: linear-gradient(180deg,rgba(28,28,28,.71),rgba(0, 0, 0, 0), rgba(0, 0, 0, 0),rgba(0, 0, 0, 0.39));
+	width: 100%;
+	height: 100%;
+	position: fixed;
+}
+
+.item > img {
+	height: 100vh !important;
+	max-width: none !important;
+}
+
+.home-slogan {
+	@extend .home-airbnb-holder--h3;
+	font-size: 3.5rem;
+	margin-bottom: 20rem;
+
+}
+
+//Home content
+
 .home-intro {
 	margin: 3rem 0;
 
@@ -205,7 +270,7 @@ hr {
 
 	&__panel {
 		background: $red;
-		box-shadow: inset 0 0 0 5px rgba(255,255,255,0.1);
+		box-shadow: inset 0 0 0 .25rem rgba(255,255,255,0.05);
 		text-align: center;
 		align-items: center;
 		transition:
@@ -278,7 +343,8 @@ hr {
 	position: relative;
 	background-size: cover;
 	background-position: center;
-	h3 {
+	
+	&--h3 {
 		font-family: 'Deadstock';
 		font-size: 4rem;
 		text-transform: none;
@@ -418,6 +484,9 @@ hr {
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		height: 3.2rem;
+		border-top: 1.25px solid $darkgray;
+		border-bottom: 1.25px solid $darkgray;
 
 		i {
 			font-size: 1.5rem;
@@ -433,18 +502,14 @@ hr {
 		justify-content: center;
 
 		img {
-		width: 9rem;
+		width: 6.5rem;
 		height: auto;
-		margin: 0 auto 1rem 2rem;
+		margin: .5rem auto .5rem 2rem;
 		}
-
-		span {
-		padding: 1rem;
-		color: $darkgray;
-		margin: 0 2rem 1rem auto;
-		}	
 	}
 }
+
+
 
 
 ////////////////////////////////////////////////////////////////
@@ -637,12 +702,6 @@ hr {
 	display: flex;
 	flex-direction: column;
 
-	&__hr {
-		background-color: #fff;
-		border-top: 18px dashed #8c8b8b;
-		z-index: 10;
-	}
-
 	&__info {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
@@ -652,6 +711,7 @@ hr {
 			display : grid;
 			grid-template-columns: 1fr 4fr;
 			div {
+
 				p {
 					font-weight: 300;
 					font-size: 1.13rem;
@@ -677,9 +737,11 @@ hr {
 
 	&__forms {
 		margin: 2rem 0 0;
+		z-index: 2;
 		> * {
 			margin: 1.2rem 0 0;
 			padding: 1.2rem;
+
 		}
 	}
 
@@ -688,11 +750,20 @@ hr {
 		margin-top: -1.5rem;
 		z-index: 5;
 	}
+
+	&__map {
+		
+		margin: 0 -2rem;
+		border-radius: 1rem;
+
+		iframe {
+			margin: -5rem 0 -2rem;
+			z-index: 3;
+
+		}
+	}
 }
 
-#contact-us__map {
-	height: 23.75rem;
-}
 
 
 ////////////////////////////////////////////////////////////////
