@@ -4,12 +4,13 @@
 	font-family: $Oswald;
 	color: $black;
 }
+html {
+	font-size: 16px;
+}
 
 body {
 	font-family: $Oswald;
-	font-size: 16px;
 	line-height: 1.4;
-	font-smoothing: antialiased;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -53,12 +54,20 @@ span {
 	font-size: 0.85rem;
 }
 
+a {
+	color: $blue;
+}
+
 .white {
 	color: white;
 }
 
 .red {
 	color: $red;
+}
+
+.blue {
+	color: $blue;
 }
 
 .center {

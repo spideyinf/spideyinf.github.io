@@ -853,13 +853,12 @@ hr {
 		background-color: $gray;
 
 		tr {
-			border-radius: 1rem !important;
 			margin-bottom: .5rem !important;
 			th {
 				font-size: 1.25rem;
 				color: white;
 				text-transform: uppercase;
-				padding: 1.5rem .5rem !important;
+				padding: 1.5rem 1rem !important;
 				border: none !important;
 			}	
 		}	
@@ -868,8 +867,12 @@ hr {
 	&__tbody {
 		tr {
 			td {
-				width: 45vw;
-				padding: 1rem .5rem !important;
+				padding: 1rem 2rem !important;
+				border-top: .5rem solid white !important;
+
+				span {
+					display: inline-block;
+				}
 			}
 		}
 	}
@@ -887,7 +890,7 @@ hr {
 			display: flex;
 			flex-direction: column;
 
-			h5 {
+			h5.price {
 				margin-top: auto;
 			}
 		}	
@@ -898,4 +901,98 @@ hr {
 	}
 }
 
+//User - Round table
+
+table { 
+    border-collapse: separate;
+    border-radius: 1.25rem;
+}
+
+thead:first-child tr:first-child th:first-child, tbody:first-child tr:first-child td:first-child {
+    border-radius: 1.25rem 0 0 0;
+}
+thead:last-child tr:last-child th:first-child, tbody:last-child tr:last-child td:first-child {
+    border-radius: 0 0 0 1.25rem;
+}
+
+thead:last-child, th:last-child {
+	border-radius: 0 1.25rem 0 0;
+}
+
+tr:last-child td:last-child {
+	border-radius: 0 0 1.25rem 0;
+}
+
+//Product-detail
+
+.product-detail {
+
+	&__info {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		grid-gap: 1rem;
+
+		&__options {
+			display: flex;
+			flex-direction: column;
+
+			&__detail {
+				background-color: $lightgray;
+				display: flex;
+				flex-direction: column;
+				padding: 1rem 1rem 0;
+				
+				h6 {
+					font-size: 1rem;
+				}
+
+				&__selects {
+					padding: .5rem 0;
+					display: grid;
+					grid-template-columns: 3fr 1fr;
+					grid-gap: .5rem;
+
+					div {
+						padding: .5rem 0;
+					}
+				}
+
+				&__socials {
+					padding: .5rem 0 3rem;
+					display: flex;
+					align-items: center;
+					
+					&__circle {
+						border: 1px solid $gray;
+						width: 2.25rem;
+						height: 2.25rem;
+						border-radius: 50%;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						margin: 0 .5rem;
+
+						&:first-child {
+							margin: 0 auto 0 .25rem;
+						}
+
+						i {
+							color: $darkgray;
+							font-size: 1.25rem;
+						}
+
+						&:hover {
+							background-color: white;
+							border: white;
+						} 
+					}
+				}		
+			}
+		}
+		button.cta {
+			align-self: center;
+			transform: translateY(-1.5rem);
+		}
+	}
+}
 

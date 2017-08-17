@@ -52,6 +52,11 @@ $(document).ready(function () {
     });
   });
 
+ //Tooltip kickoff
+ $(document).ready(function(){
+     $('[data-toggle="tooltip"]').tooltip();   
+ });
+
  //Carousel full screen function
 
 var $item = $('.carousel .item'); 
