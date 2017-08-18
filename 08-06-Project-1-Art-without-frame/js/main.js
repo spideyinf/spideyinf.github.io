@@ -92,11 +92,11 @@ $(window).on('resize', function (){
 });
 
 $('.carousel').carousel({
-  interval: 6000,
-  pause: "false"
+  interval: 8000,
+  pause: true,
 });
 
-//
+// Product-page Carousel function
 (function($){
   $('#thumbcarousel').carousel(0);
   var $thumbItems = $('#thumbcarousel .item');

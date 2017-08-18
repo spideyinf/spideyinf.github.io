@@ -273,7 +273,7 @@ hr {
   height: 100%;
   position: fixed; }
 
-.item > img {
+.full-screen > img {
   height: 100vh !important;
   max-width: none !important; }
 
@@ -811,13 +811,15 @@ tr:last-child td:last-child {
     grid-gap: 1rem; }
     .product-detail__info__illus #carousel {
       margin-top: 1.88rem;
-      width: 100%; }
+      width: 100%;
+      height: 100%; }
     .product-detail__info__illus .item .thumb {
       width: 25%;
       cursor: pointer;
       float: left; }
     .product-detail__info__illus .item .thumb img, .product-detail__info__illus .item img {
-      width: 100%; }
+      width: 100%;
+      height: auto; }
     .product-detail__info__illus .carousel-control.left, .product-detail__info__illus .carousel-control.right {
       background-image: none;
       width: 8%; }
