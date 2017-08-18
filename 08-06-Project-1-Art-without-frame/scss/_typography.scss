@@ -44,6 +44,7 @@ h6 {
 
 p {
 	font-weight: 300;
+	text-align: justify;
 }
 
 li, span, select {
@@ -56,6 +57,12 @@ span {
 
 a {
 	color: $blue;
+}
+
+.lead {
+	font-weight: 400;
+	font-size: 1.15rem;
+	margin-bottom: .5rem;
 }
 
 .white {

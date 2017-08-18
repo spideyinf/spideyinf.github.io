@@ -57,15 +57,26 @@ $(document).ready(function () {
      $('[data-toggle="tooltip"]').tooltip();   
  });
 
- //Carousel full screen function
+ //See more - See less
+ $('.see-more-see-less').click(function(){
+  var $this = $(this);
+  $this.toggleClass('see-more-see-less');
+  if($this.hasClass('see-more-see-less')){
+    $this.text('Xem thêm >');     
+  } else {
+    $this.text('Thu gọn <');
+  }
+ });
 
-var $item = $('.carousel .item'); 
+ //Home page - Carousel full screen function
+
+var $item = $('.carousel .full-screen'); 
 var $wHeight = $(window).height();
 $item.eq(0).addClass('active');
 $item.height($wHeight); 
 $item.addClass('full-screen');
 
-$('.carousel img').each(function() {
+$('.carousel .full-responsive').each(function() {
   var $src = $(this).attr('src');
   var $color = $(this).attr('data-color');
   $(this).parent().css({
@@ -84,4 +95,27 @@ $('.carousel').carousel({
   interval: 6000,
   pause: "false"
 });
+
+//
+(function($){
+  $('#thumbcarousel').carousel(0);
+  var $thumbItems = $('#thumbcarousel .item');
+    $('#carousel').on('slide.bs.carousel', function (event) {
+     var $slide = $(event.relatedTarget);
+     var thumbIndex = $slide.data('thumb');
+     var curThumbIndex = $thumbItems.index($thumbItems.filter('.active').get(0));
+    if (curThumbIndex>thumbIndex) {
+      $('#thumbcarousel').one('slid.bs.carousel', function (event) {
+        $('#thumbcarousel').carousel(thumbIndex);
+      });
+      if (curThumbIndex === ($thumbItems.length-1)) {
+        $('#thumbcarousel').carousel('next');
+      } else {
+        $('#thumbcarousel').carousel(numThumbItems-1);
+      }
+    } else {
+      $('#thumbcarousel').carousel(thumbIndex);
+    }
+  });
+})(jQuery);
 

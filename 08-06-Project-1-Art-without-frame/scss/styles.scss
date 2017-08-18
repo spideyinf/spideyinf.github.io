@@ -71,6 +71,12 @@ hr {
 	color: $blue;
 }
 
+.breadcrumb {
+	li {
+		text-transform: uppercase;
+	}
+}
+
 
 ////////////////////////////////////////////////////////////////
 //Home page
@@ -208,12 +214,44 @@ hr {
 	max-width: none !important;
 }
 
-.home-slogan {
-	@extend .home-airbnb-holder--h3;
-	font-size: 3.5rem;
-	margin-bottom: 20rem;
+.carousel-caption {
 
+	// .home-slogan {
+	// 	@extend .home-airbnb-holder--h3;
+	// 	font-size: 3rem;
+	// 	opacity: .75;
+	// 	margin-bottom: 5rem;
+
+	// 	span {
+	// 		font-family: "Streamster";
+	// 		font-size: 3.5rem;
+	// 		color: white;
+	// 	}
+
+	// }
+
+	h3 {
+		font-family: "Streamster";
+		text-transform: none;
+		font-size: 3.5rem;
+		color: white;
+	}
+
+	p {
+		
+		font-size: 1.25rem;
+		color: white;
+		text-align: center;
+	}
+
+	button {
+		padding: .5rem 1.65rem;
+		margin-top: 1rem;
+		font-size: 1.1rem;
+	}
 }
+
+
 
 //Home content
 
@@ -923,18 +961,71 @@ tr:last-child td:last-child {
 	border-radius: 0 0 1.25rem 0;
 }
 
+////////////////////////////////////////////////////////////////
 //Product-detail
+////////////////////////////////////////////////////////////////
 
 .product-detail {
+	padding: 0 1.5rem;
+
+	&__title {
+		margin-bottom: 1rem;
+	}
 
 	&__info {
 		display: grid;
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: 65fr 35fr;
 		grid-gap: 1rem;
+
+		&__illus {
+			//Product-detail Carousel
+			#carousel {
+			    margin-top: 1.88rem;
+			    width: 100%;
+			}
+			.item .thumb {
+				width: 25%;
+				cursor: pointer;
+				float: left;
+			}
+			.item .thumb img, .item img {
+				width: 100%;	
+			}
+
+			.carousel-control.left, .carousel-control.right {
+				background-image: none;
+				width: 8%;
+
+				span {
+					color: white;
+				}
+			}
+
+		}
 
 		&__options {
 			display: flex;
 			flex-direction: column;
+
+			&__tags {
+				margin-bottom: .5rem;
+
+				i {
+					color: $darkgray;
+					font-size: 1.15rem;
+					margin: 0 .5rem;
+				}
+				
+				span {
+					text-transform: uppercase;
+					background-color: $gray;
+					color: white;
+					cursor: pointer;
+					border: 1px solid $gray;
+					border-radius: .2rem;
+					padding: 0 .25rem;
+				}
+			}
 
 			&__detail {
 				background-color: $lightgray;
@@ -994,5 +1085,105 @@ tr:last-child td:last-child {
 			transform: translateY(-1.5rem);
 		}
 	}
+
+	&__author {
+		background-color: $lightgray;
+		margin: 1rem 0 2rem;
+		padding: 1rem 1rem 0;
+
+		li {
+			font-weight: 300;
+		}
+
+		p {
+			padding: .5rem 1rem;
+		}
+
+		ul {
+			margin: 0 1rem;
+		}
+
+		button {
+			text-transform: none;
+			margin-left: .5rem;
+			padding: .35rem 1.5rem;
+			transform: translateY(1.25rem);
+		}
+	}
+
+	&__comments {
+		background-color: $lightgray;
+		padding: 0 2rem;
+		
+		hr {
+			margin: 1rem 0;
+			border-top: 1.25px solid $gray;
+		}
+
+		&__comment {
+			&__title {
+				display: flex;
+				align-items: center;
+
+				i { color: $blue; }
+			}
+		}
+
+		&__reply {
+			padding: 0 2rem 0;
+
+			&__title {
+				display: flex;
+				align-items: center;
+
+				i { color: $blue; }
+			}
+		}
+
+		&__input {
+			margin: 1.5rem 0;
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-start;
+
+			&__rate {
+				display: flex;
+				align-items: center;
+				margin-top: 1rem;
+				
+				.lead {
+					text-transform: uppercase;
+				}
+
+				span {
+					padding: 0 1rem 0;
+					i {
+						font-size: 1.2rem;
+					}
+				}
+			}
+
+			&__name-email {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				
+				div {
+					width: 49%;
+					padding: 1rem 0;
+				}
+			}
+
+			button {
+				align-self: center;
+				padding: .5rem 1.5rem;
+				transform: translateY(-1.5rem);
+			}
+		}
+	}
 }
+
+
+
+
 
