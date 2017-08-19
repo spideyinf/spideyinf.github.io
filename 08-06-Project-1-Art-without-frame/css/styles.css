@@ -841,7 +841,7 @@ tr:last-child td:last-child {
           cursor: pointer;
           border: 1px solid #BDBDBD;
           border-radius: .2rem;
-          padding: 0 .25rem; }
+          padding: 0 .5rem; }
       .product-detail__info__options__detail {
         background-color: #EDEDED;
         display: flex;
