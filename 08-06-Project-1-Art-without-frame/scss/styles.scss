@@ -45,8 +45,9 @@ $Oswald: 'Oswald', sans-serif;
 
 //Form-control
 .form-control {
-	font-weight: 300;
+	font-weight: 200;
 	font-size: 1rem;
+	text-transform: uppercase;
 }
 
 //Font-Awesome on hover
@@ -120,6 +121,8 @@ hr {
 	box-shadow: inset 0 0 0 5px rgba(255,255,255,0.1);
 }
 
+//Dropdown 
+
 .dropdown-toggle__icon, .nav-link__icon {
 	font-size: 1.25rem;
 	color: white;
@@ -130,6 +133,10 @@ hr {
     line-height: 1.6;
     color: $darkgray;
     font-weight: 300;
+}
+
+.bootstrap-select.btn-group .dropdown-toggle .filter-option {
+	text-transform: uppercase;
 }
 
 .content-block-one {
@@ -1207,7 +1214,162 @@ tr:last-child td:last-child {
 	}
 }
 
+////////////////////////////////////////////////////////////////
+//Products
+////////////////////////////////////////////////////////////////
+
+.funkyradio {
+
+    div {
+        clear: both;
+        overflow: hidden;
+    }
+
+    label {
+        width: 100%;
+        border-radius: .25rem;
+        padding: 0;
+        border: 1px solid $lightgray;
+    }
+
+    input[type="radio"],
+    input[type="checkbox"] {
+
+        &:empty {
+            display: none;
+
+            ~ label {
+                position: relative;
+                line-height: 2.25rem;
+                text-indent: 3.25rem;
+                margin-top: 1rem;
+                cursor: pointer;
+                user-select: none;
+                color: $darkgray;
+                font-weight: 300;
+                text-transform: uppercase;
+				
+				sup {
+					font-weight: 200;
+					font-size: .8rem;
+					color: $blue;
+					opacity: .6;
+				}
 
 
+                &:before {
+                    position: absolute;
+                    display: block;
+                    top: 0;
+                    bottom: 0;
+                    left: 0;
+                    content: '';
+                    width: 2.5em;
+                    background: $lightgray;
+                    border-radius: 3px 0 0 3px;
+                }
+            }
+        }
+
+        &:hover:not(:checked) ~ label {
+            color: $gray;
+
+            &:before {
+            	font-family: FontAwesome;
+                content: '\f00c';
+                text-indent: .9em;
+                color: $gray;
+            }
+        }
+
+        &:checked ~ label {
+            color: black;
+
+            sup {
+            	opacity: 1;
+            }
+
+            &:before {
+            	font-family: FontAwesome;
+                content: '\f00c';
+                text-indent: .9em;
+                color: #333;
+                background-color: #ccc;
+            }
+        }
+
+        &:focus ~ label:before {
+            box-shadow: 0 0 0 3px $darkgray;
+        }
+    }
+
+    &-default {
+        input[type="radio"],
+        input[type="checkbox"] {
+            &:checked ~ label:before {
+                color: $darkgray;
+                background-color: #ccc;
+            }
+        }
+    }
+
+    &-primary {
+        input[type="radio"],
+        input[type="checkbox"] {
+            &:checked ~ label:before {
+                color: #fff;
+                background-color: $blue;
+            }
+        }
+    }
+}
+
+//Products-Products style (Mansory)
+
+.grid {
+  max-width: 1024px;
+}
+
+/* reveal grid after images loaded */
+.grid.are-images-unloaded {
+  opacity: 0;
+}
+
+.grid__item,
+.grid__col-sizer {
+  width: 32%;
+}
+
+.grid__gutter-sizer { width: 2%; }
+
+/* hide by default */
+.grid.are-images-unloaded .image-grid__item {
+  opacity: 0;
+}
+
+.grid__item {
+  margin-bottom: 20px;
+  float: left;
+}
+
+.grid__item--height1 { height: 140px; background: #EA0; }
+.grid__item--height2 { height: 220px; background: #C25; }
+.grid__item--height3 { height: 300px; background: #19F; }
+
+.grid__item--width2 { width: 66%; }
+
+.grid__item img {
+  display: block;
+  max-width: 100%;
+}
+
+
+.page-load-status {
+  display: none; /* hidden by default */
+  padding-top: 20px;
+  border-top: 1px solid #DDD;
+  text-align: center;
+  color: #777;
+}
 
 
