@@ -128,8 +128,7 @@ a {
 
 .form-control {
   font-weight: 200;
-  font-size: 1rem;
-  text-transform: uppercase; }
+  font-size: 1rem; }
 
 .fa-facebook:hover {
   color: #3b5999; }
@@ -165,6 +164,14 @@ hr {
 .breadcrumb li {
   text-transform: uppercase; }
 
+.art {
+  font-family: "Deadstock";
+  color: #FF555C; }
+
+.without-frame {
+  font-family: "Streamster";
+  color: #696969; }
+
 .navbar-default {
   background-color: transparent;
   border-color: transparent;
@@ -199,16 +206,17 @@ hr {
   color: white; }
 
 .dropdown-menu > li > a {
-  text-transform: uppercase;
   line-height: 1.6;
   color: #696969;
   font-weight: 300; }
 
 .bootstrap-select.btn-group .dropdown-toggle .filter-option {
-  text-transform: uppercase; }
+  font-size: .915rem;
+  font-weight: 200;
+  color: #696969; }
 
 .content-block-one {
-  padding: 30px;
+  padding: 1.88px;
   margin-bottom: 0px;
   color: inherit;
   background-color: #eee; }
@@ -218,8 +226,8 @@ hr {
   color: inherit; }
 
 .content-block-one p {
-  margin-bottom: 15px;
-  font-size: 21px;
+  margin-bottom: 1rem;
+  font-size: 1.31rem;
   font-weight: 200; }
 
 .content-block-one > hr {
@@ -233,38 +241,38 @@ hr {
 
 @media screen and (min-width: 768px) {
   .content-block-one {
-    padding-top: 48px;
-    padding-bottom: 48px; }
+    padding-top: 3rem;
+    padding-bottom: 3rem; }
   .container .content-block-one {
-    padding-right: 60px;
-    padding-left: 60px; }
+    padding-right: 3.75rem;
+    padding-left: 3.75rem; }
   .content-block-one h1,
   .content-block-one .h1 {
-    font-size: 63px; } }
+    font-size: 3.94rem; } }
 
 .content-space-one {
   padding: 0px;
   margin-bottom: 0px;
   color: inherit;
-  background: url(http://placehold.it/1200x650/0033cc/ffffff) no-repeat center center fixed;
+  background: url("../images/covers/Dancing-fire-Sztukowski.jpg") no-repeat center center fixed;
   background-size: cover;
-  padding-top: 100px;
-  padding-bottom: 100px; }
-
-.content-space-two {
-  padding: 0px;
-  margin-bottom: 0px;
-  color: inherit;
-  background: url(http://placehold.it/1200x650/cc0000/ffffff) no-repeat center center fixed;
-  background-size: cover;
-  padding-top: 100px;
-  padding-bottom: 100px; }
+  padding-top: 6.25rem;
+  padding-bottom: 6.25rem; }
+  .content-space-one .text-wrap {
+    text-align: center;
+    padding: 0 6.5rem; }
+    .content-space-one .text-wrap h3 {
+      text-transform: none;
+      color: #f7f7f7; }
+    .content-space-one .text-wrap p {
+      text-transform: uppercase;
+      color: #f7f7f7; }
 
 .page-break {
-  width: 50%;
-  height: 3px;
+  width: 40%;
+  height: .15rem;
   background-color: #fff;
-  margin: 0 auto; }
+  margin: auto 0 0 auto; }
 
 .full-screen {
   background-size: cover;
@@ -968,7 +976,7 @@ tr:last-child td:last-child {
   width: 100%;
   border-radius: .25rem;
   padding: 0;
-  border: 1px solid #EDEDED; }
+  background-color: #f7f7f7; }
 
 .funkyradio input[type="radio"]:empty,
 .funkyradio input[type="checkbox"]:empty {
@@ -978,7 +986,7 @@ tr:last-child td:last-child {
     position: relative;
     line-height: 2.25rem;
     text-indent: 3.25rem;
-    margin-top: 1rem;
+    margin-top: .75rem;
     cursor: pointer;
     user-select: none;
     color: #696969;
@@ -999,22 +1007,25 @@ tr:last-child td:last-child {
       left: 0;
       content: '';
       width: 2.5em;
-      background: #EDEDED;
+      background: #BDBDBD;
       border-radius: 3px 0 0 3px; }
 
 .funkyradio input[type="radio"]:hover:not(:checked) ~ label,
 .funkyradio input[type="checkbox"]:hover:not(:checked) ~ label {
-  color: #BDBDBD; }
+  color: #333;
+  background-color: white; }
   .funkyradio input[type="radio"]:hover:not(:checked) ~ label:before,
   .funkyradio input[type="checkbox"]:hover:not(:checked) ~ label:before {
     font-family: FontAwesome;
     content: '\f00c';
     text-indent: .9em;
-    color: #BDBDBD; }
+    color: #EDEDED; }
 
 .funkyradio input[type="radio"]:checked ~ label,
 .funkyradio input[type="checkbox"]:checked ~ label {
-  color: black; }
+  color: black;
+  background-color: #BDBDBD;
+  border: none; }
   .funkyradio input[type="radio"]:checked ~ label sup,
   .funkyradio input[type="checkbox"]:checked ~ label sup {
     opacity: 1; }
@@ -1024,16 +1035,16 @@ tr:last-child td:last-child {
     content: '\f00c';
     text-indent: .9em;
     color: #333;
-    background-color: #ccc; }
+    background-color: white; }
 
 .funkyradio input[type="radio"]:focus ~ label:before,
 .funkyradio input[type="checkbox"]:focus ~ label:before {
-  box-shadow: 0 0 0 3px #696969; }
+  box-shadow: 0 0 0 3px black; }
 
 .funkyradio-default input[type="radio"]:checked ~ label:before,
 .funkyradio-default input[type="checkbox"]:checked ~ label:before {
   color: #696969;
-  background-color: #ccc; }
+  background-color: #BDBDBD; }
 
 .funkyradio-primary input[type="radio"]:checked ~ label:before,
 .funkyradio-primary input[type="checkbox"]:checked ~ label:before {
@@ -1088,3 +1099,69 @@ tr:last-child td:last-child {
   border-top: 1px solid #DDD;
   text-align: center;
   color: #777; }
+
+.products {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; }
+  .products__search-sort {
+    background-color: #EDEDED;
+    padding: .5rem 1rem;
+    max-width: 1170px;
+    width: 100%;
+    transform: translateY(-1.65rem); }
+    .products__search-sort .wrapper {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 3fr;
+      grid-gap: .5rem; }
+      .products__search-sort .wrapper .input-group button {
+        background-color: #236ED4;
+        border: 1px solid #236ED4; }
+        .products__search-sort .wrapper .input-group button i.fa-search {
+          color: white; }
+  .products__main {
+    max-width: 1170px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    grid-gap: 1rem; }
+    .products__main > * {
+      width: 100%; }
+    .products__main__navbar {
+      background-color: #EDEDED;
+      padding: 1rem 0; }
+      .products__main__navbar--top {
+        color: #236ED4;
+        text-align: center; }
+      .products__main__navbar__art-of-the-month {
+        background-color: #BDBDBD;
+        margin: 1rem 0;
+        padding: .25rem 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        cursor: pointer;
+        z-index: 1; }
+        .products__main__navbar__art-of-the-month .art {
+          font-size: 2.5rem;
+          color: #EDEDED; }
+        .products__main__navbar__art-of-the-month .without-frame {
+          font-size: 1.5rem;
+          color: #f7f7f7; }
+        .products__main__navbar__art-of-the-month:hover .art, .products__main__navbar__art-of-the-month:focus .art {
+          color: #FF555C; }
+        .products__main__navbar__art-of-the-month:hover .without-frame, .products__main__navbar__art-of-the-month:focus .without-frame {
+          color: #696969; }
+      .products__main__navbar--title {
+        background-color: #BDBDBD;
+        color: #696969;
+        margin: 1rem 0 0;
+        padding: .25rem .5rem;
+        cursor: pointer; }
+        .products__main__navbar--title:hover, .products__main__navbar--title:focus {
+          background-color: #236ED4;
+          color: white; }
+      .products__main__navbar .funkyradio {
+        padding: .5rem .5rem 0 1.25rem; }
