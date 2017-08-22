@@ -117,6 +117,57 @@ a {
 .center {
   text-align: center; }
 
+.loader-ellips {
+  font-size: 20px;
+  /* change size here */
+  position: relative;
+  width: 4em;
+  height: 1em;
+  margin: 10px auto; }
+
+.loader-ellips__dot {
+  display: block;
+  width: 1em;
+  height: 1em;
+  border-radius: 0.5em;
+  background: #555;
+  /* change color here */
+  position: absolute;
+  animation-duration: 0.5s;
+  animation-timing-function: ease;
+  animation-iteration-count: infinite; }
+
+.loader-ellips__dot:nth-child(1),
+.loader-ellips__dot:nth-child(2) {
+  left: 0; }
+
+.loader-ellips__dot:nth-child(3) {
+  left: 1.5em; }
+
+.loader-ellips__dot:nth-child(4) {
+  left: 3em; }
+
+@keyframes reveal {
+  from {
+    transform: scale(0.001); }
+  to {
+    transform: scale(1); } }
+
+@keyframes slide {
+  to {
+    transform: translateX(1.5em); } }
+
+.loader-ellips__dot:nth-child(1) {
+  animation-name: reveal; }
+
+.loader-ellips__dot:nth-child(2),
+.loader-ellips__dot:nth-child(3) {
+  animation-name: slide; }
+
+.loader-ellips__dot:nth-child(4) {
+  animation-name: reveal;
+  animation-direction: reverse; }
+
 .btn-info {
   background-color: #236ED4;
   border-radius: 100px;
@@ -161,8 +212,10 @@ hr {
 .price {
   color: #236ED4; }
 
-.breadcrumb li {
-  text-transform: uppercase; }
+.breadcrumb {
+  margin: 0; }
+  .breadcrumb li {
+    text-transform: uppercase; }
 
 .art {
   font-family: "Deadstock";
@@ -216,18 +269,25 @@ hr {
   color: #696969; }
 
 .content-block-one {
-  padding: 1.88px;
+  padding: .5rem;
   margin-bottom: 0px;
   color: inherit;
-  background-color: #eee; }
+  background-color: #EDEDED;
+  display: flex;
+  align-items: center;
+  justify-content: center; }
+  .content-block-one .wrapper {
+    max-width: 1170px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; }
 
 .content-block-one h1,
 .content-block-one .h1 {
   color: inherit; }
 
 .content-block-one p {
-  margin-bottom: 1rem;
-  font-size: 1.31rem;
+  font-size: 1.25rem;
   font-weight: 200; }
 
 .content-block-one > hr {
@@ -257,22 +317,32 @@ hr {
   background: url("../images/covers/Dancing-fire-Sztukowski.jpg") no-repeat center center fixed;
   background-size: cover;
   padding-top: 6.25rem;
-  padding-bottom: 6.25rem; }
+  padding-bottom: 6.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center; }
   .content-space-one .text-wrap {
-    text-align: center;
-    padding: 0 6.5rem; }
-    .content-space-one .text-wrap h3 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 1170px;
+    text-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.5); }
+    .content-space-one .text-wrap h2 {
+      text-align: center;
       text-transform: none;
+      font-size: 300;
       color: #f7f7f7; }
+    .content-space-one .text-wrap .page-break {
+      width: 20vw;
+      height: .15rem;
+      margin: .5rem 0;
+      background-color: #fff;
+      align-self: flex-end; }
     .content-space-one .text-wrap p {
       text-transform: uppercase;
-      color: #f7f7f7; }
-
-.page-break {
-  width: 40%;
-  height: .15rem;
-  background-color: #fff;
-  margin: auto 0 0 auto; }
+      color: #f7f7f7;
+      align-self: flex-end; }
 
 .full-screen {
   background-size: cover;
@@ -1063,26 +1133,26 @@ tr:last-child td:last-child {
   width: 32%; }
 
 .grid__gutter-sizer {
-  width: 2%; }
+  width: 1.5%; }
 
 /* hide by default */
 .grid.are-images-unloaded .image-grid__item {
   opacity: 0; }
 
 .grid__item {
-  margin-bottom: 20px;
+  margin-bottom: 1rem;
   float: left; }
 
 .grid__item--height1 {
-  height: 140px;
+  height: 160px;
   background: #EA0; }
 
 .grid__item--height2 {
-  height: 220px;
+  height: 260px;
   background: #C25; }
 
 .grid__item--height3 {
-  height: 300px;
+  height: 320px;
   background: #19F; }
 
 .grid__item--width2 {
@@ -1107,20 +1177,26 @@ tr:last-child td:last-child {
   justify-content: center; }
   .products__search-sort {
     background-color: #EDEDED;
-    padding: .5rem 1rem;
+    padding: .5rem;
     max-width: 1170px;
     width: 100%;
-    transform: translateY(-1.65rem); }
-    .products__search-sort .wrapper {
-      width: 100%;
-      display: grid;
-      grid-template-columns: 1fr 3fr;
-      grid-gap: .5rem; }
-      .products__search-sort .wrapper .input-group button {
-        background-color: #236ED4;
-        border: 1px solid #236ED4; }
-        .products__search-sort .wrapper .input-group button i.fa-search {
-          color: white; }
+    transform: translateY(-1.65rem);
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    grid-gap: 12vw; }
+    .products__search-sort .btn-group {
+      width: 24vw !important;
+      min-width: 159.67px !important; }
+    .products__search-sort .input-group button {
+      background-color: #236ED4;
+      border: 1px solid #236ED4; }
+      .products__search-sort .input-group button i.fa-search {
+        color: white; }
+    @media screen and (min-width: 1170px) {
+      .products__search-sort {
+        grid-gap: 306.5px; }
+        .products__search-sort .btn-group {
+          width: 280.28px !important; } }
   .products__main {
     max-width: 1170px;
     width: 100%;
@@ -1130,38 +1206,93 @@ tr:last-child td:last-child {
     .products__main > * {
       width: 100%; }
     .products__main__navbar {
-      background-color: #EDEDED;
-      padding: 1rem 0; }
+      background-color: #EDEDED; }
       .products__main__navbar--top {
-        color: #236ED4;
-        text-align: center; }
+        border-bottom: .1rem solid white;
+        padding: .5rem; }
       .products__main__navbar__art-of-the-month {
-        background-color: #BDBDBD;
+        background-color: #236ED4;
+        color: #f7f7f7;
         margin: 1rem 0;
-        padding: .25rem 1rem;
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
+        padding: .5rem .5rem;
         cursor: pointer;
         z-index: 1; }
-        .products__main__navbar__art-of-the-month .art {
-          font-size: 2.5rem;
-          color: #EDEDED; }
-        .products__main__navbar__art-of-the-month .without-frame {
-          font-size: 1.5rem;
-          color: #f7f7f7; }
-        .products__main__navbar__art-of-the-month:hover .art, .products__main__navbar__art-of-the-month:focus .art {
-          color: #FF555C; }
-        .products__main__navbar__art-of-the-month:hover .without-frame, .products__main__navbar__art-of-the-month:focus .without-frame {
-          color: #696969; }
       .products__main__navbar--title {
-        background-color: #BDBDBD;
-        color: #696969;
+        background-color: #236ED4;
+        color: #f7f7f7;
         margin: 1rem 0 0;
         padding: .25rem .5rem;
         cursor: pointer; }
-        .products__main__navbar--title:hover, .products__main__navbar--title:focus {
-          background-color: #236ED4;
-          color: white; }
       .products__main__navbar .funkyradio {
         padding: .5rem .5rem 0 1.25rem; }
+    .products__main__products__info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      position: relative; }
+      .products__main__products__info .part-gray {
+        height: 83%;
+        flex: 3;
+        background-color: rgba(32, 32, 32, 0.5);
+        align-self: flex-start;
+        padding: 3% 6%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: -1rem;
+        left: 0;
+        opacity: 0;
+        transition: all .5s; }
+        .products__main__products__info .part-gray .summary {
+          flex: 3;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          opacity: .75; }
+          .products__main__products__info .part-gray .summary p {
+            color: #EDEDED;
+            overflow: hidden; }
+        .products__main__products__info .part-gray .price {
+          text-shadow: 0 0 2px rgba(0, 0, 0, 0.5); }
+        .products__main__products__info .part-gray .icon {
+          flex: 1;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          width: 48%;
+          cursor: pointer; }
+          .products__main__products__info .part-gray .icon i {
+            color: #EDEDED;
+            transition: linear .2s; }
+            .products__main__products__info .part-gray .icon i:hover {
+              font-size: 1.5rem;
+              color: white; }
+      .products__main__products__info .part-red {
+        width: 100%;
+        background-color: #f65454;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 3% 6%;
+        z-index: 5;
+        bottom: -1rem;
+        left: 0;
+        position: absolute;
+        opacity: 0;
+        transition: all .25s; }
+        .products__main__products__info .part-red p {
+          text-transform: uppercase;
+          font-size: .85rem; }
+      .products__main__products__info:hover > .part-gray {
+        top: 0;
+        opacity: 1; }
+      .products__main__products__info:hover > .part-red {
+        bottom: 0;
+        opacity: 1; }

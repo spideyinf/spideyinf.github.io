@@ -153,15 +153,19 @@ $grid.imagesLoaded( function() {
 // hack CodePen to load pens as pages
 
 var nextPenSlugs = [
-  '202252c2f5f192688dada252913ccf13',
-  'a308f05af22690139e9a2bc655bfe3ee',
-  '6c9ff23039157ee37b3ab982245eef28',
+  'InfiniteScroll4.htm',
+  'InfiniteScroll2.htm',
+  'InfiniteScroll3.htm',
+  'InfiniteScroll4.htm',
+  'InfiniteScroll2.htm',
+  'InfiniteScroll3.htm',
+
 ];
 
 function getPenPath() {
   var slug = nextPenSlugs[ this.loadCount ];
   if ( slug ) {
-    return 'https://s.codepen.io/desandro/debug/' + slug;
+    return 'http://localhost:3012/' + slug;
   }
 }
 
@@ -172,6 +176,34 @@ $grid.infiniteScroll({
   path: getPenPath,
   append: '.grid__item',
   outlayer: msnry,
-  status: '.page-load-status',
+  scrollThresold: 200,
+  status: '.page-load-status'
 });
 
+//Add content to all HTML grid__item
+// $(function(){
+//   $('.grid__item').prepend(`
+//     <div class="products__main__products__info">
+//                 <div class="part-gray">
+//                   <div class="product-detail__info__options__tags">
+//                     <span style="font-size: .75rem;">Sơn dầu</span>
+//                     <span style="font-size: .75rem;">Trừu tượng</span>
+//                   </div>
+//                   <div class="summary">
+//                     <p>"The more effort you put into improving your skills, the bigger the payoff you will get. Realize that things will be hard at first, but the rewards will be worth it."</p>
+//                   </div>
+//                   <h5 class="price">VND 2,300,000</h5>
+//                   <div class="icon">
+//                     <i data-toggle="tooltip" data-placement="top" title="Thêm vào Yêu thích" class="fa fa-heart-o" aria-hidden="true"></i>
+//                     <i data-toggle="tooltip" data-placement="top" title="Thêm vào Giỏ hàng!" class="fa fa-cart-plus" aria-hidden="true"></i>
+//                     <i data-toggle="tooltip" data-placement="top" title="Tìm hiểu thêm" class="fa fa-search" aria-hidden="true"></i>
+//                   </div>
+//                 </div>
+//                 <div class="part-red">
+//                   <h6>the Inspiration</h6>
+//                   <p class="white">Tác giả: A Famous Artist</p>
+//                 </div>
+//               </div>
+//             </div>
+//     `);
+// })

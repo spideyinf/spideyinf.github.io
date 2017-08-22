@@ -1,0 +1,162 @@
+
+<!DOCTYPE html>
+<html >
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="shortcut icon" type="image/x-icon" href="https://production-assets.codepen.io/assets/favicon/favicon-8ea04875e70c4b0bb41da869e81236e54394d63638a1ef12fa558a4a835f1164.ico" />
+  <link rel="mask-icon" type="" href="https://production-assets.codepen.io/assets/favicon/logo-pin-f2d2b6d2c61838f7e76325261b7195c27224080bc099486ddd6dccb469b8e8e6.svg" color="#111" />
+  <meta name="robots" content="noindex">
+  <title>CodePen - Infinite Scroll - Masonry page 4</title>
+  
+  
+  
+  <style>
+body {
+  font-family: sans-serif;
+  line-height: 1.4;
+  font-size: 18px;
+  padding: 20px;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.grid {
+  max-width: 1200px;
+}
+
+/* reveal grid after images loaded */
+.grid.are-images-unloaded {
+  opacity: 0;
+}
+
+.grid__item,
+.grid__col-sizer {
+  width: 32%;
+}
+
+.grid__gutter-sizer { width: 1.5%; }
+
+/* hide by default */
+.grid.are-images-unloaded .image-grid__item {
+  opacity: 0;
+}
+
+.grid__item {
+  margin-bottom: 1rem;
+  float: left;
+}
+
+.grid__item--height1 { height: 140px; background: #EA0; }
+.grid__item--height2 { height: 220px; background: #C25; }
+.grid__item--height3 { height: 300px; background: #19F; }
+
+.grid__item--width2 { width: 66%; }
+
+.grid__item img {
+  display: block;
+  max-width: 100%;
+}
+
+
+.page-load-status {
+  display: none; /* hidden by default */
+  padding-top: 20px;
+  border-top: 1px solid #DDD;
+  text-align: center;
+  color: #777;
+}
+
+/* loader ellips in separate pen CSS */
+
+</style>
+
+      <style>
+      /* CSS from external pen */
+    </style>
+
+  
+  
+  
+  
+</head>
+
+<body translate="no" >
+
+  <h1>Infinite Scroll - Masonry page 4</h1>
+
+<div class="grid are-images-unloaded">
+  <div class="grid__col-sizer"></div>
+  <div class="grid__gutter-sizer"></div>
+  <div class="grid__item grid__item--width2">
+    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/golden-hour.jpg" alt="golden hour" />
+  </div>
+  <div class="grid__item grid__item--height2"></div>
+  <div class="grid__item grid__item--height1"></div>
+  <div class="grid__item grid__item--height3"></div>
+  <div class="grid__item grid__item--height1"></div>
+  <div class="grid__item grid__item--height2"></div>
+  <div class="grid__item grid__item--height2"></div>
+  <div class="grid__item grid__item--height3"></div>
+  <div class="grid__item grid__item--width2">
+    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/leaf-droplets.jpg" alt="droplets" />
+  </div>
+  <div class="grid__item grid__item--height1"></div>
+  <div class="grid__item grid__item--height2"></div>
+  <div class="grid__item grid__item--width2">
+    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/submerged.jpg" alt="submerged" />
+  </div>
+  <div class="grid__item grid__item--height1"></div>
+  <div class="grid__item grid__item--height3"></div>
+  <div class="grid__item grid__item--height3"></div>
+  <div class="grid__item grid__item--height1"></div>
+  <div class="grid__item grid__item--height2"></div>
+</div>
+
+<div class="page-load-status">
+  <div class="loader-ellips infinite-scroll-request">
+    <span class="loader-ellips__dot"></span>
+    <span class="loader-ellips__dot"></span>
+    <span class="loader-ellips__dot"></span>
+    <span class="loader-ellips__dot"></span>
+  </div>
+  <p class="infinite-scroll-last">End of content</p>
+  <p class="infinite-scroll-error">No more pages to load</p>
+</div>
+  
+  <script src='https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.js'></script>
+<script src='https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.js'></script>
+<script>
+var grid = document.querySelector('.grid');
+
+var msnry = new Masonry( grid, {
+  itemSelector: 'none', // select none at first
+  columnWidth: '.grid__col-sizer',
+  gutter: '.grid__gutter-sizer',
+  percentPosition: true,
+  stagger: 30,
+  // nicer reveal transition
+  visibleStyle: { transform: 'translateY(0)', opacity: 1 },
+  hiddenStyle: { transform: 'translateY(100px)', opacity: 0 },
+});
+
+imagesLoaded( grid, function() {
+  // reveal items
+  grid.classList.remove('are-images-unloaded');
+  msnry.options.itemSelector = '.grid__item';
+  var items = grid.querySelectorAll('.grid__item');
+  msnry.appended( items );
+});
+
+</script>
+
+    <script>
+    /* JS from external pen */
+  </script>
+
+  
+  
+
+</body>
+</html>
+ 

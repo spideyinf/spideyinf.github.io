@@ -33,6 +33,7 @@ $Oswald: 'Oswald', sans-serif;
 //Imports
 @import 'reset';
 @import 'typography';
+@import 'loader-ellips';//For infinite scroll
 
 //btn modifications
 .btn-info {
@@ -74,6 +75,7 @@ hr {
 }
 
 .breadcrumb {
+	margin: 0;
 	li {
 		text-transform: uppercase;
 	}
@@ -154,18 +156,27 @@ hr {
 //Content Parallax
 
 .content-block-one {
-  padding: 1.88px;
+  padding: .5rem;
   margin-bottom: 0px;
   color: inherit;
-  background-color: #eee;
+  background-color: $lightgray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .wrapper {
+  	max-width: 1170px;
+  	display: flex; 
+  	flex-direction: column;
+	align-items: center;
+  }
 }
 .content-block-one h1,
 .content-block-one .h1 {
   color: inherit;
 }
 .content-block-one p {
-  margin-bottom: 1rem;
-  font-size: 1.31rem;
+  font-size: 1.25rem;
   font-weight: 200;
 }
 .content-block-one > hr {
@@ -200,30 +211,44 @@ hr {
   background-size: cover;
   padding-top: 6.25rem;
   padding-bottom: 6.25rem;
-  
-  .text-wrap {
-  	  text-align: center;
-  	  padding: 0 6.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-	  h3 {
+  .text-wrap {
+  	  display: flex;
+  	  flex-direction: column;
+	  align-items: center;
+	  justify-content: center;
+  	  max-width: 1170px;
+  	  text-shadow: 0 0 .5rem rgba(0, 0, 0, .5);
+
+	  h2 {
+	  	text-align: center;
 	  	text-transform: none;
+	  	font-size: 300;
 	  	color: $white;
-	  }  	
+	  }
+
+	  .page-break {
+      width: 20vw;
+      height: .15rem;
+      margin: .5rem 0;
+      background-color: #fff;
+      align-self: flex-end;
+      }	
+  	
 
 	  p {
 	  	text-transform: uppercase;
 	  	color: $white;
+	  	align-self: flex-end;
 	  }
   }
 
 }
 
-.page-break {
-    width: 40%;
-    height: .15rem;
-    background-color: #fff;
-    margin: auto 0 0 auto;
-}
+
 
 //For full-responsive Home Carousel
 
@@ -1367,7 +1392,7 @@ tr:last-child td:last-child {
   width: 32%;
 }
 
-.grid__gutter-sizer { width: 2%; }
+.grid__gutter-sizer { width: 1.5%; }
 
 /* hide by default */
 .grid.are-images-unloaded .image-grid__item {
@@ -1375,13 +1400,13 @@ tr:last-child td:last-child {
 }
 
 .grid__item {
-  margin-bottom: 20px;
+  margin-bottom: 1rem;
   float: left;
 }
 
-.grid__item--height1 { height: 140px; background: #EA0; }
-.grid__item--height2 { height: 220px; background: #C25; }
-.grid__item--height3 { height: 300px; background: #19F; }
+.grid__item--height1 { height: 160px; background: #EA0; }
+.grid__item--height2 { height: 260px; background: #C25; }
+.grid__item--height3 { height: 320px; background: #19F; }
 
 .grid__item--width2 { width: 66%; }
 
@@ -1409,28 +1434,38 @@ tr:last-child td:last-child {
 
 	&__search-sort {
 		background-color: $lightgray;
-		padding: .5rem 1rem;
+		padding: .5rem;
 		max-width: 1170px;
 		width: 100%;
 		transform: translateY(-1.65rem);
 
-		.wrapper {
-			width: 100%;
-			display: grid;
-			grid-template-columns: 1fr 3fr;
-			grid-gap: .5rem;
+		display: grid;
+		grid-template-columns: 1fr 3fr;
+		grid-gap: 12vw;
+		
+		.btn-group {
+			width: 24vw !important;
+			min-width: 159.67px !important;
+		}
 
-			.input-group {
+		.input-group {
 
-				button {
-					background-color: $blue;
-					border: 1px solid $blue;
+			button {
+				background-color: $blue;
+				border: 1px solid $blue;
 
-					i.fa-search {
-						color: white;
-					}
+				i.fa-search {
+					color: white;
 				}
-			}		
+			}
+		}
+
+		@media screen and (min-width: 1170px) {
+			grid-gap: 306.5px;
+
+			.btn-group {
+				width: 280.28px !important;
+			}
 		}
 	}
 
@@ -1447,57 +1482,28 @@ tr:last-child td:last-child {
 
 		&__navbar {
 			background-color: $lightgray;
-			padding: 1rem 0;
 
 			&--top {
-				color: $blue;
-				text-align: center;
+				border-bottom: .1rem solid white;
+				padding: .5rem;
+				
 			}
 
 			&__art-of-the-month {
-				background-color: $gray;
+				background-color: $blue;
+				color: $white;
 				margin: 1rem 0;
-				padding: .25rem 1rem;
-				display: flex;
-				align-items: center;
-				justify-content: flex-start;
+				padding: .5rem .5rem;
 				cursor: pointer;
 				z-index: 1;
-
-				.art {
-					font-size: 2.5rem;
-					color: $lightgray;
-				}
-
-				.without-frame {
-					font-size: 1.5rem;
-					color: $white;
-				}
-
-				&:hover, &:focus {
-
-					.art {
-						color: $red;
-					}
-
-					.without-frame {
-						color: $darkgray;
-					}
-
-				}
 			}
 
 			&--title {
-				background-color: $gray;
-				color: $darkgray;
+				background-color: $blue;
+				color: $white;
 				margin: 1rem 0 0;
 				padding: .25rem .5rem;
 				cursor: pointer;
-
-				&:hover, &:focus {
-					background-color: $blue;
-					color: white;
-				}
 			}
 
 			.funkyradio {
@@ -1506,6 +1512,105 @@ tr:last-child td:last-child {
 		}
 
 		&__products {
+
+			&__info {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				height: 100%;
+				position: relative;
+			
+
+				.part-gray {
+					height: 83%;
+					flex: 3;
+					background-color: rgba(32, 32, 32, 0.5);;
+					align-self: flex-start;
+					padding: 3% 6%;
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+					justify-content: center;
+					
+					.summary {
+						flex: 3;
+						display: flex;
+						flex-direction: column;
+						align-items: center;
+						justify-content: center;
+						opacity: .75;
+
+						p {
+							color: $lightgray;
+							overflow: hidden;
+						}
+					}
+
+					.price {
+						text-shadow: 0 0 2px rgba(0, 0, 0, .5);
+					}
+
+					.icon {
+						flex: 1;
+						display: flex;
+						align-items: center;
+						justify-content: space-between;
+						width: 48%;
+						cursor: pointer;
+
+						i {
+							color: $lightgray;
+							transition: linear .2s;
+
+							&:hover {
+								font-size: 1.5rem;
+								color: white;
+							}	
+						}		
+					}
+
+					position: absolute;
+					top: -1rem;
+					left: 0;
+					opacity: 0;
+					transition: all .5s;
+
+				}
+
+				.part-red {
+					width: 100%;
+					background-color: rgba(246, 84, 84, 1);	
+					flex: 1;
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+					justify-content: center;
+					padding: 3% 6%;
+
+					p {
+						text-transform: uppercase;
+						font-size: .85rem;
+					}
+
+					z-index: 5;
+					bottom: -1rem;
+					left: 0;
+					position: absolute;
+					opacity: 0;
+					transition: all .25s;
+				}
+
+				&:hover > .part-gray {
+					top: 0;
+					opacity: 1;
+				}	
+
+				&:hover > .part-red {
+					bottom: 0;
+					opacity: 1;
+				}
+			}
 			
 		}
 	}
