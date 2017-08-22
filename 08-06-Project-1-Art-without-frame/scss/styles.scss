@@ -3,6 +3,7 @@
 //Variables
 $red: #FF555C;
 $blue: #236ED4;
+$darkblue: #003781;
 $black: #333;
 $white: #f7f7f7;
 $lightgray: #EDEDED;
@@ -37,13 +38,19 @@ $Oswald: 'Oswald', sans-serif;
 
 //btn modifications
 .btn-info {
-	background-color: $blue;
+	background: linear-gradient( $blue, $darkblue );
+	color: $lightgray;
 	border-radius: 100px;
 	border: none;
 	font-weight: 200;
 	text-transform: uppercase;
 	font-size: 1.25rem;
 	padding: 0.65rem 2rem;
+
+	&:hover {
+		background: $darkblue !important;
+		color: white;
+	}
 }
 
 //Form-control
@@ -287,9 +294,7 @@ hr {
 	// }
 
 	h3 {
-		font-family: "Streamster";
-		text-transform: none;
-		font-size: 3.5rem;
+		font-size: 3rem;
 		color: white;
 	}
 
@@ -298,6 +303,7 @@ hr {
 		font-size: 1.25rem;
 		color: white;
 		text-align: center;
+		text-transform: uppercase;
 	}
 
 	button {
@@ -360,7 +366,6 @@ hr {
 	min-height: 90vh;
 	overflow: hidden;
 	display: flex;
-	// padding: 0 8rem;
 
 	&__panel {
 		width: 100%;
@@ -479,6 +484,55 @@ hr {
  	left: 45%;
  	bottom: -2rem;
  }
+//Testimonial
+
+#quote-carousel {
+    padding: 0 10px 30px 10px;
+    margin-top: 60px;
+}
+#quote-carousel .carousel-control {
+    background: none;
+    color: #CACACA;
+    font-size: 2.3em;
+    text-shadow: none;
+    margin-top: 30px;
+}
+#quote-carousel .carousel-indicators {
+    position: relative;
+    right: 50%;
+    top: auto;
+    bottom: 0px;
+    margin-top: 20px;
+    margin-right: -19px;
+}
+#quote-carousel .carousel-indicators li {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    opacity: 0.4;
+    overflow: hidden;
+    transition: all .4s ease-in;
+    vertical-align: middle;
+}
+#quote-carousel .carousel-indicators .active {
+    width: 128px;
+    height: 128px;
+    opacity: 1;
+    transition: all .2s;
+}
+.item blockquote {
+    border-left: none;
+    margin: 0;
+}
+.item blockquote p:before {
+    content: "\f10d";
+    font-family: 'Fontawesome';
+    float: left;
+    margin-right: 10px;
+}
 
 //Footer
 .footer {
@@ -1415,7 +1469,6 @@ tr:last-child td:last-child {
   max-width: 100%;
 }
 
-
 .page-load-status {
   display: none; /* hidden by default */
   padding-top: 20px;
@@ -1442,7 +1495,7 @@ tr:last-child td:last-child {
 		display: grid;
 		grid-template-columns: 1fr 3fr;
 		grid-gap: 12vw;
-		
+
 		.btn-group {
 			width: 24vw !important;
 			min-width: 159.67px !important;
@@ -1458,13 +1511,13 @@ tr:last-child td:last-child {
 					color: white;
 				}
 			}
-		}
 
-		@media screen and (min-width: 1170px) {
-			grid-gap: 306.5px;
+			@media screen and (min-width: 1170px) {
+				grid-gap: 306.5px;
 
-			.btn-group {
-				width: 280.28px !important;
+				.btn-group {
+					width: 280.28px !important;
+				}
 			}
 		}
 	}
@@ -1475,7 +1528,7 @@ tr:last-child td:last-child {
 		display: grid;
 		grid-template-columns: 1fr 3fr;
 		grid-gap: 1rem;
-		
+
 		> * {
 			width: 100%;
 		}
@@ -1486,7 +1539,7 @@ tr:last-child td:last-child {
 			&--top {
 				border-bottom: .1rem solid white;
 				padding: .5rem;
-				
+
 			}
 
 			&__art-of-the-month {
@@ -1520,7 +1573,7 @@ tr:last-child td:last-child {
 				justify-content: center;
 				height: 100%;
 				position: relative;
-			
+
 
 				.part-gray {
 					height: 83%;
@@ -1532,7 +1585,7 @@ tr:last-child td:last-child {
 					flex-direction: column;
 					align-items: center;
 					justify-content: center;
-					
+
 					.summary {
 						flex: 3;
 						display: flex;
@@ -1566,8 +1619,8 @@ tr:last-child td:last-child {
 							&:hover {
 								font-size: 1.5rem;
 								color: white;
-							}	
-						}		
+							}
+						}
 					}
 
 					position: absolute;
@@ -1580,7 +1633,7 @@ tr:last-child td:last-child {
 
 				.part-red {
 					width: 100%;
-					background-color: rgba(246, 84, 84, 1);	
+					background-color: rgba(246, 84, 84, 1);
 					flex: 1;
 					display: flex;
 					flex-direction: column;
@@ -1604,14 +1657,13 @@ tr:last-child td:last-child {
 				&:hover > .part-gray {
 					top: 0;
 					opacity: 1;
-				}	
+				}
 
 				&:hover > .part-red {
 					bottom: 0;
 					opacity: 1;
 				}
 			}
-			
 		}
 	}
 }

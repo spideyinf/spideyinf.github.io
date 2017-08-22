@@ -8,13 +8,13 @@ $(document).ready(function(){
                 $(document).scroll(function() { 
                     scroll_start = $(this).scrollTop();
                     if(scroll_start > offset.top) {
-                          $(".navbar-default").css('background-color', 'white');
-                          $('.logo-brand').attr('src', 'images/logo/logo2.png');
-                          $('.nav-link, .nav-link__icon, .dropdown-toggle, .dropdown-toggle__icon, .caret').css('color', 'gray');
+                          $(".navbar-default").css('background-color', 'rgba(105, 105, 105, 0.9)');
+                          // $('.logo-brand').attr('src', 'images/logo/logo2.png');
+                          // $('.nav-link, .nav-link__icon, .dropdown-toggle, .dropdown-toggle__icon, .caret').css('color', 'gray');
                        } else {
                           $('.navbar-default').css('background-color', 'transparent');
-                          $('.logo-brand').attr('src', 'images/logo/logo.png');
-                          $('.nav-link, .nav-link__icon, .dropdown-toggle, .dropdown-toggle__icon, .caret').css('color', 'white');
+                          // $('.logo-brand').attr('src', 'images/logo/logo.png');
+                          // $('.nav-link, .nav-link__icon, .dropdown-toggle, .dropdown-toggle__icon, .caret').css('color', 'white');
                        }
                    });
                     }
