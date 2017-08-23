@@ -67,7 +67,7 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   text-transform: uppercase;
-  font-weight: 500; }
+  font-weight: 400; }
 
 h1 {
   font-size: 2.25rem; }
@@ -109,7 +109,7 @@ a {
   color: white; }
 
 .red {
-  color: #FF555C; }
+  color: #ff474e; }
 
 .blue {
   color: #236ED4; }
@@ -223,7 +223,7 @@ hr {
 
 .art {
   font-family: "Deadstock";
-  color: #FF555C; }
+  color: #ff474e; }
 
 .without-frame {
   font-family: "Streamster";
@@ -462,15 +462,17 @@ nav.stroke ul li a:hover:after {
         text-align: center; }
 
 #home-art-panels {
-  margin: 3rem 0;
-  padding: 3rem 2rem;
+  padding-bottom: 3rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   background-color: #EDEDED; }
-  #home-art-panels h2 {
-    margin-bottom: 2rem; }
+  #home-art-panels h3 {
+    padding: 3rem;
+    margin-bottom: 3rem;
+    width: 100%;
+    background-color: white; }
   #home-art-panels .home-art-panels {
     max-width: 1170px;
     width: 100%;
@@ -500,7 +502,7 @@ nav.stroke ul li a:hover:after {
         transition: linear .5s; }
       #home-art-panels .home-art-panels__panel p:nth-child(2) {
         font-family: 'Deadstock';
-        font-size: 3rem;
+        font-size: 3.5rem;
         flex: 2; }
       #home-art-panels .home-art-panels__panel > * {
         margin: 0;
@@ -528,11 +530,11 @@ nav.stroke ul li a:hover:after {
   #home-art-panels .home-art-panels__panel.open-active > *:last-child {
     transform: translateY(0); }
   #home-art-panels .home-art-panels__panel.open {
-    font-size: 2rem;
+    font-size: 3rem;
     flex: 5; }
     #home-art-panels .home-art-panels__panel.open p:nth-child(2) {
-      font-size: 4.5rem;
-      color: #FF555C; }
+      font-size: 4.6rem;
+      color: #ff474e; }
 
 .home-best-sellers-holder {
   display: grid;
@@ -633,7 +635,7 @@ nav.stroke ul li a:hover:after {
   justify-content: center; }
   .footer__subscription {
     width: 100%;
-    background-color: #FF555C;
+    background-color: #ff474e;
     height: auto;
     display: flex;
     align-items: center;
@@ -675,12 +677,29 @@ nav.stroke ul li a:hover:after {
       .footer__info__element h6 {
         text-transform: none;
         text-decoration: underline;
-        color: #FF555C;
+        color: #ff474e;
         letter-spacing: -0.05rem; }
       .footer__info__element li {
         padding: 0 0.5rem 0;
         color: #696969;
-        line-height: 2rem; }
+        line-height: 2rem;
+        cursor: pointer;
+        transition: all 0.4s ease;
+        overflow: hidden; }
+        .footer__info__element li::before {
+          content: "\f105";
+          font-family: 'FontAwesome';
+          position: relative;
+          left: -.25rem;
+          transition: all 0.4s ease;
+          color: #236ED4;
+          display: none; }
+        .footer__info__element li:hover, .footer__info__element li:focus {
+          color: #236ED4;
+          padding-left: .5rem;
+          font-weight: 300; }
+          .footer__info__element li:hover:before, .footer__info__element li:focus:before {
+            display: inline; }
     .footer__info__payments {
       padding: 3rem 2rem 1rem;
       display: flex;
@@ -811,7 +830,7 @@ nav.stroke ul li a:hover:after {
         display: none; }
   .about-core__footer {
     height: 11.6rem;
-    background-color: #FF555C;
+    background-color: #ff474e;
     display: flex;
     justify-content: center;
     align-items: center; }
@@ -846,7 +865,7 @@ nav.stroke ul li a:hover:after {
 .about-core__agencies__agency:hover > .about-core__agencies__agency__overlay2 {
   display: grid;
   width: 100%;
-  background-color: #FF555C;
+  background-color: #ff474e;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -872,7 +891,7 @@ nav.stroke ul li a:hover:after {
       flex-direction: column; }
     .about-videos__video iframe {
       border-radius: .8rem;
-      background-color: #FF555C; }
+      background-color: #ff474e; }
   .about-videos__bg-without-frame {
     font-family: 'Streamster';
     font-size: 10.6rem;

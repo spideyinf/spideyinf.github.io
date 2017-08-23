@@ -1,7 +1,7 @@
 @import 'https://fonts.googleapis.com/css?family=Oswald:200,300,400,500&subset=vietnamese';
 
 //Variables
-$red: #FF555C;
+$red: #ff474e;
 $blue: #236ED4;
 $darkblue: #003781;
 $black: #333;
@@ -428,16 +428,18 @@ nav.stroke ul li a:hover:after {
 }
 
 #home-art-panels {
-	margin: 3rem 0;
-	padding: 3rem 2rem;
+	padding-bottom: 3rem;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
 	background-color: $lightgray;
 
-	h2 {
-		margin-bottom: 2rem;
+	h3 {
+		padding: 3rem;
+		margin-bottom: 3rem;
+		width: 100%;
+		background-color: white;
 	}
 
 	.home-art-panels {
@@ -477,7 +479,7 @@ nav.stroke ul li a:hover:after {
 
 			p:nth-child(2){
 				font-family: 'Deadstock';
-				font-size: 3rem;
+				font-size: 3.5rem;
 				flex: 2;
 			}
 
@@ -508,11 +510,11 @@ nav.stroke ul li a:hover:after {
 
 
 	.home-art-panels__panel.open {
-	  font-size: 2rem;
+	  font-size: 3rem;
 	  flex: 5;
 
 	  p:nth-child(2){
-	  	font-size: 4.5rem;
+	  	font-size: 4.6rem;
 	  	color: $red;
 	  }
 	}
@@ -696,6 +698,29 @@ nav.stroke ul li a:hover:after {
 				padding: 0 0.5rem 0;
 				color: $darkgray;
 				line-height: 2rem;
+				cursor: pointer;
+				transition: all 0.4s ease;
+				overflow: hidden;
+
+				&::before {
+					content: "\f105";
+					font-family: 'FontAwesome';
+					position: relative;
+					left: -.25rem;
+					transition: all 0.4s ease;
+					color: $blue;
+					display: none;
+				}
+
+				&:hover, &:focus {
+					color: $blue;
+					padding-left: .5rem;
+					font-weight: 300;
+
+					&:before {
+						display: inline;
+					}
+				}
 			}	
 		}
 
