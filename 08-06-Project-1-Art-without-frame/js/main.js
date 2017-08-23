@@ -1,24 +1,27 @@
 ﻿//Navbar control
 
 $(document).ready(function(){       
-                var scroll_start = 0;
-                var startchange = $('#startchange');
-                var offset = startchange.offset();
-                    if (startchange.length){
-                $(document).scroll(function() { 
-                    scroll_start = $(this).scrollTop();
-                    if(scroll_start > offset.top) {
-                          $(".navbar-default").css('background-color', 'rgba(105, 105, 105, 0.9)');
-                          // $('.logo-brand').attr('src', 'images/logo/logo2.png');
-                          // $('.nav-link, .nav-link__icon, .dropdown-toggle, .dropdown-toggle__icon, .caret').css('color', 'gray');
-                       } else {
-                          $('.navbar-default').css('background-color', 'transparent');
-                          // $('.logo-brand').attr('src', 'images/logo/logo.png');
-                          // $('.nav-link, .nav-link__icon, .dropdown-toggle, .dropdown-toggle__icon, .caret').css('color', 'white');
-                       }
-                   });
-                    }
-                });
+  var scroll_start = 0;
+  var startchange = $('#startchange');
+  var offset = startchange.offset();
+
+  if ($(window).width() > 768) {
+    if (startchange.length){
+      $(document).scroll(function() { 
+        scroll_start = $(this).scrollTop();
+          if(scroll_start > offset.top) {
+            $(".navbar-default").css('background-color', 'rgba(15, 15, 15, 0.8)');
+              // $('.logo-brand').attr('src', 'images/logo/logo2.png');
+              // $('.nav-link, .nav-link__icon, .dropdown-toggle, .dropdown-toggle__icon, .caret').css('color', 'gray');
+            } else {
+              $('.navbar-default').css('background-color', 'transparent');
+              // $('.logo-brand').attr('src', 'images/logo/logo.png');
+              // $('.nav-link, .nav-link__icon, .dropdown-toggle, .dropdown-toggle__icon, .caret').css('color', 'white');
+            }   
+      });
+    }
+  }
+});
 
 // Home -  Flex panel galery
 
@@ -38,6 +41,77 @@ panels.forEach(panel => panel.addEventListener('transitionend', toggleActive));
 
 $('.selectpicker').selectpicker({
   });
+
+//Home Number animation JS control - By Adam at depthdev.com
+  /*
+   Inc v1.0.0
+   (c) 2014 Depth Development. http://depthdev.com
+   License: Apache 2.0
+  */
+
+  'use strict';
+   
+  function Inc(obj) {
+    var elem = obj.elem;
+    var input = (elem.nodeName.toLowerCase() === 'input') ? true: false;
+    var value = parseFloat(elem.getAttribute('data-inc-value')) || 0;
+    var duration = parseInt(elem.getAttribute('data-inc-duration')) || 0;
+    var delay = parseInt(elem.getAttribute('data-inc-delay')) || 0;
+    var decimal = ((obj.decimal > 2) ? 2 : obj.decimal) || 0;
+    var currency = obj.currency || '';
+    var speed = ((obj.speed < 30) ? 30 : obj.speed) || 30;
+    var count = 0;
+    var increment = value / (duration / speed);
+    var interval = null;
+    var regex = /\B(?=(\d{3})+(?!\d))/g;
+    var run = function() {
+      count += increment;
+      if (count < value) {
+        (input) ? elem.value = currency + (count).toFixed(decimal).toString().replace(regex, ',') : elem.innerHTML = currency + (count).toFixed(decimal).toString().replace(regex, ',');
+      } else {
+        clearInterval(interval);
+        (input) ? elem.value = currency + (value).toFixed(decimal).toString().replace(regex, ',') : elem.innerHTML = currency + (value).toFixed(decimal).toString().replace(regex, ',');
+      }
+    };
+    setTimeout(function() {
+      interval = setInterval(run.bind(this), speed);
+    }.bind(this), delay);
+    this.reset = function() {
+      clearInterval(interval);
+      value = parseFloat(elem.getAttribute('data-inc-value')) || 0;
+      duration = parseInt(elem.getAttribute('data-inc-duration')) || 0;
+      increment = value / (duration / speed);
+      delay = parseInt(elem.getAttribute('data-inc-delay')) || 0;
+      count = 0;
+      interval = setInterval(run, speed);
+    }.bind(this);
+  } // Inc
+
+
+  var elems = $('.home-intro__infographics__holder h1');
+  var objs = [];
+
+  for (var i = 0, l = elems.length; i < l; i++) {
+    objs.push(
+      new Inc({
+        elem: elems[i],
+        speed: 50,
+        decimal: 0,
+        currency: '>'
+      })
+    );
+  }
+  elems[0].addEventListener('click', function() {
+    objs[0].reset();
+  });
+  elems[1].addEventListener('click', function() {
+    objs[1].reset();
+  });
+  elems[2].addEventListener('click', function() {
+    objs[2].reset();
+  });
+//End of Number animation control
+
 
 //Dropdown kickoff
 
