@@ -263,12 +263,16 @@ hr {
   padding: 1rem .75rem 1.25rem; }
 
 .navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:focus, .navbar-default .navbar-nav > .active > a:hover {
-  color: white;
+  color: white !important;
   background-color: transparent; }
 
 .navbar-default .navbar-nav > li > a:focus, .navbar-default .navbar-nav > li > a:hover {
-  color: white;
+  color: white !important;
   background-color: rgba(237, 237, 237, 0.6) !important; }
+  .navbar-default .navbar-nav > li > a:focus .dropdown-toggle__icon, .navbar-default .navbar-nav > li > a:focus .nav-link__icon, .navbar-default .navbar-nav > li > a:hover .dropdown-toggle__icon, .navbar-default .navbar-nav > li > a:hover .nav-link__icon {
+    color: white !important; }
+  .navbar-default .navbar-nav > li > a:focus .caret.top, .navbar-default .navbar-nav > li > a:hover .caret.top {
+    color: white !important; }
 
 /* stroke */
 nav.stroke ul li a {
@@ -515,6 +519,39 @@ nav.stroke ul li a:hover:after {
       .home-intro__infographics__holder h1 {
         font-size: 2.75rem; }
 
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 3.5rem 0; }
+  .title__cover {
+    max-width: 1170px;
+    width: 100%;
+    padding: 0 .15rem; }
+    .title__cover h3 {
+      position: relative;
+      padding: 0 2rem; }
+      .title__cover h3:before {
+        content: '';
+        display: inline;
+        position: absolute;
+        background-color: #ff474e;
+        height: 100%;
+        width: 1rem;
+        left: 0; }
+      .title__cover h3:after {
+        content: '';
+        display: inline;
+        position: absolute;
+        background-color: #ff474e;
+        height: 100%;
+        width: 1rem;
+        right: 0; }
+    .title__cover--1 h3:before {
+      display: none; }
+    .title__cover--2 h3:after {
+      display: none; }
+
 #home-art-panels {
   padding: 3.5rem 0;
   display: flex;
@@ -608,8 +645,6 @@ nav.stroke ul li a:hover:after {
   display: flex;
   align-items: center;
   flex-direction: column; }
-  #home-airbnb-feature h4 {
-    padding: 3rem; }
   #home-airbnb-feature p {
     text-align: center;
     font-weight: 400;
@@ -620,7 +655,7 @@ nav.stroke ul li a:hover:after {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 2rem; }
+    padding: 0 2rem; }
     #home-airbnb-feature .input-group input {
       height: 2.35rem;
       width: 100%;
@@ -637,6 +672,7 @@ nav.stroke ul li a:hover:after {
           font-size: 1.5rem; }
 
 .home-airbnb-holder {
+  margin-top: 3.5rem;
   background-size: cover;
   background-position: center;
   display: flex;

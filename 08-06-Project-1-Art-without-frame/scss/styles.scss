@@ -137,13 +137,21 @@ hr {
 }
 .navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover {
 
-	color: white;
+	color: white !important;
 	background-color: transparent;
 }
 
 .navbar-default .navbar-nav>li>a:focus, .navbar-default .navbar-nav>li>a:hover {
-	color: white;
+	color: white !important;
 	background-color: rgba(237, 237, 237, 0.6) !important;
+
+	.dropdown-toggle__icon, .nav-link__icon {
+		color: white !important;
+	}
+
+	.caret.top {
+		color: white !important;
+	}
 }
 /* stroke */
 nav.stroke ul li a {
@@ -488,6 +496,59 @@ nav.stroke ul li a:hover:after {
 	}
 }
 
+.title {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 3.5rem 0;
+	
+	&__cover {
+		max-width: 1170px;
+		width: 100%;
+		padding: 0 .15rem;
+
+		h3 {
+			position: relative;
+			padding: 0 2rem;
+
+			&:before {
+				content: '';
+				display: inline;
+				position: absolute;
+				background-color: $red;
+				height: 100%;
+				width: 1rem;
+				left: 0;
+			}
+
+			&:after {
+				content: '';
+				display: inline;
+				position: absolute;
+				background-color: $red;
+				height: 100%;
+				width: 1rem;
+				right: 0;
+			}
+		}
+		
+		&--1 {
+			h3:before {
+				display: none;
+			}
+		}
+
+		&--2 {
+			h3:after {
+				display: none;
+			}
+		}
+	}
+	
+}
+
+
+
 #home-art-panels {
 	padding: 3.5rem 0;
 	display: flex;
@@ -604,10 +665,6 @@ nav.stroke ul li a:hover:after {
 	display: flex;
 	align-items: center;
 	flex-direction: column;
-	
-	h4 {
-		padding: 3rem;
-	}
 
 	p {
 		text-align: center;
@@ -621,7 +678,7 @@ nav.stroke ul li a:hover:after {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		margin: 2rem;
+		padding: 0 2rem;
 
 		input {
 			height: 2.35rem;
@@ -649,6 +706,7 @@ nav.stroke ul li a:hover:after {
 }
 
 .home-airbnb-holder {
+	margin-top: 3.5rem;
 	background-size: cover;
 	background-position: center;
 	display: flex;
