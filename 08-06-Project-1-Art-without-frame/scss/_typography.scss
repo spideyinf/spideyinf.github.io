@@ -3,19 +3,23 @@
 * {
 	font-family: $Oswald;
 	color: $black;
+	-webkit-font-smoothing: antialiased;
 }
 html {
 	font-size: 16px;
+	height: 100%;
+	margin:0;
+	padding:0;
 }
 
 body {
 	font-family: $Oswald;
-	line-height: 1.4;
+	line-height: 1.5;
 }
 
 h1, h2, h3, h4, h5, h6 {
 	text-transform: uppercase;
-	font-weight: 400;
+	font-weight: 500;
 }
 
 h1 {
@@ -27,7 +31,7 @@ h2 {
 }
 
 h3 {
-	font-size: 1.875rem;
+	font-size: 1.8rem;
 }
 
 h4 {
@@ -48,11 +52,12 @@ p {
 }
 
 li, span, select {
-	font-weight: 200;
+	font-weight: 300;
+	font-size: 1rem;
 }
 
 span {
-	font-size: 0.85rem;
+	font-size: 1rem;
 }
 
 a {
@@ -79,4 +84,8 @@ a {
 
 .center {
 	text-align: center;
+}
+
+.right {
+	text-align: right;
 }

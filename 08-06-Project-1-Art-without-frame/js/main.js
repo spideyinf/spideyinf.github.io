@@ -11,12 +11,10 @@ $(document).ready(function(){
         scroll_start = $(this).scrollTop();
           if(scroll_start > offset.top) {
             $(".navbar-default").css('background-color', 'rgba(15, 15, 15, 0.8)');
-              // $('.logo-brand').attr('src', 'images/logo/logo2.png');
-              // $('.nav-link, .nav-link__icon, .dropdown-toggle, .dropdown-toggle__icon, .caret').css('color', 'gray');
+              $('.nav-link, .nav-link__icon, .dropdown-toggle, .dropdown-toggle__icon, .caret').css('color', 'white');
             } else {
               $('.navbar-default').css('background-color', 'transparent');
-              // $('.logo-brand').attr('src', 'images/logo/logo.png');
-              // $('.nav-link, .nav-link__icon, .dropdown-toggle, .dropdown-toggle__icon, .caret').css('color', 'white');
+              $('.nav-link, .nav-link__icon, .dropdown-toggle, .dropdown-toggle__icon, .caret').css('color', '#BDBDBD');
             }   
       });
     }
@@ -95,21 +93,24 @@ $('.selectpicker').selectpicker({
     objs.push(
       new Inc({
         elem: elems[i],
-        speed: 50,
+        speed: 60,
         decimal: 0,
         currency: '>'
       })
     );
   }
-  elems[0].addEventListener('click', function() {
+  if (elems.length > 0) {
+    elems[0].addEventListener('click', function() {
     objs[0].reset();
-  });
-  elems[1].addEventListener('click', function() {
-    objs[1].reset();
-  });
-  elems[2].addEventListener('click', function() {
-    objs[2].reset();
-  });
+    });
+    elems[1].addEventListener('click', function() {
+      objs[1].reset();
+    });
+    elems[2].addEventListener('click', function() {
+      objs[2].reset();
+    });
+  }
+  
 //End of Number animation control
 
 
@@ -239,7 +240,7 @@ var nextPenSlugs = [
 function getPenPath() {
   var slug = nextPenSlugs[ this.loadCount ];
   if ( slug ) {
-    return 'http://localhost:3012/' + slug;
+    return 'https://github.com/spideyinf/spideyinf.github.io/tree/master/08-06-Project-1-Art-without-frame/images/htm/' + slug;
   }
 }
 
