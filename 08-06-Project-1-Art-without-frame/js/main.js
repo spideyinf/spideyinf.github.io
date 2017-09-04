@@ -10,10 +10,10 @@ $(document).ready(function(){
       $(document).scroll(function() { 
         scroll_start = $(this).scrollTop();
           if(scroll_start > offset.top) {
-            $(".navbar-default").css('background-color', 'rgba(15, 15, 15, 0.8)');
+            $(".navbar-moving").css('background-color', 'rgba(15, 15, 15, 0.8)');
               $('.nav-link, .nav-link__icon, .dropdown-toggle, .dropdown-toggle__icon, .caret.top').css('color', 'white');
             } else {
-              $('.navbar-default').css('background-color', 'transparent');
+              $('.navbar-moving').css('background-color', 'transparent');
               $('.nav-link, .nav-link__icon, .dropdown-toggle, .dropdown-toggle__icon, .caret.top').css('color', '#BDBDBD');
             }   
       });

@@ -16,10 +16,68 @@
 </head>
 <body >
 
-<ol class="breadcrumb">
-  <li><a href="home.html">Trang chủ</a></li>
-  <li class="active">Sản phẩm</li>
-</ol>
+<!-- Navbar -->	
+<!-- Navbar and Carousel + Parallax effects thanks to @taylorgrendel -->
+<nav class="navbar navbar-default navbar-fixed" role="navigation">
+ <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="home.html"><img class="logo-brand" style="width: 180px; height: auto; margin-top: -.6rem;" src="images/logo/logo.png" alt=""></a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-right">
+        <li class="nav-item">
+        	<a class="nav-link" href="home.html">Trang chủ <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+        	<a class="nav-link" href="about.html">Về chúng tôi</a>
+        </li>
+
+        <li class="dropdown active">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sản phẩm <span class="caret" style="color: white;"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Mở rộng <span class="caret" style="color: white;"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Đối tác</a></li>
+            <li><a href="#">Họa sĩ của Art</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Chương trình khuyến mãi</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+          	<i class="dropdown-toggle__icon fa fa-user-circle-o" aria-hidden="true"></i>
+          </a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Đăng nhập</a></li>
+            <li><a href="#">Đăng ký</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+        	<a class="nav-link" href=""><i class="nav-link__icon fa fa-shopping-cart" aria-hidden="true"></i></a>
+        </li>
+
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+<!-- End of Navbar -->
 
 <!-- Products  -->
 <div class="content-block-one">
@@ -134,7 +192,7 @@
 					    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/orange-tree.jpg" alt="orange tree" />
 					  </div>
 					  <div class="grid__item grid__item--height3">
-					  	<img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/look-out.jpg" alt="look out" />
+					  	<!-- <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/look-out.jpg" alt="look out" /> -->
 					  	<div class="products__main__products__info">
 					  		<div class="part-gray">
 					  			<div class="product-detail__info__options__tags">
@@ -160,7 +218,7 @@
 					  <div class="grid__item grid__item--height1"></div>
 					  <div class="grid__item grid__item--height2"></div>
 					  <div class="grid__item">
-					    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/look-out.jpg" alt="look out" />
+					    <!-- <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/look-out.jpg" alt="look out" /> -->
 					  </div>
 
 					  <div class="grid__item grid__item--height1"></div>
@@ -170,7 +228,7 @@
 					  <div class="grid__item grid__item--height1"></div>
 					  <div class="grid__item grid__item--height1"></div>
 					  <div class="grid__item grid__item--width2">
-					    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/raspberries.jpg" alt="rasberries" />
+					    <!-- <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/raspberries.jpg" alt="rasberries" /> -->
 					  </div>
 					  <div class="grid__item grid__item--height2"></div>
 					  <div class="grid__item grid__item--height2"></div>
@@ -194,6 +252,92 @@
 	</div><!-- products -->
 </section>
 
+<!-- Footer -->
+	<section class="footer">
+		<div class="footer__subscription">
+			<div class="footer__subscription__content">
+				<i class="fa fa-paper-plane" aria-hidden="true"></i>
+				<div>
+					<h6>Nhận thông tin từ AWF</h6>
+					<p>Chăm sóc khách hàng (+84) 1649 606 906 (ex: 01-05)</p>
+				</div>
+				<input type="email" class="form-control" name="Email" id="email" placeholder="phuchoang.inf@gmail.com"/>
+				<button class="btn btn-info">Đăng ký</button>
+			</div>
+		</div>
+		<div class="footer__info">
+			<div class="footer__info__element">
+				<h6>Art without frame</h6>
+				<ul>
+					<li>Trang chủ</li>
+					<li>Về chúng tôi</li>
+					<li>Liên hệ</li>
+				</ul>
+			</div>
+			<div class="footer__info__element">
+				<h6>Khách hàng</h6>
+				<ul>
+					<li>Sản phẩm</li>
+					<li>Điều khoản & dịch vụ</li>
+					<li>Chính sách đổi trả</li>
+				</ul>
+			</div>
+			<div class="footer__info__element">
+				<h6>Họa sĩ của AWF</h6>
+				<ul>
+					<li>Giới thiệu</li>
+					<li>Portfolios</li>
+					<li>Hoạt động</li>
+				</ul>
+			</div>
+			<div class="footer__info__element">
+				<h6>Mở rộng</h6>
+				<ul>
+					<li>Tin tức</li>
+					<li>Liên kết</li>
+					<li>Đối tác</li>
+				</ul>
+			</div>
+
+			<div class="footer__info__payments">
+				<select name="language" class="selectpicker" data-width="100%">
+				  <option>Tiếng Việt</option>
+				  <option>English</option>
+				  <option>French</option>
+				</select>
+				<select name="currency" class="selectpicker" data-width="100%">
+					<option>VND</option>
+					<option>USD</option>
+					<option>EURO</option>
+				</select>
+
+				<div class="footer__info__payments__icons">
+					<i class="fa fa-cc-discover" aria-hidden="true"></i>
+					<i class="fa fa-cc-visa" aria-hidden="true"></i>
+					<i class="fa fa-cc-paypal" aria-hidden="true"></i>
+					<i class="fa fa-cc-jcb" aria-hidden="true"></i>
+					<i class="fa fa-cc-mastercard" aria-hidden="true"></i>
+					<i class="fa fa-cc-stripe" aria-hidden="true"></i>
+				</div>
+			</div>
+		</div>
+		<div class="footer__socials">
+			<i class="fa fa-facebook" aria-hidden="true"></i>
+			<i class="fa fa-twitter" aria-hidden="true"></i>
+			<i class="fa fa-google-plus" aria-hidden="true"></i>
+			<i class="fa fa-instagram" aria-hidden="true"></i>
+			<i class="fa fa-pinterest" aria-hidden="true"></i>
+			<i class="fa fa-deviantart" aria-hidden="true"></i>
+		</div>
+		<div class="footer__copyright">
+				<div class="wrapper">
+					<img src="images/logo/logo.png" alt="logo">
+					<span>® Artwithoutframe.com and Awf.com - by Art without frame, inc.</span>
+					<span style="flex: 1; text-align: right; padding-right: 2rem">A <a href="https://techmaster.">Techmaster.vn</a> project - All right reserved © designed by <a href="https://github.com/spideyinf">Phuchoang</a></span>
+				</div>
+		</div>
+	</section>
+<!-- End of Footer -->
 
  	<!-- bower:js -->
  	<script src="bower_components/jquery/dist/jquery.js"></script>
@@ -206,7 +350,8 @@
  	<script src="bower_components/imagesloaded/imagesloaded.js"></script>
  	<!-- endbower -->
  	<script src="dist/main.min.js"></script>
- 	<script> //For Grid Mansory and Infinite Scroll
+ 	<script> 
+ 		//For Grid Mansory and Infinite Scroll
  		//-------------------------------------//
  		// init Masonry
 
@@ -248,7 +393,8 @@
  		function getPenPath() {
  		  var slug = nextPenSlugs[ this.loadCount ];
  		  if ( slug ) {
- 		    return 'https://github.com/spideyinf/spideyinf.github.io/tree/master/08-06-Project-1-Art-without-frame/images/htm/' + slug;
+ 		    // return 'https://github.com/spideyinf/spideyinf.github.io/tree/master/08-06-Project-1-Art-without-frame/images/htm/' + slug;
+ 		    return 'images/htm/' + slug;
  		  }
  		}
 
@@ -262,6 +408,16 @@
  		  scrollThresold: 200,
  		  status: '.page-load-status'
  		});
+
+
+ 		// Get random products images into page.
+
+ 		$(function() {
+ 			$('.grid__item').each(function () {
+ 				$(this).css('background-image', 'url(' + 'images/products/product' + Math.floor(Math.random()*16) + '.jpg' + ')');
+ 			})
+ 		})
+
  	</script>
 </body>
 </html>

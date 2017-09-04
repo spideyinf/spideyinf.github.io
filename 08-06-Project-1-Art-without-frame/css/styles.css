@@ -318,6 +318,10 @@ nav.stroke ul li a:hover:after {
     .navbar-collapse .stroke ul li {
       text-align: center; } }
 
+.navbar-fixed {
+  position: fixed;
+  background-color: rgba(15, 15, 15, 0.8) !important; }
+
 .dropdown-toggle__icon, .nav-link__icon {
   font-size: 1.25rem;
   color: white; }
@@ -333,6 +337,8 @@ nav.stroke ul li a:hover:after {
   color: #696969; }
 
 .content-block-one {
+  position: relative;
+  top: 3.2rem;
   padding: .5rem;
   margin-bottom: 0px;
   color: inherit;
@@ -1617,18 +1623,20 @@ tr:last-child td:last-child {
 
 .grid__item {
   margin-bottom: 1rem;
-  float: left; }
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+  background-position: center center !important; }
 
 .grid__item--height1 {
-  height: 160px;
+  height: 220px;
   background: #EA0; }
 
 .grid__item--height2 {
-  height: 260px;
+  height: 280px;
   background: #C25; }
 
 .grid__item--height3 {
-  height: 320px;
+  height: 360px;
   background: #19F; }
 
 .grid__item--width2 {
@@ -1688,8 +1696,12 @@ tr:last-child td:last-child {
         margin: 1rem 0;
         padding: .5rem .5rem;
         cursor: pointer;
-        z-index: 1;
-        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15); }
+        z-index: 1; }
+        .products__main__navbar__art-of-the-month h5 {
+          font-weight: 400; }
+          .products__main__navbar__art-of-the-month h5:hover, .products__main__navbar__art-of-the-month h5:focus {
+            font-weight: 500 !important;
+            text-shadow: 2px 2px rgba(0, 0, 0, 0.35); }
       .products__main__navbar--title {
         background-color: #236ED4;
         color: #f7f7f7;
@@ -1697,76 +1709,81 @@ tr:last-child td:last-child {
         padding: .25rem .5rem;
         cursor: pointer;
         font-weight: 400; }
+        .products__main__navbar--title:hover, .products__main__navbar--title:focus > h5 {
+          font-weight: 500;
+          text-shadow: 2px 2px rgba(0, 0, 0, 0.35); }
       .products__main__navbar .funkyradio {
         padding: .5rem .5rem 0 1.25rem; }
-    .products__main__products__info {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100%;
-      position: relative; }
-      .products__main__products__info .part-gray {
-        height: 83%;
-        flex: 3;
-        background-color: rgba(32, 32, 32, 0.5);
-        align-self: flex-start;
-        padding: 3% 6%;
+    .products__main__products {
+      margin-bottom: 3rem; }
+      .products__main__products__info {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        position: absolute;
-        top: -1rem;
-        left: 0;
-        opacity: 0;
-        transition: all .5s; }
-        .products__main__products__info .part-gray .summary {
+        height: 100%;
+        position: relative; }
+        .products__main__products__info .part-gray {
+          height: 83%;
           flex: 3;
+          background-color: rgba(32, 32, 32, 0.5);
+          align-self: flex-start;
+          padding: 3% 6%;
           display: flex;
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          opacity: .75; }
-          .products__main__products__info .part-gray .summary p {
-            color: #EDEDED;
-            overflow: hidden; }
-        .products__main__products__info .part-gray .price {
-          text-shadow: 0 0 2px rgba(0, 0, 0, 0.5); }
-        .products__main__products__info .part-gray .icon {
+          position: absolute;
+          top: -1rem;
+          left: 0;
+          opacity: 0;
+          transition: all .5s; }
+          .products__main__products__info .part-gray .summary {
+            flex: 3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: .75; }
+            .products__main__products__info .part-gray .summary p {
+              color: #EDEDED;
+              overflow: hidden; }
+          .products__main__products__info .part-gray .price {
+            text-shadow: 0 0 2px rgba(0, 0, 0, 0.5); }
+          .products__main__products__info .part-gray .icon {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 48%;
+            cursor: pointer; }
+            .products__main__products__info .part-gray .icon i {
+              color: #EDEDED;
+              transition: linear .2s; }
+              .products__main__products__info .part-gray .icon i:hover {
+                font-size: 1.5rem;
+                color: white; }
+        .products__main__products__info .part-red {
+          width: 100%;
+          background-color: #f65454;
           flex: 1;
           display: flex;
+          flex-direction: column;
           align-items: center;
-          justify-content: space-between;
-          width: 48%;
-          cursor: pointer; }
-          .products__main__products__info .part-gray .icon i {
-            color: #EDEDED;
-            transition: linear .2s; }
-            .products__main__products__info .part-gray .icon i:hover {
-              font-size: 1.5rem;
-              color: white; }
-      .products__main__products__info .part-red {
-        width: 100%;
-        background-color: #f65454;
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 3% 6%;
-        z-index: 5;
-        bottom: -1rem;
-        left: 0;
-        position: absolute;
-        opacity: 0;
-        transition: all .25s; }
-        .products__main__products__info .part-red p {
-          text-transform: uppercase;
-          font-size: .85rem; }
-      .products__main__products__info:hover > .part-gray {
-        top: 0;
-        opacity: 1; }
-      .products__main__products__info:hover > .part-red {
-        bottom: 0;
-        opacity: 1; }
+          justify-content: center;
+          padding: 3% 6%;
+          z-index: 5;
+          bottom: -1rem;
+          left: 0;
+          position: absolute;
+          opacity: 0;
+          transition: all .25s; }
+          .products__main__products__info .part-red p {
+            text-transform: uppercase;
+            font-size: .85rem; }
+        .products__main__products__info:hover > .part-gray {
+          top: 0;
+          opacity: 1; }
+        .products__main__products__info:hover > .part-red {
+          bottom: 0;
+          opacity: 1; }
