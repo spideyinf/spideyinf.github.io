@@ -17,67 +17,120 @@
 <body >
 
 <!-- Navbar -->	
-<!-- Navbar and Carousel + Parallax effects thanks to @taylorgrendel -->
-<nav class="navbar navbar-default navbar-fixed" role="navigation">
- <div class="container">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="home.html"><img class="logo-brand" style="width: 180px; height: auto; margin-top: -.6rem;" src="images/logo/logo.png" alt=""></a>
+	<nav class="navbar navbar-default navbar-fixed" role="navigation">
+	 <div class="container">
+	    <!-- Brand and toggle get grouped for better mobile display -->
+	    <div class="navbar-header">
+	      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+	        <span class="sr-only">Toggle navigation</span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	      </button>
+	      <a class="navbar-brand" href="home.html"><img class="logo-brand" src="images/logo/logo.png" alt=""></a>
+	    </div>
+
+	    <!-- Collect the nav links, forms, and other content for toggling -->
+	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	      <nav class="stroke">
+	      	<ul class="nav navbar-nav navbar-right">
+	      	  <li class="nav-item">
+	      	  	<a class="nav-link" href="home.html">Trang chủ <span class="sr-only">(current)</span></a>
+	      	  </li>
+	      	  <li class="nav-item">
+	      	  	<a class="nav-link" href="about.html">Về chúng tôi</a>
+	      	  </li>
+	      	
+	      	  <li class="dropdown active">
+	      	    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sản phẩm <span class="caret top"></span></a>
+	      	    <ul class="dropdown-menu" role="menu">
+	      	      <li><a href="products.html#">Sơn dầu</a></li>
+	      	      <li><a href="products.html#">Màu nước</a></li>
+	      	      <li><a href="products.html#">Sắp đặt</a></li>
+	      	      <li><a href="products.html#">Digital Art</a></li>
+	      	      <li><a href="products.html#">Calligraphy</a></li>
+	      	      <li class="divider"></li>
+	      	      <li><a href="products.html#">Photography (BETA)</a></li>
+	      	      <li><a href="products.html#">Mixed Media (BETA)</a></li>
+	      	    </ul>
+	      	  </li>
+	      	  <li class="dropdown">
+	      	    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Mở rộng <span class="caret top"></span></a>
+	      	    <ul class="dropdown-menu" role="menu">
+	      	      <li><a href="#">Dành cho đối tác</a></li>
+  	      	      <li><a href="#">Họa sĩ của AWF</a></li>
+	      	      <li class="divider"></li>
+	      	      <li><a href="#">Chương trình khuyến mãi</a></li>
+	      	    </ul>
+	      	  </li>
+	      	  <li class="dropdown" id="account">
+	      	    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+	      	    	<i class="dropdown-toggle__icon fa fa-user-circle-o" aria-hidden="true"></i>
+	      	    </a>
+	      	    <ul class="dropdown-menu" role="menu">
+	      	      <li><a id="login" href="" data-toggle="modal" data-target="#myModal">Đăng nhập</a></li>
+	      	      <li><a id="register" href="">Đăng ký</a></li>
+	      	    </ul>
+	      	  </li>
+	      	  <li class="nav-item">
+	      	  	<a class="nav-link" href=""><i class="nav-link__icon fa fa-shopping-cart" aria-hidden="true"></i> <sup><span class="badge">0</span></sup></a>
+	      	  </li>
+	      	
+	      	</ul>
+	      </nav>
+	    </div><!-- /.navbar-collapse -->
+	  </div><!-- /.container-fluid -->
+	</nav>
+
+<!-- Modals -->
+<!-- Modal Login-->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	          <ul class="nav nav-pills nav-justified">
+	            <li class="active"><a data-toggle="tab" href="#modal-login">ĐĂNG NHẬP</a></li>
+	            <li><a data-toggle="tab" href="#modal-register">ĐĂNG KÝ TÀI KHOẢN</a></li>
+	          </ul>
+	      </div>
+	      <div class="modal-body">
+	        <div class="tab-content">
+	          <div id="modal-login" class="tab-pane fade in active">
+	              <form>
+	                <label>Email: </label><br/><input class="form-control" type="email" name="username" placeholder="phuchoang.inf@gmail.com" /><br />
+	                <label>Mật khẩu: </label><br/><input class="form-control" type="password" name="password" placeholder="**********" /><br />
+	                <button class="btn btn-info">Đăng nhập</button>
+	              </form>
+	          </div>
+	          <div id="modal-register" class="tab-pane fade">
+	            <form>
+	              <label>Địa chỉ Email: </label><br /><input class="form-control" type="email" name="email" placeholder="Email" /><br />
+	              <label>Họ và tên: </label><br /><input class="form-control" name="name" placeholder="Họ tên" /> <br />
+	              <label>Mật khẩu: </label><br /><input class="form-control" type="password" name="password" placeholder="Mật khẩu" /><br/>
+	              <label>Xác nhận mật khẩu: </label><br /><input class="form-control" type="password" name="repassword" placeholder="Xác nhận mật khẩu" /> <br />
+	              <button class="btn btn-info">Đăng ký tài khoản</button>
+	            </form>
+	          </div>
+	        </div>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+<!--Modal Addcart-->
+<div class="modal fade" id="success" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <h4>Đã thêm thành công vào giỏ hàng!</h4>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
     </div>
+  </div>
+</div>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav navbar-right">
-        <li class="nav-item">
-        	<a class="nav-link" href="home.html">Trang chủ <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-        	<a class="nav-link" href="about.html">Về chúng tôi</a>
-        </li>
-
-        <li class="dropdown active">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sản phẩm <span class="caret" style="color: white;"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
-            <li class="divider"></li>
-            <li><a href="#">Separated link</a></li>
-          </ul>
-        </li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Mở rộng <span class="caret" style="color: white;"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="#">Đối tác</a></li>
-            <li><a href="#">Họa sĩ của Art</a></li>
-            <li class="divider"></li>
-            <li><a href="#">Chương trình khuyến mãi</a></li>
-          </ul>
-        </li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-          	<i class="dropdown-toggle__icon fa fa-user-circle-o" aria-hidden="true"></i>
-          </a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="#">Đăng nhập</a></li>
-            <li><a href="#">Đăng ký</a></li>
-          </ul>
-        </li>
-        <li class="nav-item">
-        	<a class="nav-link" href=""><i class="nav-link__icon fa fa-shopping-cart" aria-hidden="true"></i></a>
-        </li>
-
-      </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
-<!-- End of Navbar -->
+<!-- End of Modals -->
 
 <!-- Products  -->
 <div class="content-block-one">
@@ -206,12 +259,12 @@
 					  			<div class="icon">
 					  				<i data-toggle="tooltip" data-placement="top" title="Thêm vào Yêu thích" class="fa fa-heart-o" aria-hidden="true"></i>
 					  				<i data-toggle="tooltip" data-placement="top" title="Thêm vào Giỏ hàng!" class="fa fa-cart-plus" aria-hidden="true"></i>
-					  				<i data-toggle="tooltip" data-placement="top" title="Tìm hiểu thêm" class="fa fa-search" aria-hidden="true"></i>
+					  				<a href="product-detail.html"><i data-toggle="tooltip" data-placement="top" title="Tìm hiểu thêm" class="fa fa-search" aria-hidden="true"></i></a>
 					  			</div>
 					  		</div>
 					  		<div class="part-red">
-					  			<h6>the Inspiration</h6>
-					  			<p class="white">Tác giả: A Famous Artist</p>
+					  			<a href="product-detail.html"><h6>the Inspiration</h6></a>
+					  			<a href="product-detail.html"><p class="white">Tác giả: A Famous Artist</p></a>
 					  		</div>
 					  	</div>
 					  </div>

@@ -193,7 +193,7 @@ a {
 
 .form-control {
   font-weight: 300;
-  font-size: 1.25rem; }
+  font-size: 1rem; }
 
 .fa-facebook:hover {
   color: #3b5999; }
@@ -267,6 +267,12 @@ hr {
   color: white !important;
   background-color: transparent; }
 
+.dropdown-toggle__icon, .nav-link__icon {
+  color: #BDBDBD !important; }
+
+.caret.top {
+  color: #BDBDBD !important; }
+
 .navbar-default .navbar-nav > li > a:focus, .navbar-default .navbar-nav > li > a:hover {
   color: white !important;
   background-color: rgba(237, 237, 237, 0.6) !important; }
@@ -304,6 +310,9 @@ nav.stroke ul li a:hover:after {
   height: auto;
   margin-top: -.5rem;
   filter: drop-shadow(0.5rem 0.5rem 0.5rem rgba(0, 0, 0, 0.35)); }
+
+.nav-item .badge {
+  font-weight: 300; }
 
 @media screen and (max-width: 768px) {
   .navbar-header {
@@ -1726,7 +1735,7 @@ tr:last-child td:last-child {
         .products__main__products__info .part-gray {
           height: 83%;
           flex: 3;
-          background-color: rgba(32, 32, 32, 0.5);
+          background-color: rgba(32, 32, 32, 0.7);
           align-self: flex-start;
           padding: 3% 6%;
           display: flex;
@@ -1749,7 +1758,7 @@ tr:last-child td:last-child {
               color: #EDEDED;
               overflow: hidden; }
           .products__main__products__info .part-gray .price {
-            text-shadow: 0 0 2px rgba(0, 0, 0, 0.5); }
+            text-shadow: 0 2px 2px rgba(0, 0, 0, 0.5); }
           .products__main__products__info .part-gray .icon {
             flex: 1;
             display: flex;
@@ -1761,7 +1770,7 @@ tr:last-child td:last-child {
               color: #EDEDED;
               transition: linear .2s; }
               .products__main__products__info .part-gray .icon i:hover {
-                font-size: 1.5rem;
+                font-size: 1.65rem;
                 color: white; }
         .products__main__products__info .part-red {
           width: 100%;
@@ -1778,6 +1787,9 @@ tr:last-child td:last-child {
           position: absolute;
           opacity: 0;
           transition: all .25s; }
+          .products__main__products__info .part-red a {
+            text-decoration: none;
+            color: inherit; }
           .products__main__products__info .part-red p {
             text-transform: uppercase;
             font-size: .85rem; }
@@ -1787,3 +1799,26 @@ tr:last-child td:last-child {
         .products__main__products__info:hover > .part-red {
           bottom: 0;
           opacity: 1; }
+
+.nav-pills > li.active > a, .nav-pills > li.active > a:focus, .nav-pills > li.active > a:hover {
+  background-color: #ff474e;
+  font-weight: 300; }
+
+.modal-body form {
+  padding-bottom: 1.25rem; }
+  .modal-body form label {
+    padding: .25rem 0; }
+
+.modal-body #modal-login button {
+  position: absolute;
+  right: 39%;
+  bottom: -1.5rem; }
+
+.modal-body #modal-register button {
+  position: absolute;
+  right: 33%;
+  bottom: -1.5rem; }
+
+#account img {
+  width: 1.8rem;
+  height: 1.8rem; }

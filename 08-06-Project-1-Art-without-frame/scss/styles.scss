@@ -58,7 +58,7 @@ $Oswald: 'Oswald', sans-serif;
 //Form-control
 .form-control {
 	font-weight: 300;
-	font-size: 1.25rem;
+	font-size: 1rem;
 	// padding: .5rem 1rem;
 	// height: auto;
 }
@@ -143,6 +143,14 @@ hr {
 	background-color: transparent;
 }
 
+.dropdown-toggle__icon, .nav-link__icon {
+	color: $gray !important;
+}
+
+.caret.top {
+	color: $gray !important;
+}
+
 .navbar-default .navbar-nav>li>a:focus, .navbar-default .navbar-nav>li>a:hover {
 	color: white !important;
 	background-color: rgba(237, 237, 237, 0.6) !important;
@@ -188,6 +196,13 @@ nav.stroke ul li a:hover:after {
 	height: auto;
 	margin-top: -.5rem; 
 	filter: drop-shadow(.5rem .5rem .5rem rgba(0, 0, 0, .35));
+}
+
+.nav-item {
+
+	.badge {
+		font-weight: 300;
+	}
 }
 
 //Navbar Header (Max-width: 768px Navbar)
@@ -2193,7 +2208,7 @@ tr:last-child td:last-child {
 				.part-gray {
 					height: 83%;
 					flex: 3;
-					background-color: rgba(32, 32, 32, 0.5);;
+					background-color: rgba(32, 32, 32, 0.7);;
 					align-self: flex-start;
 					padding: 3% 6%;
 					display: flex;
@@ -2216,7 +2231,7 @@ tr:last-child td:last-child {
 					}
 
 					.price {
-						text-shadow: 0 0 2px rgba(0, 0, 0, .5);
+						text-shadow: 0 2px 2px rgba(0, 0, 0, .5);
 					}
 
 					.icon {
@@ -2232,7 +2247,7 @@ tr:last-child td:last-child {
 							transition: linear .2s;
 
 							&:hover {
-								font-size: 1.5rem;
+								font-size: 1.65rem;
 								color: white;
 							}
 						}
@@ -2255,6 +2270,11 @@ tr:last-child td:last-child {
 					align-items: center;
 					justify-content: center;
 					padding: 3% 6%;
+
+					a {
+						text-decoration: none;
+						color: inherit;
+					}
 
 					p {
 						text-transform: uppercase;
@@ -2282,3 +2302,53 @@ tr:last-child td:last-child {
 		}
 	}
 }
+
+//Modal Navpills
+
+.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
+	background-color: $red;
+	font-weight: 300;
+}
+
+.modal-body {
+
+	form {
+		padding-bottom: 1.25rem;
+
+		label {
+			padding: .25rem 0;
+		}
+	}
+
+	#modal-login {
+
+		button {
+			position: absolute;
+			right: 39%;
+			bottom: -1.5rem;
+		}
+	}
+
+	#modal-register {
+
+		button {
+			position: absolute;
+			right: 33%;
+			bottom: -1.5rem;
+		}
+	}
+}
+
+//User avatar
+
+#account {
+	img {
+		width: 1.8rem;
+		height: 1.8rem;
+	}
+}
+
+
+
+
+

@@ -10,7 +10,7 @@ $(document).ready(function(){
       $(document).scroll(function() { 
         scroll_start = $(this).scrollTop();
           if(scroll_start > offset.top) {
-            $(".navbar-moving").css('background-color', 'rgba(15, 15, 15, 0.8)');
+            $('.navbar-moving').css('background-color', 'rgba(15, 15, 15, 0.8)');
               $('.nav-link, .nav-link__icon, .dropdown-toggle, .dropdown-toggle__icon, .caret.top').css('color', 'white');
             } else {
               $('.navbar-moving').css('background-color', 'transparent');
@@ -20,6 +20,35 @@ $(document).ready(function(){
     }
   }
 });
+
+//Modals control
+    
+    // $('#login').click(function() {
+    //   $('#myModal').modal('toggle');
+    // });
+
+    $('#myModal').modal('toggle');
+
+    $("#modal-login button").click(function(e){
+        e.preventDefault();
+        $("#account").html(`<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <img src='images/agencies/user-avatar.png' />
+              </a>
+              <ul class='dropdown-menu' role='menu'>
+                <li><a href='user.html'>Thông tin</a></li>
+                <li><a onclick='logout()'>Đăng xuất</a></li>
+              </ul>`);
+        $("#myModal").modal("toggle");
+    });
+    $("#modal-register button").click(function (e) {
+        e.preventDefault();
+        $("#myModal").modal("toggle");
+    })
+    function logout(){
+        $("#account").removeClass("dropdown");
+        $("#account").html("<a data-toggle='modal' data-target='#myModal'>Tài khoản</a>");
+    }
+
 
 // Home -  Flex panel galery
 
