@@ -224,7 +224,7 @@ nav.stroke ul li a:hover:after {
 	}
 
 	.navbar-collapse {
-		background-color: $navbar-color;
+		background-color: $navbar-color !important;
 		.stroke {
 			ul {
 
@@ -366,8 +366,7 @@ nav.stroke ul li a:hover:after {
   color: inherit;
   background: url('../images/covers/Dancing-fire-Sztukowski.jpg') no-repeat center center fixed; 
   background-size: cover;
-  padding-top: 8rem;
-  padding-bottom: 6rem;
+  padding: 8rem 1rem 5rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -416,11 +415,11 @@ nav.stroke ul li a:hover:after {
   color: inherit;
   background: url('../images/covers/Simple color digital.jpg') no-repeat center center fixed; 
   background-size: cover;
-  padding-top: 8rem;
-  padding-bottom: 5rem;
+  padding: 8rem 1rem 5rem;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
 
 
   .text-wrap {
@@ -1179,7 +1178,7 @@ nav.stroke ul li a:hover:after {
 			grid-template-columns: repeat(4, 1fr);
 		}
 
-		@media (max-width: 425px) {
+		@media (max-width: 670px) {
 			grid-template-columns: repeat(2, 1fr);
 		}
 
@@ -1336,6 +1335,12 @@ nav.stroke ul li a:hover:after {
 					margin: .5rem 0 .5rem .5rem;
 				}
 			}
+
+			@media (max-width: 340px) {
+				span {
+					font-size: .9rem;
+				}
+			}
 		}
 	}
 }
@@ -1400,6 +1405,7 @@ nav.stroke ul li a:hover:after {
 			display: flex;
 			align-items: center;
 			justify-content: space-around;
+			flex-wrap: wrap;
 
 			img {
 				filter: grayscale(100%);
@@ -1528,6 +1534,8 @@ nav.stroke ul li a:hover:after {
 		align-items: center;
 		h4 {
 			color: white;
+			text-align: center;
+			padding: 0 1rem;
 		}
 	}
 	button {
@@ -1582,8 +1590,10 @@ nav.stroke ul li a:hover:after {
 		display: grid;
 		grid-template-columns: 3fr 4fr;
 		grid-gap: .5rem;
-
 		
+		@media (max-width: 690px) {
+			grid-template-columns: 1fr;
+		}
 
 		&__title {
 			display: flex;
@@ -1605,6 +1615,10 @@ nav.stroke ul li a:hover:after {
 		display: grid;
 		grid-template-columns: 4fr 3fr;
 		grid-gap: .5rem;
+
+		@media (max-width: 690px) {
+			grid-template-columns: 1fr;
+		}
 
 		&__title {
 			display: flex;
@@ -1639,6 +1653,10 @@ nav.stroke ul li a:hover:after {
 	flex-direction: column;
 	align-items: center;
 
+	@media (max-width: 560px) {
+			margin: 2rem 0rem 3rem;
+	}
+
 	.title {
 		margin: 0 0 1rem;
 		width: 100%;
@@ -1657,9 +1675,20 @@ nav.stroke ul li a:hover:after {
 		margin-top: 1rem;
 		padding: 0 2rem;
 
+		@media (max-width: 560px) {
+			grid-template-columns: 1fr;
+			justify-self: center;
+			align-self: center;
+		}
+
 		&__ele {
 			display : grid;
 			grid-template-columns: 1fr 4fr;
+			grid-gap: .5rem;
+			justify-self: center;
+			align-self: center;
+			margin: .5rem 0;
+
 			div {
 
 				p {
@@ -1706,7 +1735,7 @@ nav.stroke ul li a:hover:after {
 		align-items: center;
 		justify-content: center;
 		flex-direction: column;
-		padding: 0 2rem;
+		padding: 0 1rem;
 
 		input {
 			font-size: 1.25rem;
@@ -1800,8 +1829,11 @@ nav.stroke ul li a:hover:after {
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+	width: 100%;
+	padding: 0 2rem;
 
 	&__element {
+
 		h5 {
 			text-transform: none;
 		}
@@ -1915,6 +1947,10 @@ tr:last-child td:last-child {
 		display: grid;
 		grid-template-columns: 3fr 2fr;
 		grid-gap: 1rem;
+
+		@media (max-width: 768px) {
+			grid-template-columns: 1fr;
+		}
 
 		&__illus {
 
@@ -2074,7 +2110,7 @@ tr:last-child td:last-child {
 		align-items: center;
 		justify-content: center;
 		flex-direction: column;
-		
+
 		&__wrapper {
 			max-width: 1170px;
 			width: 100%;
@@ -2092,7 +2128,7 @@ tr:last-child td:last-child {
 				grid-gap: .5rem;
 				justify-self: center;
 				align-self: center;
-
+			
 				img {
 					width: 6rem;
 					height: auto;
@@ -2101,7 +2137,16 @@ tr:last-child td:last-child {
 				&__title {
 					display: flex;
 					align-items: center;
+					justify-content: center;
 					width: 100%;
+
+					@media (max-width: 425px) {
+						flex-direction: column;
+						.lead {
+							align-self: flex-start;
+						}
+						
+					}
 
 					p:after, .title-comment:after {
 						content: "\f111";
@@ -2109,8 +2154,12 @@ tr:last-child td:last-child {
 					    display: inline-block;
 					    font-family: "FontAwesome";
 					    font-size: 5px;
-					    margin: 0 12px 0 14px;
-					    transform: translateY(-2px)
+					    margin: 0 10px 0 12px;
+					    transform: translateY(-2px);
+
+				        @media (max-width: 425px) {
+				    		content: none;
+				    	}		
 					}
 
 					.star-rate:before, .star-rate:after {
@@ -2119,7 +2168,7 @@ tr:last-child td:last-child {
 						display: inline-block;
 						font-family: "FontAwesome";
 						font-size: 5px;
-						margin: 0 12px 0 14px;
+						margin: 0 10px 0 12px;
 						transform: translateY(-2px)
 					}
 
@@ -2142,7 +2191,7 @@ tr:last-child td:last-child {
 				grid-gap: .5rem;
 				justify-self: center;
 				align-self: center;
-				
+
 				img {
 					width: 5.5rem;
 					height: auto;
@@ -2151,6 +2200,13 @@ tr:last-child td:last-child {
 				&__title {
 					display: flex;
 					align-items: center;
+
+					@media (max-width: 425px) {
+						flex-direction: column;
+						.lead {
+							align-self: flex-start;
+						}
+					}
 					
 					p:after, .title-comment:after {
 						content: "\f111";
@@ -2159,7 +2215,11 @@ tr:last-child td:last-child {
 					    font-family: "FontAwesome";
 					    font-size: 5px;
 					    margin: 0 12px 0 14px;
-					    transform: translateY(-2px)
+					    transform: translateY(-2px);
+
+					    @media (max-width: 425px) {
+							content: none;
+						}
 					}
 
 					i {
