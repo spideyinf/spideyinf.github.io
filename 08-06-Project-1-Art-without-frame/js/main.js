@@ -23,12 +23,12 @@ $(document).ready(function(){
 
 //Modals control
     
-    $('#login').click(function(e) {
-      e.preventDefault();
-      $('#myModal').modal('toggle');
-    });
+    // $('#login').click(function(e) {
+    //   e.preventDefault();
+    //   $('#myModal').modal('toggle');
+    // });
 
-    // $('#myModal').modal('toggle');
+    // $('#myModal').modal('show');
 
     $("#modal-login button").click(function(e){
         e.preventDefault();
@@ -43,7 +43,7 @@ $(document).ready(function(){
         $("#myModal").modal("toggle");
     });
     $("#modal-register button").click(function (e) {
-        // e.preventDefault();
+        e.preventDefault();
         $("#myModal").modal("toggle");
     })
     function logout(){
