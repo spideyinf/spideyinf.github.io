@@ -270,7 +270,7 @@ nav.stroke ul li a:hover:after {
   padding: .5rem;
   margin-bottom: 0px;
   color: inherit;
-  background-color: $lightgray;
+  background-color: white;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -366,8 +366,58 @@ nav.stroke ul li a:hover:after {
   color: inherit;
   background: url('../images/covers/Dancing-fire-Sztukowski.jpg') no-repeat center center fixed; 
   background-size: cover;
-  padding-top: 6rem;
+  padding-top: 8rem;
   padding-bottom: 6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+
+  .text-wrap {
+  	  display: flex;
+  	  flex-direction: column;
+	  align-items: center;
+	  justify-content: center;
+  	  max-width: 1170px;
+  	  text-shadow: 0 0 .5rem rgba(0, 0, 0, .5);
+
+	  blockquote {
+	      border-left: none;
+	      margin: 0;
+	      color: $white;
+	  }
+	  blockquote h2:before {
+	      content: "\f10d";
+	      font-family: 'Fontawesome';
+	      float: left;
+	      margin-right: 10px;
+	  }
+
+	  .page-break {
+      width: 20vw;
+      height: .15rem;
+      margin: .5rem 0;
+      background-color: #fff;
+      align-self: flex-end;
+      }	
+  	
+
+	  p {
+	  	text-transform: uppercase;
+	  	color: $white;
+	  	align-self: flex-end;
+	  }
+  }
+}
+
+.content-space-three {
+  padding: 0px;
+  margin-bottom: 1rem;
+  color: inherit;
+  background: url('../images/covers/Simple color digital.jpg') no-repeat center center fixed; 
+  background-size: cover;
+  padding-top: 8rem;
+  padding-bottom: 5rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -498,7 +548,7 @@ nav.stroke ul li a:hover:after {
 		margin: 0 2rem 0 2rem;
 		padding: 3rem 0 3rem 0;
 		display: grid;
-		grid-template-columns: 2fr repeat(5, 2fr);
+		grid-template-columns: 1fr 5fr;
 
 		&__text {
 			display: flex;
@@ -506,22 +556,27 @@ nav.stroke ul li a:hover:after {
 			flex-direction: column;
 		}
 
-		&__holder {
-			justify-self: center;
-			align-self: center;
+		&__holders {
+			display: grid;
+			grid-template-columns: repeat(5, 1fr);
 
-			> * {
-				text-align: center;
-				line-height: 1.2;
-			}
+			&__holder {
+				justify-self: center;
+				align-self: center;
 
-			.span {
-				font-size: 1.2rem;
-				line-height: .8;
-			}
+				> * {
+					text-align: center;
+					line-height: 1.2;
+				}
 
-			h1 {
-				font-size: 2.75rem;
+				.span {
+					font-size: 1.2rem;
+					line-height: .8;
+				}
+
+				h1 {
+					font-size: 2.75rem;
+				}
 			}
 		}
 	}
@@ -880,10 +935,25 @@ nav.stroke ul li a:hover:after {
 			text-align: center;
 			text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45), 0 1px 10px rgba(0, 0, 0, 0.2);
 			z-index: 10;
+
+			@media (max-width: 1024px) {
+				font-size: 3.5rem;
+				padding-bottom: 1.5rem;
+			}
+
+			@media (max-width: 425px) {
+				font-size: 2.5rem;
+				padding-bottom: 1rem;
+			}
 		}
 
 		a {
 				z-index: 10;
+
+				@media (max-width: 425px) {
+					font-size: 1.1rem;
+					padding: .5rem 1.25rem;
+				}
 			}
 
 		&--space {
@@ -901,6 +971,10 @@ nav.stroke ul li a:hover:after {
 				z-index: 10;
 				padding: 2%;
 				filter: drop-shadow(.1rem .1rem .1rem rgba(0, 0, 0, .35));
+
+				@media (max-width: 425px) {
+					max-width: 26vw;
+				}
 			}
 
 			&__logo2 {
@@ -908,6 +982,10 @@ nav.stroke ul li a:hover:after {
 				z-index: 10;
 				padding: 2%;
 				filter: drop-shadow(.1rem .15rem 0.15rem rgba(0, 0, 0, .5));
+
+				@media (max-width: 425px) {
+					max-width: 28vw;
+				}
 			}
 		}
 
@@ -1026,7 +1104,7 @@ nav.stroke ul li a:hover:after {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		
+
 		&__content {
 			max-width: 1170px;
 			width: 100%;
@@ -1035,32 +1113,60 @@ nav.stroke ul li a:hover:after {
 			align-items: center;
 			justify-content: center;
 
-			i {
-				flex: 1;
-				font-size: 2.5rem;
-				color: white;
-				padding-left: 2rem;
+			@media (max-width: 425px) {
+				flex-direction: column;
 			}
-			div {
-				flex: 10;
-				> * { color: white;}
-			}
-			input {
-				flex: 8;
-				height: 2.2rem;
-				margin: .5rem;
-			}
+			
+			&__customer-support {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				width: 100%;
 
-			button {
-				flex: 2;
-				height: 2.2rem;
-				margin: .5rem 2rem .5rem .25rem;
-				padding: 0 .5rem;
-				border-radius: 5px;
-				font-size: 1.2rem;
+				i {
+					flex: 1;
+					font-size: 2.5rem;
+					color: white;
+					padding-left: 2rem;
+					padding-right: .5rem;
+				}
+
+				div {
+					flex: 10;
+					> * { color: white;}
+				}
 			}
+			
+			&__input-group {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				width: 100%;
+
+				input {
+					flex: 9;
+					height: 2.2rem;
+					margin: .5rem;
+				}
+
+				button {
+					flex: 2;
+					height: 2.2rem;
+					margin: .5rem 2rem .5rem .25rem;
+					padding: 0 .5rem;
+					border-radius: 5px;
+					font-size: 1.2rem;
+
+					@media (max-width: 425px) {
+						font-size: 1rem;
+					}
+				}
+
+				@media (max-width: 425px) {
+					padding: .5rem 2rem;
+				}	
+			}		
 		}
-
 	}
 
 	&__info {
@@ -1069,8 +1175,25 @@ nav.stroke ul li a:hover:after {
 		display: grid;
 		grid-template-columns: repeat(4, 2fr) 3fr;
 
+		@media (max-width: 768px) {
+			grid-template-columns: repeat(4, 1fr);
+		}
+
+		@media (max-width: 425px) {
+			grid-template-columns: repeat(2, 1fr);
+		}
+
 		&__element {
 			padding: 3rem 2rem 1rem;
+
+			@media (max-width: 768px) {
+				padding: 2rem 2rem .5rem;
+			}
+
+			@media (max-width: 425px) {
+				padding: 1rem 2rem .5rem;
+			}
+
 			h6 {
 				text-transform: none;
 				text-decoration: underline;
@@ -1112,6 +1235,7 @@ nav.stroke ul li a:hover:after {
 			padding: 3rem 2rem 1rem;
 			display: flex;
 			flex-direction: column;
+
 			select.selectpicker {
 				width: 100%;
 				color: $darkgray;
@@ -1141,6 +1265,16 @@ nav.stroke ul li a:hover:after {
 				justify-self: center;
 				align-self: center;
 				}
+			}
+
+			@media (max-width: 768px) {
+				grid-area: 2/2/3/4;
+				padding: 2rem 2rem 1rem;
+			}
+
+			@media (max-width: 425px) {
+				grid-area: 3/1/4/3;
+				padding: 1rem 2rem .5rem;
 			}
 		}
 	}
@@ -1190,6 +1324,17 @@ nav.stroke ul li a:hover:after {
 				width: 7rem;
 				height: auto;
 				margin-left: 1rem;
+			}
+
+			@media (max-width: 768px) {
+				flex-direction: column;
+				padding: .5rem 0;
+				justify-content: center !important;
+
+				span {
+					padding: 0 !important;
+					margin: .5rem 0 .5rem .5rem;
+				}
 			}
 		}
 	}
@@ -1314,10 +1459,12 @@ nav.stroke ul li a:hover:after {
 					justify-content: center;
 					flex-wrap: wrap;
 					padding: 1rem;
+					width: 100%;
 
 					h6 {
 						margin: 1rem;
 						color: $white;
+						text-align: center;
 					}
 
 					p {	
@@ -1329,6 +1476,11 @@ nav.stroke ul li a:hover:after {
 
 					&__links {
 						cursor: pointer;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						width: 100%;
+
 						i {
 							padding: 1rem;
 							font-size: 1.3rem;
@@ -1353,8 +1505,16 @@ nav.stroke ul li a:hover:after {
 
 					p {
 						text-transform: uppercase;
+						text-align: center;
 						color: white;
+						padding: 0 .5rem;
+
+						@media (max-width: 768px) {
+							font-size: .85rem;
+						}
 					}
+
+
 				}
 			}
 		}
@@ -1390,6 +1550,7 @@ nav.stroke ul li a:hover:after {
 	.about-value {
 		max-width: 1170px;
 		width: 100%;
+		padding: 0 2rem;
 	}
 }
 
@@ -1400,6 +1561,7 @@ nav.stroke ul li a:hover:after {
 	align-items: center;
 	justify-content: center;
 	flex-direction: column;
+	padding: 0 2rem;
 
 	&__bg-art {
 		font-family: 'DeadStock';
@@ -1412,22 +1574,45 @@ nav.stroke ul li a:hover:after {
 		left: 0;
 	}
 
-	&__video {
+	&__video1 {
 		max-width: 1170px;
-		width: 100%;
+		width: 100% !important;
+		margin-bottom: 3.5rem;
 
 		display: grid;
-		grid-template-columns: 2fr 3fr;
-		grid-gap: 1rem;
-		padding: 2rem;
+		grid-template-columns: 3fr 4fr;
+		grid-gap: .5rem;
+
+		
 
 		&__title {
 			display: flex;
 			flex-direction: column;
-			width: 45vw;
 		}
 
 		iframe {
+			max-width: 100%;
+			border-radius: .8rem;
+			background-color: $red;
+			margin: 0 0 0 auto;
+		}
+	}
+
+	&__video2 {
+		max-width: 1170px;
+		width: 100% !important;
+
+		display: grid;
+		grid-template-columns: 4fr 3fr;
+		grid-gap: .5rem;
+
+		&__title {
+			display: flex;
+			flex-direction: column;
+		}
+
+		iframe {
+			max-width: 100%;
 			border-radius: .8rem;
 			background-color: $red;
 		}
@@ -1457,6 +1642,7 @@ nav.stroke ul li a:hover:after {
 	.title {
 		margin: 0 0 1rem;
 		width: 100%;
+		padding: 0 2rem;
 	}
 
 	hr {
@@ -1469,6 +1655,7 @@ nav.stroke ul li a:hover:after {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
 		margin-top: 1rem;
+		padding: 0 2rem;
 
 		&__ele {
 			display : grid;
@@ -1478,6 +1665,10 @@ nav.stroke ul li a:hover:after {
 				p {
 					font-weight: 300;
 					font-size: 1.25rem;
+
+					@media (max-width: 768px) {
+						font-size: 1.15rem;
+					}
 				}
 			}
 	
@@ -1515,6 +1706,7 @@ nav.stroke ul li a:hover:after {
 		align-items: center;
 		justify-content: center;
 		flex-direction: column;
+		padding: 0 2rem;
 
 		input {
 			font-size: 1.25rem;
@@ -2456,7 +2648,70 @@ tr:last-child td:last-child {
 	}
 }
 
+//////////////////////////////////////////////////////
+//RESPONSIVE
+/////////////////////////////////////////////////////
 
+//For Desktops less than 1024px
+@media (max-width: 1024px) {
 
+	html {
+		font-size: 14px;
+	}
+	
+	.home-intro {
+		&__infographics {
 
+			&__text {
+				align-self: center;
+			}
+
+			&__holders {
+				grid-template-columns: repeat(3, 1fr);
+				grid-gap: .75rem;
+			}
+		}		
+	}
+}
+
+//For Tablets less than 768px
+@media (max-width: 768px) {
+
+}
+
+//For Phones less than 425px
+@media (max-width: 425px) {
+	h1.red {
+		font-size: 2.2rem;
+	}
+
+	h3 {
+		font-size: 1.65rem;
+	}
+
+	h5 {
+		font-size: 1.15rem;
+	}
+	#home-testimonials {
+		p {
+			font-size: 1.15rem !important;
+			padding: 0 .5rem;
+		}
+	}
+
+	.home-intro {
+		&__infographics {
+			grid-template-columns: 1fr;
+
+			&__text {
+				display: none !important;
+			}
+
+			&__holders {
+				grid-template-columns: 1fr;
+				grid-gap: 1rem;
+			}
+		}		
+	}
+}
 

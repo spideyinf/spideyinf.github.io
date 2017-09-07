@@ -23,12 +23,12 @@ $(document).ready(function(){
 
 //Modals control
     
-    // $('#login').click(function(e) {
-    //   e.preventDefault();
-    //   $('#myModal').modal('toggle');
-    // });
+    $('#login').click(function(e) {
+      e.preventDefault();
+      $('#myModal').modal('toggle');
+    });
 
-    $('#myModal').modal('toggle');
+    // $('#myModal').modal('toggle');
 
     $("#modal-login button").click(function(e){
         e.preventDefault();
@@ -125,7 +125,7 @@ $('.selectpicker').selectpicker({
   } // Inc
 
 
-  var elems = $('.home-intro__infographics__holder h1');
+  var elems = $('.home-intro__infographics__holders__holder h1');
   var objs = [];
 
   for (var i = 0, l = elems.length; i < l; i++) {
@@ -238,7 +238,7 @@ $('.carousel').carousel({
   pause: true,
 });
 
-//Home Bestsellers Slider
+//Bestsellers Slider
 
 $(document).ready(function(){
 
