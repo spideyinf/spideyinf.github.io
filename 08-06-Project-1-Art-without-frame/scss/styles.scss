@@ -695,10 +695,12 @@ nav.stroke ul li a:hover:after {
 	#itemslider h4{
 	  font-size: 1.15rem;
 	  margin: 10px auto 3px;
+	  color: $red;
 	}
 	#itemslider h5{
 	  font-weight: bold;
 	  font-size: 1rem;
+	  color: $blue;
 	  margin: 3px auto 2px;
 	}
 	#itemslider h6{
@@ -871,12 +873,12 @@ nav.stroke ul li a:hover:after {
 		
 		&--h3 {
 			font-family: 'Deadstock';
-			font-size: 4rem;
-			padding-top: 2rem;
+			font-size: 4.5rem;
+			padding: 3rem 0;
 			text-transform: none;
 			color: white;
 			text-align: center;
-			text-shadow: 0 0 8px rgba(0, 0, 0, 0.45), 0 0 10px rgba(0, 0, 0, 0.2);
+			text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45), 0 1px 10px rgba(0, 0, 0, 0.2);
 			z-index: 10;
 		}
 
@@ -905,7 +907,7 @@ nav.stroke ul li a:hover:after {
 				max-width: 23vw;
 				z-index: 10;
 				padding: 2%;
-				filter: drop-shadow(.1rem .1rem 0.1rem rgba(0, 0, 0, .45));
+				filter: drop-shadow(.1rem .15rem 0.15rem rgba(0, 0, 0, .5));
 			}
 		}
 
@@ -914,7 +916,6 @@ nav.stroke ul li a:hover:after {
 	.home-airbnb-cover { 
 		background: url('../images/airbnb-cover/airbnb-cover.jpg') no-repeat center center fixed; 
 		background-size: cover;
-		max-width: 1440px;
 		width: 100%;
 		height: 90vh;
 	}
@@ -2169,9 +2170,9 @@ tr:last-child td:last-child {
   background-position: center center !important; 
 }
 
-.grid__item--height1 { height: 220px; background: #EA0; }
-.grid__item--height2 { height: 280px; background: #C25; }
-.grid__item--height3 { height: 360px; background: #19F; }
+.grid__item--height1 { height: 285px; background: #EA0; }
+.grid__item--height2 { height: 320px; background: #C25; }
+.grid__item--height3 { height: 375px; background: #19F; }
 
 .grid__item--width2 { width: 66%; }
 
@@ -2230,7 +2231,7 @@ tr:last-child td:last-child {
 		max-width: 1170px;
 		width: 100%;
 		display: grid;
-		grid-template-columns: 1fr 3fr;
+		grid-template-columns: 1fr 4fr;
 		grid-gap: 1rem;
 
 		> * {
@@ -2312,6 +2313,10 @@ tr:last-child td:last-child {
 						align-items: center;
 						justify-content: center;
 						opacity: .75;
+
+						a {
+							text-decoration: none;
+						}
 
 						p {
 							color: $lightgray;

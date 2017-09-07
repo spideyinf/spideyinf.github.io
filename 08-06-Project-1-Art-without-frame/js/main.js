@@ -134,7 +134,7 @@ $('.selectpicker').selectpicker({
         elem: elems[i],
         speed: 60,
         decimal: 0,
-        currency: '>'
+        currency: ''
       })
     );
   }
