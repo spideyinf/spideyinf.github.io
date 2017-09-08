@@ -9,6 +9,6 @@ This hub is for static web front-end exercises and projects at Techmaster.vn
 3. 06.29 [Hearthstone Memory card](https://spideyinf.github.io/06-29-Memory-card/index.html)
   - Javascript and jQuery featuring Bootstrap...
 4. 08.06 [Project: Art without frame](https://spideyinf.github.io/08-06-Project-1-Art-without-frame/home.html) - Demo site for selling and purchasing Artworks.
-  - Designed with Sketchapp -[Mockup](/08-06-Project-1-Art-without-frame/sketch-design/17-08-Mockup.pdf)
+  - Designed with Sketchapp - [Mockup](/08-06-Project-1-Art-without-frame/sketch-design/17-08-Mockup.pdf)
   - Using Sass with BEM syntax and workflow with Bower, Gulp including Uglify, Browser-sync...
 
