@@ -527,7 +527,7 @@ nav.stroke ul li a:hover:after {
     color: white;
     text-align: center;
     text-transform: uppercase; }
-  .carousel-caption button {
+  .carousel-caption a {
     padding: .5rem 1.65rem;
     margin-top: 1rem;
     font-size: 1.1rem;
