@@ -747,13 +747,12 @@ nav.stroke ul li a:hover:after {
 	}
 
 	#itemslider h4{
-	  font-size: 1.15rem;
+	  font-size: 1.25rem;
 	  margin: 10px auto 3px;
 	  color: $red;
 	}
 	#itemslider h5{
-	  font-weight: bold;
-	  font-size: 1rem;
+	  font-size: 1.1rem;
 	  color: $blue;
 	  margin: 3px auto 2px;
 	}
@@ -769,10 +768,10 @@ nav.stroke ul li a:hover:after {
 	}
 
 	@media screen and (max-width: 992px){
-	#slider-control img {
-	  padding-top: 70px;
-	  margin: 0 auto;
-	}
+		#slider-control img {
+		  padding-top: 70px;
+		  margin: 0 auto;
+		}
 	}
 
 	.carousel-showmanymoveone .carousel-control {

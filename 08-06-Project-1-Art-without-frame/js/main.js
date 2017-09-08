@@ -23,12 +23,6 @@ $(document).ready(function(){
 
 //Modals control
     
-    // $('#login').click(function(e) {
-    //   e.preventDefault();
-    //   $('#myModal').modal('toggle');
-    // });
-
-    // $('#myModal').modal('show');
 
     $("#modal-login button").click(function(e){
         e.preventDefault();
@@ -42,10 +36,12 @@ $(document).ready(function(){
         $('.dropdown-toggle').dropdown();
         $("#myModal").modal("toggle");
     });
+
     $("#modal-register button").click(function (e) {
         e.preventDefault();
         $("#myModal").modal("toggle");
-    })
+    });
+
     function logout(){
         $("#account").html(`
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">

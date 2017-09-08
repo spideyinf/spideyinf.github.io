@@ -701,12 +701,11 @@ nav.stroke ul li a:hover:after {
   #home-best-sellers #slider-text .col-md-6 {
     overflow: hidden; }
   #home-best-sellers #itemslider h4 {
-    font-size: 1.15rem;
+    font-size: 1.25rem;
     margin: 10px auto 3px;
     color: #ff474e; }
   #home-best-sellers #itemslider h5 {
-    font-weight: bold;
-    font-size: 1rem;
+    font-size: 1.1rem;
     color: #236ED4;
     margin: 3px auto 2px; }
   #home-best-sellers #itemslider h6 {

@@ -148,7 +148,41 @@ imagesLoaded( grid, function() {
 </script>
 
     <script>
-    /* JS from external pen */
+        // Get random products images into page.
+
+        $(function() {
+          $('.grid__item').each(function () {
+            $(this).css('background-image', 'url(' + 'images/products/product' + Math.floor(Math.random()*18) + '.jpg' + ')');
+          })
+        })
+
+        // Add info on hover
+
+        $(function() {
+          $('.grid__item').append(`
+            <div class="products__main__products__info">
+                    <div class="part-gray">
+                      <div class="product-detail__info__options__tags">
+                        <span style="font-size: .75rem;">Sơn dầu</span>
+                        <span style="font-size: .75rem;">Trừu tượng</span>
+                      </div>
+                      <div class="summary">
+                        <a href="product-detail.html"><p>"The more effort you put into improving your skills, the bigger the payoff you will get. Realize that things will be hard at first, but the rewards will be worth it."</p></a>
+                      </div>
+                      <h5 class="price">VND 2,300,000</h5>
+                      <div class="icon">
+                        <i data-toggle="tooltip" data-placement="top" title="Thêm vào Yêu thích" class="fa fa-heart-o" aria-hidden="true"></i>
+                        <i data-toggle="tooltip" data-placement="top" title="Thêm vào Giỏ hàng!" class="fa fa-cart-plus" aria-hidden="true"></i>
+                        <a href="product-detail.html"><i data-toggle="tooltip" data-placement="top" title="Tìm hiểu thêm" class="fa fa-search" aria-hidden="true"></i></a>
+                      </div>
+                    </div>
+                    <div class="part-red">
+                      <a href="product-detail.html"><h6>the Inspiration</h6></a>
+                      <a href="product-detail.html"><p class="white">Tác giả: A Famous Artist</p></a>
+                    </div>
+                  </div>
+          `);
+        })
   </script>
 
   
