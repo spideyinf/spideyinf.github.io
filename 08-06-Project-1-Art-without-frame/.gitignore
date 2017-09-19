@@ -12,6 +12,7 @@
 *.tar
 *.zip
 *.idea
+.idea
 
 # Logs and databases #
 ######################
