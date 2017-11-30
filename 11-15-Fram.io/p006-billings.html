@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <head>
+      <title></title>
+      <meta charset="utf-8" />
+      <meta name="description" content="" />
+      <meta name="keywords" content="" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <link rel="stylesheet" type="text/css" href="css/main.css" />
+      <link rel="stylesheet" type="text/css" href="fonts/iconfont.css" />
+    </head>
+  </head>
+  <body>
+    <div class="d-flex">
+      <div class="sidebar">
+        <a class="sidebar--off__close-btn" href="#">
+          <i class="anticon icon-close"></i>
+        </a>
+        <h2 class="sidebar__user-avatar">
+          <a href="#">User avatar image</a>
+        </h2>
+        <p class="sidebar__user-name">Emily Doe</p>
+        <p class="sidebar__user-title">Communicator</p>
+        <ul class="sidebar__nav nav nav-stacked w-100 d-flex mt-5 flex-column align-self-start">
+          <li class="sidebar__nav__list">
+            <a class="sidebar__nav__link" href="#">
+              <i class="sidebar__nav__icon anticon icon-user"></i>
+              <span class="sidebar__nav__text">User profile</span>
+            </a>
+          </li>
+          <li class="sidebar__nav__list">
+            <a class="sidebar__nav__link" href="#">
+              <i class="sidebar__nav__icon anticon icon-bells"></i>
+              <span class="sidebar__nav__text">Notifications</span>
+              <span class="sidebar__nav__badge badge badge-pill">03</span>
+            </a>
+          </li>
+          <li class="sidebar__nav__list">
+            <a class="sidebar__nav__link" href="#">
+              <i class="sidebar__nav__icon anticon icon-wallet"></i>
+              <span class="sidebar__nav__text">Billings</span>
+            </a>
+          </li>
+          <li class="sidebar__nav__list">
+            <a class="sidebar__nav__link" href="#">
+              <i class="sidebar__nav__icon anticon icon-lock"></i>
+              <span class="sidebar__nav__text">Security</span>
+            </a>
+          </li>
+          <li class="sidebar__nav__list">
+            <a class="sidebar__nav__link" href="#">
+              <i class="sidebar__nav__icon anticon icon-message1"></i>
+              <span class="sidebar__nav__text">Messages</span>
+              <span class="sidebar__nav__badge badge badge-pill">05</span>
+            </a>
+          </li>
+          <li class="sidebar__nav__list">
+            <a class="sidebar__nav__link" href="#">
+              <i class="sidebar__nav__icon anticon icon-barschart"></i>
+              <span class="sidebar__nav__text">Statistics</span>
+            </a>
+          </li>
+          <li class="sidebar__nav__list">
+            <a class="sidebar__nav__link" href="#">
+              <i class="sidebar__nav__icon anticon icon-setting"></i>
+              <span class="sidebar__nav__text">Settings</span>
+            </a>
+          </li>
+        </ul>
+        <h4 class="sidebar__footer">
+          <a href="#">Logo</a>
+        </h4>
+      </div>
+      <main class="billings">
+        <header class="header-dashboard">
+          <!--For the best UX we put the sidebar button on the header-->
+          <a class="sidebar__toggle-btn" href="#">
+            <i class="anticon icon-menufold"></i>
+          </a>
+          <p class="title title--orange-dark">Billings</p>
+          <div class="btn-group">
+            <button class="btn btn-sm fr-btn-primary" type="button">Export</button>
+            <button class="btn dropdown-toggle dropdown-toggle-split btn-sm fr-btn-primary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span class="sr-only">Span for toggle this dropdown</span>
+            </button>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="#">Excel(.xls)</a>
+              <a class="dropdown-item" href="#">PDF (.pdf)</a>
+              <a class="dropdown-item" href="#">JPEG (.jpeg)</a>
+            </div>
+          </div>
+        </header>
+        <div class="billings__main-content">
+          <div class="billings__btn-group">
+            <a class="btn btn-sm btn--primary-dark" href="#">
+              <i class="anticon icon-plus"></i>
+              <span class="text">Transaction</span>
+            </a>
+            <a class="btn btn--secondary-dark btn-sm" href="#">
+              <i class="anticon icon-plus"></i>
+              <span class="text">Client</span>
+            </a>
+          </div>
+          <div class="billings__title d-flex align-items-center">
+            <div class="dropdown show">
+              <a class="btn dropdown-toggle fr-btn-primary btn-sm" id="btn-adding" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Add</a>
+              <div class="dropdown-menu" aria-labelledby="btn-adding">
+                <a class="dropdown-item" href="#">+ Transaction</a>
+                <a class="dropdown-item" href="#">+ Client</a>
+              </div>
+            </div>
+            <span class="title title--orange-dark billings__title__text">Transaction board</span>
+          </div>
+          <div class="billings__board" id="billing-table">
+            <table class="table table-striped billing-table">
+              <thead>
+                <th>Title</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Payments</th>
+                <th>Client/Contact</th>
+                <th>Actions</th>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Broadcasting program</td>
+                  <td>
+                    <button class="btn btn-xs fr-btn-primary">
+                      <span class="text">Done</span>
+                    </button>
+                  </td>
+                  <td>24/10/2017</td>
+                  <td>$15,000</td>
+                  <td>
+                    <p class="font-weight-bold">Phantom Design</p>
+                    <p class="small">Phantomdesign@gmail.com</p>
+                  </td>
+                  <td>
+                    <a href="#">
+                      <i class="anticon icon-eye"></i>
+                    </a>
+                    <a href="#">
+                      <i class="anticon icon-setting"></i>
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Marketing and Design program</td>
+                  <td>
+                    <button class="btn btn-xs btn-danger">
+                      <span class="text">Pending</span>
+                    </button>
+                  </td>
+                  <td>22/09/2017</td>
+                  <td>$12,500</td>
+                  <td>
+                    <p class="font-weight-bold">Leo &amp; partners</p>
+                    <p class="small">Leo-and-partners.com</p>
+                  </td>
+                  <td>
+                    <a href="#">
+                      <i class="anticon icon-eye"></i>
+                    </a>
+                    <a href="#">
+                      <i class="anticon icon-setting"></i>
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Pandorama.io</td>
+                  <td>
+                    <button class="btn btn-xs fr-btn-primary">
+                      <span class="text">Done</span>
+                    </button>
+                  </td>
+                  <td>02/08/2017</td>
+                  <td>$35,000</td>
+                  <td>
+                    <p class="font-weight-bold">The International Federation</p>
+                    <p class="small">kim@international.com</p>
+                  </td>
+                  <td>
+                    <a href="#">
+                      <i class="anticon icon-eye"></i>
+                    </a>
+                    <a href="#">
+                      <i class="anticon icon-setting"></i>
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Gram program</td>
+                  <td>
+                    <button class="btn btn-xs fr-btn-secondary">
+                      <span class="text">Cancel</span>
+                    </button>
+                  </td>
+                  <td>24/06/2017</td>
+                  <td>$85,000</td>
+                  <td>
+                    <p class="font-weight-bold">Panomra Pictures</p>
+                    <p class="small">panoramapictures.com</p>
+                  </td>
+                  <td>
+                    <a href="#">
+                      <i class="anticon icon-eye"></i>
+                    </a>
+                    <a href="#">
+                      <i class="anticon icon-setting"></i>
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Casting</td>
+                  <td>
+                    <button class="btn btn-xs fr-btn-primary">
+                      <span class="text">Done</span>
+                    </button>
+                  </td>
+                  <td>15/05/2017</td>
+                  <td>$15,000</td>
+                  <td>
+                    <p class="font-weight-bold">Media Group</p>
+                    <p class="small">mediagroup.admin@mediagroup.com</p>
+                  </td>
+                  <td>
+                    <a href="#">
+                      <i class="anticon icon-eye"></i>
+                    </a>
+                    <a href="#">
+                      <i class="anticon icon-setting"></i>
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Supporting</td>
+                  <td>
+                    <button class="btn btn-xs btn-info">
+                      <span class="text">WIP</span>
+                    </button>
+                  </td>
+                  <td>22/02/2017</td>
+                  <td>$5,000</td>
+                  <td>
+                    <p class="font-weight-bold">Picky Customer</p>
+                  </td>
+                  <td>
+                    <a href="#">
+                      <i class="anticon icon-eye"></i>
+                    </a>
+                    <a href="#">
+                      <i class="anticon icon-setting"></i>
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>inDesign group</td>
+                  <td>
+                    <button class="btn btn-xs fr-btn-primary">
+                      <span class="text">Done</span>
+                    </button>
+                  </td>
+                  <td>11/11/2016</td>
+                  <td>$10,000</td>
+                  <td>
+                    <p class="font-weight-bold">Fram.io inc</p>
+                    <p class="small">Fram.io</p>
+                  </td>
+                  <td>
+                    <a href="#">
+                      <i class="anticon icon-eye"></i>
+                    </a>
+                    <a href="#">
+                      <i class="anticon icon-setting"></i>
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Internal training</td>
+                  <td>
+                    <button class="btn btn-xs fr-btn-primary">
+                      <span class="text">Done</span>
+                    </button>
+                  </td>
+                  <td>10/10/2016</td>
+                  <td>$60,000</td>
+                  <td>
+                    <p class="font-weight-bold">Fram.io inc</p>
+                    <p class="small">Fram.io</p>
+                  </td>
+                  <td>
+                    <a href="#">
+                      <i class="anticon icon-eye"></i>
+                    </a>
+                    <a href="#">
+                      <i class="anticon icon-setting"></i>
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Depth.io Advertisement</td>
+                  <td>
+                    <button class="btn btn-xs btn-danger">
+                      <span class="text">Pending</span>
+                    </button>
+                  </td>
+                  <td>09/09/2016</td>
+                  <td>$50,000</td>
+                  <td>
+                    <p class="font-weight-bold">Depth.io</p>
+                  </td>
+                  <td>
+                    <a href="#">
+                      <i class="anticon icon-eye"></i>
+                    </a>
+                    <a href="#">
+                      <i class="anticon icon-setting"></i>
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Pro campain</td>
+                  <td>
+                    <button class="btn btn-xs btn-info">
+                      <span class="text">WIP</span>
+                    </button>
+                  </td>
+                  <td>09/09/2016</td>
+                  <td>$10,000</td>
+                  <td>
+                    <p class="font-weight-bold">John Doe</p>
+                    <p class="small">Johndoe@gmail.com</p>
+                  </td>
+                  <td>
+                    <a href="#">
+                      <i class="anticon icon-eye"></i>
+                    </a>
+                    <a href="#">
+                      <i class="anticon icon-setting"></i>
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Client Doe</td>
+                  <td>
+                    <button class="btn btn-xs fr-btn-primary">
+                      <span class="text">Done</span>
+                    </button>
+                  </td>
+                  <td>09/08/2016</td>
+                  <td>$50,000</td>
+                  <td>
+                    <p class="font-weight-bold">Depth.io</p>
+                  </td>
+                  <td>
+                    <a href="#">
+                      <i class="anticon icon-eye"></i>
+                    </a>
+                    <a href="#">
+                      <i class="anticon icon-setting"></i>
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Doe Task</td>
+                  <td>
+                    <button class="btn btn-xs btn-danger">
+                      <span class="text">Pending</span>
+                    </button>
+                  </td>
+                  <td>09/06/2016</td>
+                  <td>$10,000</td>
+                  <td>
+                    <p class="font-weight-bold">Doe@mail.com</p>
+                  </td>
+                  <td>
+                    <a href="#">
+                      <i class="anticon icon-eye"></i>
+                    </a>
+                    <a href="#">
+                      <i class="anticon icon-setting"></i>
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <footer class="footer">
+          <p class="copyright">&copy; Demo project Fram.io | All right reversed</p>
+        </footer>
+      </main>
+    </div>
+    <script type="text/javascript" src="js/main.js"></script>
+    <script>
+      let billingTable = fixedHeadTable(document.getElementById('billing-table'));
+
+    </script>
+  </body>
+</html>

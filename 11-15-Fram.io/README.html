@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <div class="wrapper">
+      <h1>Frontend Standard</h1>
+      <h2>Content</h2>
+      <ol>
+        <li>
+          <a href="#syntax-formatting">Syntax & formatting</a>
+        </li>
+        <li>
+          <a href="#name-convention">Name conventions</a>
+        </li>
+        <li>
+          <a href="#commenting">Commenting</a>
+        </li>
+        <li>Architecture</li>
+        <li>Responsive Web Design & breakpoints</li>
+        <li>Variables</li>
+        <li>Extend</li>
+        <li>Mixins</li>
+        <li>Conditional statements</li>
+        <li>Loops</li>
+        <li>Warnings and Errors</li>
+        <li>Tools</li>
+      </ol>
+      <h3 id="syntax-formatting">Syntax & Formatting</h3>
+      <ul>
+        <li>two spaces indents, no tabs;</li>
+        <li>ideally, 80-characters wide lines;</li>
+        <li>properly written multi-line CSS rules;</li>
+        <li>meaningful use of whitespace.</li>
+      </ul>
+      <h4>Strings</h4>
+      <h5>Quotes</h5>Using single quote
+      <pre class="prettyprint"><code class="lang-css">// Yep
+$direction: 'left';
+
+// Nope
+$direction: left;
+
+</code></pre>
+      <h5>String as CSS value</h5>Specific CSS values (identifiers) such as<code>initial</code>or<code>sans-serif</code>require not to be quoted.
+      <h5>URL</h5>URLs are quoted as well
+      <h4>Numbers</h4>Numbers shoud be display leading zeros before a decimal value less than one. Never display trailing zero
+      <pre class="prettyprint"><code class="lang-css">// Yep
+.foo {
+  padding: 2em;
+  opacity: 0.5;
+}
+
+// Nope
+.foo {
+  padding: 2.0em;
+  opacity: .5;
+}</code></pre>
+      <h4>List</h4>either inlined or multilines;
+      <h4>Map</h4>
+      <ul>
+        <li>Space after colon</li>
+        <li>Open brace (<code>(</code>) at the same line as the colon (<code>:</code>)</li>
+        <li>quoted keys iff they arre strings</li>
+        <li>each key/value pair on its own new line</li>
+        <li>comma (<code>,</code>) at the end of each key/value</li>
+        <li>trailing comma (<code>,</code>) on the last item.</li>
+      </ul>
+      <h4>Selector Nested</h4>
+      <h3 id="name-convention">Name Convention</h3>
+      <ul>
+        <li>variables</li>
+        <li>functions</li>
+        <li>mixins</li>
+      </ul>
+      <pre class="prettyprint"><code class="lang-scss">$vertical-rhythm-baseline: 1.5rem;
+
+@mixin size($width, $height: $width) {
+  // …
+}
+
+@function opposite-direction($direction) {
+  // …
+}</code></pre>
+      <h3 id="commenting">Commenting</h3>
+      <ul>
+        <li>The structure and/or role of a file</li>
+        <li>The goal of a ruleset</li>
+        <li>The idea behind a magic number</li>
+        <li>The reason for a CSS declaration</li>
+        <li>The order of CSS declarations</li>
+        <li>The thought process behind a way of doing things</li>
+      </ul>
+      <h4>Writting comments
+        <pre><code class="lang-scss">/**
+ * Helper class to truncate and add ellipsis to a string too long for it to fit
+ * on a single line.
+ * 1. Prevent content from wrapping, forcing it on a single line.
+ * 2. Add ellipsis at the end of the line.
+ */
+.ellipsis {
+  white-space: nowrap; /* 1 */
+  text-overflow: ellipsis; /* 2 */
+  overflow: hidden;
+}</code></pre>
+      </h4>
+    </div>
+  </body>
+</html>

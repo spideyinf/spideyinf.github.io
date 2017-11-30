@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <head>
+      <title></title>
+      <meta charset="utf-8" />
+      <meta name="description" content="" />
+      <meta name="keywords" content="" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <link rel="stylesheet" type="text/css" href="css/main.css" />
+      <link rel="stylesheet" type="text/css" href="fonts/iconfont.css" />
+    </head>
+  </head>
+  <body>
+    <div class="d-flex">
+      <div class="sidebar">
+        <a class="sidebar--off__close-btn" href="#">
+          <i class="anticon icon-close"></i>
+        </a>
+        <h2 class="sidebar__user-avatar">
+          <a href="#">User avatar image</a>
+        </h2>
+        <p class="sidebar__user-name">Emily Doe</p>
+        <p class="sidebar__user-title">Communicator</p>
+        <ul class="sidebar__nav nav nav-stacked w-100 d-flex mt-5 flex-column align-self-start">
+          <li class="sidebar__nav__list">
+            <a class="sidebar__nav__link" href="#">
+              <i class="sidebar__nav__icon anticon icon-user"></i>
+              <span class="sidebar__nav__text">User profile</span>
+            </a>
+          </li>
+          <li class="sidebar__nav__list">
+            <a class="sidebar__nav__link" href="#">
+              <i class="sidebar__nav__icon anticon icon-bells"></i>
+              <span class="sidebar__nav__text">Notifications</span>
+              <span class="sidebar__nav__badge badge badge-pill">03</span>
+            </a>
+          </li>
+          <li class="sidebar__nav__list">
+            <a class="sidebar__nav__link" href="#">
+              <i class="sidebar__nav__icon anticon icon-wallet"></i>
+              <span class="sidebar__nav__text">Billings</span>
+            </a>
+          </li>
+          <li class="sidebar__nav__list">
+            <a class="sidebar__nav__link" href="#">
+              <i class="sidebar__nav__icon anticon icon-lock"></i>
+              <span class="sidebar__nav__text">Security</span>
+            </a>
+          </li>
+          <li class="sidebar__nav__list">
+            <a class="sidebar__nav__link" href="#">
+              <i class="sidebar__nav__icon anticon icon-message1"></i>
+              <span class="sidebar__nav__text">Messages</span>
+              <span class="sidebar__nav__badge badge badge-pill">05</span>
+            </a>
+          </li>
+          <li class="sidebar__nav__list">
+            <a class="sidebar__nav__link" href="#">
+              <i class="sidebar__nav__icon anticon icon-barschart"></i>
+              <span class="sidebar__nav__text">Statistics</span>
+            </a>
+          </li>
+          <li class="sidebar__nav__list">
+            <a class="sidebar__nav__link" href="#">
+              <i class="sidebar__nav__icon anticon icon-setting"></i>
+              <span class="sidebar__nav__text">Settings</span>
+            </a>
+          </li>
+        </ul>
+        <h4 class="sidebar__footer">
+          <a href="#">Logo</a>
+        </h4>
+      </div>
+      <main class="d-flex flex-column w-100">
+        <header class="header-dashboard">
+          <!--For the best UX we put the sidebar button on the header-->
+          <a class="sidebar__toggle-btn" href="#">
+            <i class="anticon icon-menufold"></i>
+          </a>
+          <p class="title title--orange-dark">Statistics</p>
+        </header>
+        <div class="trans-and-filters">
+          <div class="d-flex align-items-center">
+            <h1 class="font-weight-bold">123</h1>
+            <div class="d-flex flex-column ml-2">
+              <p class="font-weight-bold small">transactions
+                <span class="font-weight-normal">you have made</span>
+              </p>
+              <p class="small">in the last
+                <span class="font-weight-bold">30 days</span>
+              </p>
+            </div>
+          </div>
+          <div class="charts__filters">
+            <a class="charts__filter" href="#" id="last-week">Last week</a>
+            <a class="charts__filter charts__filter--active" href="#" id="last-30-days">Last 30 days</a>
+            <a class="charts__filter" href="#" id="all-time">All time</a>
+          </div>
+        </div>
+        <div class="charts__content">
+          <div class="charts__group">
+            <div class="chart chart__col-2">
+              <canvas id="chart-0"></canvas>
+            </div>
+            <div class="chart chart__col-2">
+              <canvas id="chart-1"></canvas>
+            </div>
+          </div>
+          <div class="stats">
+            <div class="stats__banner">
+              <h4>Balance</h4>
+              <div class="stats__info">
+                <div class="stats__info__sum stats__info__sum--balance">
+                  <h4>Balance</h4>
+                  <p class="stats__number-primary">$18K</p>
+                </div>
+                <div class="stats__info__detail stats__info__detail--balance">
+                  <div class="info-detail">
+                    <div class="info-detail__left">
+                      <h5>Earnings</h5>
+                      <p class="stats__number">$29.5K</p>
+                    </div>
+                    <div class="info-detail__center"></div>
+                    <div class="info-detail__right">
+                      <h5>Spendings</h5>
+                      <p class="stats__number">$11.5K</p>
+                    </div>
+                  </div>
+                  <div>
+                    <p class="stats__desc">You are on top 12.5% people make up to this</p>
+                    <a class="small" href="#">Discover more...</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="chart chart__col-3">
+              <canvas id="chart-2"></canvas>
+            </div>
+          </div>
+          <div class="stats">
+            <div class="stats__banner">
+              <h4>Return of Investment</h4>
+              <div class="stats__info">
+                <div class="stats__info__sum stats__info__sum--roi">
+                  <h4>All time ROI</h4>
+                  <p class="stats__number-primary">$45K</p>
+                </div>
+                <div class="stats__info__detail stats__info__detail--roi">
+                  <div>
+                    <h5>This month ROI</h5>
+                    <p class="stats__number">$29.5K</p>
+                  </div>
+                  <div>
+                    <p class="stats__desc">You are on top 32.5% people make profit like this</p>
+                    <a class="small" href="#">Discover more...</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="chart chart__col-3">
+              <canvas id="chart-3"></canvas>
+            </div>
+          </div>
+        </div>
+        <footer class="footer">
+          <p class="copyright">&copy; Demo project Fram.io | All right reversed</p>
+        </footer>
+      </main>
+    </div>
+    <script type="text/javascript" src="js/main.js"></script>
+  </body>
+</html>
