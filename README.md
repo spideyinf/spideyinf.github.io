@@ -1,6 +1,6 @@
 # spideyinf.github.io
 ## June 2017 - November 2017 Techmaster front-end exercises and projects
-This hub is for static web front-end exercises and projects at [Techmaster.vn](https://www.techmaster.vn)
+This hub is for static web front-end exercises and projects at [Techmaster.vn](https://techmaster.vn/)
 
 #### [Basic Calculator](https://spideyinf.github.io/06-15-Calculator-jQuery/index.html) 15th June 2017
   - Calculator using jQuery.
