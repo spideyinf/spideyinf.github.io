@@ -1,0 +1,79 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-display: 'Fraunces Variable', Georgia, serif;
+  --font-sans: 'Inter Variable', system-ui, sans-serif;
+  --font-music: 'Noto Music', serif;
+
+  --color-paper: var(--paper);
+  --color-card: var(--card);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-faint: var(--ink-faint);
+  --color-rule: var(--rule);
+  --color-hot: var(--hot);
+  --color-hot-soft: var(--hot-soft);
+  --color-good: var(--good);
+  --color-bad: var(--bad);
+}
+
+:root {
+  --paper: #f6f1e7;
+  --card: #fffcf5;
+  --ink: #1f1b16;
+  --ink-soft: #5c5348;
+  --ink-faint: #a69a89;
+  --rule: #e2d8c6;
+  --hot: #d9861c;
+  --hot-soft: #f6dcb4;
+  --good: #2f7d5b;
+  --bad: #b2412e;
+  --wood: #6b4a2f;
+  --wood-dark: #4c3220;
+  --fret: #c9c2b4;
+  --string: #d8cfbf;
+  --white-key: #fffdf8;
+  --nut: #d9ccb2;
+  --black-key: #1f1b16;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #16130f;
+    --card: #1f1b16;
+    --ink: #f1e9dc;
+    --ink-soft: #bcb0a0;
+    --ink-faint: #75695a;
+    --rule: #3a332a;
+    --hot: #f0a540;
+    --hot-soft: #7d5420;
+    --good: #5cc092;
+    --bad: #e07a63;
+    --wood: #3d2a1b;
+    --wood-dark: #2b1d12;
+    --fret: #8d8577;
+    --string: #b8ae9d;
+    --white-key: #ece4d6;
+    --nut: #e6dccb;
+    --black-key: #0c0a08;
+    color-scheme: dark;
+  }
+}
+
+html,
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid var(--hot);
+  outline-offset: 2px;
+}
