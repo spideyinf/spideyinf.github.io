@@ -35,6 +35,11 @@
   --white-key: #fffdf8;
   --nut: #d9ccb2;
   --black-key: #1f1b16;
+  --role-r: #e0902a;
+  --role-3: #3fae8c;
+  --role-5: #5b9bd5;
+  --role-7: #d9739a;
+  --role-sus: #9d84d6;
   color-scheme: light;
 }
 
@@ -57,6 +62,11 @@
     --white-key: #ece4d6;
     --nut: #e6dccb;
     --black-key: #0c0a08;
+    --role-r: #f0a540;
+    --role-3: #5cc6a3;
+    --role-5: #74aee3;
+    --role-7: #e88bb0;
+    --role-sus: #b39ce8;
     color-scheme: dark;
   }
 }

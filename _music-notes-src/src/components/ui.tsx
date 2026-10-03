@@ -30,7 +30,9 @@ const Seg = styled.button<{ $on: boolean }>`
   font-weight: 500;
   color: ${(p) => (p.$on ? 'var(--card)' : 'var(--ink-soft)')};
   background: ${(p) => (p.$on ? 'var(--ink)' : 'transparent')};
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
   &:hover {
     color: ${(p) => (p.$on ? 'var(--card)' : 'var(--ink)')};
   }
@@ -94,7 +96,15 @@ const SwitchBtn = styled.button<{ $on: boolean }>`
   }
 `
 
-export const Switch = ({ on, onChange, children }: { on: boolean; onChange: (v: boolean) => void; children: React.ReactNode }) => (
+export const Switch = ({
+  on,
+  onChange,
+  children,
+}: {
+  on: boolean
+  onChange: (v: boolean) => void
+  children: React.ReactNode
+}) => (
   <SwitchBtn $on={on} role="switch" aria-checked={on} onClick={() => onChange(!on)}>
     <span className="knob" />
     {children}
@@ -112,7 +122,9 @@ export const PillButton = styled.button<{ $primary?: boolean }>`
   border: 1px solid ${(p) => (p.$primary ? 'var(--ink)' : 'var(--rule)')};
   background: ${(p) => (p.$primary ? 'var(--ink)' : 'var(--card)')};
   color: ${(p) => (p.$primary ? 'var(--card)' : 'var(--ink)')};
-  transition: transform 0.08s, border-color 0.15s;
+  transition:
+    transform 0.08s,
+    border-color 0.15s;
   &:hover {
     border-color: var(--ink-soft);
   }

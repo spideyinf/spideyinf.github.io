@@ -89,3 +89,15 @@ export function play(midi: number, voice: Voice) {
     o.stop(now + 3)
   }
 }
+
+export type ChordStyle = 'block' | 'arpeggio' | 'strum'
+
+/** Plays several notes: together, one by one, or as a quick guitar strum */
+export function playChord(midis: number[], voice: Voice, style: ChordStyle) {
+  const sorted = [...midis].sort((a, b) => a - b)
+  const gap = style === 'block' ? 0 : style === 'strum' ? 35 : 260
+  sorted.forEach((m, i) => {
+    if (gap === 0) play(m, voice)
+    else window.setTimeout(() => play(m, voice), i * gap)
+  })
+}

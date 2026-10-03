@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { FRETS, GUITAR_STRINGS, midiAt, noteName, type Spelling } from '../lib/music'
-import type { Mark, MarkFn } from '../lib/types'
+import type { PaintFn } from '../lib/types'
 
 const NUT_X = 64
 const END_X = 892
@@ -38,23 +38,29 @@ const Svg = styled.svg`
   }
 `
 
-const fillFor = (m: Mark) =>
-  m === 'selected' || m === 'answer' ? 'var(--hot)' : m === 'wrong' ? 'var(--bad)' : m === 'related' ? 'var(--hot-soft)' : null
-
 type Props = {
-  mark: MarkFn
+  paint: PaintFn
+  /** Strings not played in the current chord shape (string 1 first) */
+  muted?: boolean[]
   spelling: Spelling
   showLabels: boolean
   onPress: (midi: number, stringIdx: number, fret: number) => void
 }
 
-export function Fretboard({ mark, spelling, showLabels, onPress }: Props) {
+export function Fretboard({ paint, muted, spelling, showLabels, onPress }: Props) {
   return (
     <div className="overflow-x-auto pb-2 [scrollbar-width:thin]">
       <Svg viewBox={`0 0 ${END_X + 20} ${H}`} role="img" aria-label="Guitar fretboard, standard tuning">
         <rect x={NUT_X} y={TOP - 16} width={END_X - NUT_X} height={BOARD_BOTTOM - TOP + 16} rx={3} fill="var(--wood)" />
         {INLAYS.map((f) => (
-          <circle key={f} cx={cellX(f)} cy={(stringY(2) + stringY(3)) / 2} r={6} fill="var(--wood-dark)" opacity={0.9} />
+          <circle
+            key={f}
+            cx={cellX(f)}
+            cy={(stringY(2) + stringY(3)) / 2}
+            r={6}
+            fill="var(--wood-dark)"
+            opacity={0.9}
+          />
         ))}
         <circle cx={cellX(12)} cy={(stringY(1) + stringY(2)) / 2} r={6} fill="var(--wood-dark)" />
         <circle cx={cellX(12)} cy={(stringY(3) + stringY(4)) / 2} r={6} fill="var(--wood-dark)" />
@@ -90,15 +96,32 @@ export function Fretboard({ mark, spelling, showLabels, onPress }: Props) {
           </g>
         ))}
 
+        {muted?.map(
+          (m, i) =>
+            m && (
+              <text
+                key={`x${i}`}
+                x={cellX(0)}
+                y={stringY(i) + 5}
+                textAnchor="middle"
+                fontSize={15}
+                className="lbl"
+                fill="var(--ink-soft)"
+              >
+                ×
+              </text>
+            ),
+        )}
+
         {GUITAR_STRINGS.map((_, i) =>
           Array.from({ length: FRETS + 1 }, (_, f) => {
             const midi = midiAt(i, f)
-            const m = mark(midi)
-            const fill = fillFor(m)
+            const p = paint(midi, { string: i, fret: f })
+            const fill = p?.fill
             const x = cellX(f)
             const y = stringY(i)
             const w = f === 0 ? 40 : fretX(f) - fretX(f - 1)
-            const strong = m === 'selected' || m === 'answer' || m === 'wrong'
+            const strong = !!p?.strong
             return (
               <g key={`${i}-${f}`}>
                 <rect
@@ -123,7 +146,7 @@ export function Fretboard({ mark, spelling, showLabels, onPress }: Props) {
                     fill={strong ? '#1f1b16' : fill ? 'var(--ink)' : '#e9dfcc'}
                     opacity={fill ? 1 : 0.75}
                   >
-                    {noteName(midi, spelling, false)}
+                    {p?.label ?? noteName(midi, spelling, false)}
                   </text>
                 )}
               </g>

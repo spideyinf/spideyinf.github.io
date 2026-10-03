@@ -83,7 +83,8 @@ export function guitarPositions(midi: number) {
 
 export const midiAt = (stringIdx: number, fret: number) => GUITAR_STRINGS[stringIdx].midi + fret
 
-export const ordinal = (n: number) => `${n}${n % 10 === 1 && n !== 11 ? 'st' : n % 10 === 2 && n !== 12 ? 'nd' : n % 10 === 3 && n !== 13 ? 'rd' : 'th'}`
+export const ordinal = (n: number) =>
+  `${n}${n % 10 === 1 && n !== 11 ? 'st' : n % 10 === 2 && n !== 12 ? 'nd' : n % 10 === 3 && n !== 13 ? 'rd' : 'th'}`
 
 /** Plain-language position, e.g. "2nd line of the treble staff" */
 export function describeStaff(midi: number, clef: Clef, spelling: Spelling) {
@@ -91,7 +92,9 @@ export function describeStaff(midi: number, clef: Clef, spelling: Spelling) {
   const off = step - CLEF_BOTTOM[clef]
   const where = `${clef} staff`
   if (off >= 0 && off <= 8) {
-    return off % 2 === 0 ? `${ordinal(off / 2 + 1)} line of the ${where}` : `${ordinal((off + 1) / 2)} space of the ${where}`
+    return off % 2 === 0
+      ? `${ordinal(off / 2 + 1)} line of the ${where}`
+      : `${ordinal((off + 1) / 2)} space of the ${where}`
   }
   if (off === -1) return `just below the ${where}`
   if (off === 9) return `just above the ${where}`

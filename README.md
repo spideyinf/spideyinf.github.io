@@ -2,7 +2,8 @@
 ## Projects
 
 #### [Note map](https://spideyinf.github.io/music-notes/) - Piano, staff and guitar note explorer. October 2026
-  - See any note on the piano, the grand staff, guitar sheet music and the fretboard at once, hear it, and quiz yourself (read, name or ear).
+  - See any note or chord on the piano, the grand staff, guitar sheet music and the fretboard at once, hear it, and quiz yourself (read, name or ear).
+  - Chords mode: build 9 basic chord types step by step (root → 3rd → 5th → 7th), with inversions, guitar shapes and per-instrument rules.
   - React + TypeScript, styled-components and Tailwind CSS, built with Vite. Source in [`_music-notes-src`](https://github.com/spideyinf/spideyinf.github.io/tree/master/_music-notes-src); run `npm run build` there to rebuild `music-notes/`.
 
 ## June 2017 - November 2017 Techmaster front-end exercises and projects

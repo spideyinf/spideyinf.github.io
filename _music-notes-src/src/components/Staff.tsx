@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import styled from 'styled-components'
-import { CLEF_BOTTOM, staffSpelling, stepToMidi, type Clef, type Spelling } from '../lib/music'
+import { CLEF_BOTTOM, stepToMidi, type Clef } from '../lib/music'
+import type { StaffNote } from '../lib/types'
 
 const W = 280
 const H = 170
@@ -27,9 +28,8 @@ const Svg = styled.svg<{ $interactive: boolean }>`
 
 type Props = {
   clef: Clef
-  midi: number | null
-  spelling: Spelling
-  color?: string
+  /** One note, or several stacked as a chord */
+  notes: StaffNote[]
   /** Clicking picks the natural note on that line/space */
   onPick?: (midi: number) => void
   /** Restrict which picked notes are allowed */
@@ -39,19 +39,19 @@ type Props = {
   title: string
 }
 
-export function Staff({ clef, midi, spelling, color = 'var(--hot)', onPick, pickRange, crop = [0, H], title }: Props) {
+export function Staff({ clef, notes, onPick, pickRange, crop = [0, H], title }: Props) {
   const [hover, setHover] = useState<number | null>(null)
   const bottom = CLEF_BOTTOM[clef]
   const yOf = (step: number) => BOTTOM_Y - (step - bottom) * STEP
 
-  const ledgers = (step: number) => {
-    const ys: number[] = []
-    for (let s = bottom - 2; s >= step; s -= 2) ys.push(yOf(s))
-    for (let s = bottom + 10; s <= step; s += 2) ys.push(yOf(s))
-    return ys
-  }
+  const sorted = [...notes].sort((a, b) => a.step - b.step)
+  const lowY = sorted.length ? yOf(sorted[0].step) : 0
+  const highY = sorted.length ? yOf(sorted[sorted.length - 1].step) : 0
 
-  const stepFromEvent = (e: React.PointerEvent<SVGSVGElement>) => {
+  // Grow the visible area for notes far above or below the staff (e.g. A0, C8)
+  const view: [number, number] = sorted.length ? [Math.min(crop[0], highY - 42), Math.max(crop[1], lowY + 42)] : crop
+
+  const stepFromEvent = (e: React.PointerEvent<SVGSVGElement> | React.MouseEvent<SVGSVGElement>) => {
     const rect = e.currentTarget.getBoundingClientRect()
     const y = view[0] + ((e.clientY - rect.top) / rect.height) * (view[1] - view[0])
     const step = Math.round((BOTTOM_Y - y) / STEP) + bottom
@@ -60,35 +60,72 @@ export function Staff({ clef, midi, spelling, color = 'var(--hot)', onPick, pick
     return step
   }
 
-  const note = midi == null ? null : staffSpelling(midi, spelling)
+  const ledgerYs = (lo: number, hi: number) => {
+    const ys: number[] = []
+    for (let s = bottom - 2; s >= lo; s -= 2) ys.push(yOf(s))
+    for (let s = bottom + 10; s <= hi; s += 2) ys.push(yOf(s))
+    return ys
+  }
 
-  // Grow the visible area for notes far above or below the staff (e.g. A0, C8)
-  const view: [number, number] = note
-    ? [Math.min(crop[0], yOf(note.step) - 42), Math.max(crop[1], yOf(note.step) + 42)]
-    : crop
-
-  const head = (step: number, fill: string, accidental: string, opacity = 1) => {
-    const y = yOf(step)
-    const stemUp = step < bottom + 4
+  /** Draws one or more noteheads sharing a stem, like printed music */
+  const chord = (ns: StaffNote[], opacity = 1, key = 'chord') => {
+    if (!ns.length) return null
+    const lo = ns[0].step
+    const hi = ns[ns.length - 1].step
+    const mid = bottom + 4
+    const stemUp = (lo + hi) / 2 < mid
+    // Notes a step apart sit on opposite sides of the stem: with the stem up the
+    // upper note of the pair moves right, with the stem down the lower one moves left
+    const shifted: boolean[] = ns.map(() => false)
+    if (stemUp) {
+      for (let i = 1; i < ns.length; i++) shifted[i] = ns[i].step - ns[i - 1].step === 1 && !shifted[i - 1]
+    } else {
+      for (let i = ns.length - 2; i >= 0; i--) shifted[i] = ns[i + 1].step - ns[i].step === 1 && !shifted[i + 1]
+    }
+    const anyShift = shifted.some(Boolean)
+    const headX = (i: number) =>
+      stemUp ? NOTE_X + (shifted[i] ? 13 : 0) : NOTE_X + (anyShift && !shifted[i] ? 13 : 0)
+    const stemX = stemUp ? NOTE_X + 6 : NOTE_X - 6 + (anyShift ? 13 : 0)
+    const stemFrom = stemUp ? yOf(lo) : yOf(hi)
+    const stemTo = stemUp ? yOf(hi) - 34 : yOf(lo) + 34
+    // Accidentals stagger leftward so they never collide
+    const cols: { step: number; col: number }[] = []
+    const accX: Record<number, number> = {}
+    for (let i = ns.length - 1; i >= 0; i--) {
+      if (!ns[i].accidental) continue
+      let col = 0
+      while (cols.some((c) => c.col === col && Math.abs(c.step - ns[i].step) < 6)) col++
+      cols.push({ step: ns[i].step, col })
+      accX[i] = NOTE_X - 17 - col * 12
+    }
+    const stemColor = ns.length === 1 ? ns[0].color : 'var(--ink)'
     return (
-      <g opacity={opacity}>
-        {ledgers(step).map((ly) => (
-          <line key={ly} className="line" x1={NOTE_X - 15} x2={NOTE_X + 15} y1={ly} y2={ly} />
+      <g opacity={opacity} key={key}>
+        {ledgerYs(lo, hi).map((ly) => (
+          <line key={ly} className="line" x1={NOTE_X - 15} x2={NOTE_X + 15 + (anyShift ? 13 : 0)} y1={ly} y2={ly} />
         ))}
-        <ellipse cx={NOTE_X} cy={y} rx={6.6} ry={4.8} fill={fill} transform={`rotate(-22 ${NOTE_X} ${y})`} />
-        <line
-          x1={stemUp ? NOTE_X + 6 : NOTE_X - 6}
-          x2={stemUp ? NOTE_X + 6 : NOTE_X - 6}
-          y1={y + (stemUp ? -1 : 1)}
-          y2={y + (stemUp ? -34 : 34)}
-          stroke={fill}
-          strokeWidth={1.4}
-        />
-        {accidental && (
-          <text x={NOTE_X - 18} y={y + 5} textAnchor="middle" fontSize={37} className="clef" style={{ fill }}>
-            {accidental}
-          </text>
-        )}
+        <line x1={stemX} x2={stemX} y1={stemFrom} y2={stemTo} stroke={stemColor} strokeWidth={1.4} />
+        {ns.map((n, i) => {
+          const y = yOf(n.step)
+          const x = headX(i)
+          return (
+            <g key={n.key}>
+              <ellipse cx={x} cy={y} rx={6.6} ry={4.8} fill={n.color} transform={`rotate(-22 ${x} ${y})`} />
+              {n.accidental && (
+                <text
+                  x={accX[i]}
+                  y={y + 5}
+                  textAnchor="middle"
+                  fontSize={n.accidental.length > 1 || /[𝄫𝄪]/u.test(n.accidental) ? 30 : 37}
+                  className="clef"
+                  style={{ fill: n.color }}
+                >
+                  {n.accidental}
+                </text>
+              )}
+            </g>
+          )
+        })}
       </g>
     )
   }
@@ -104,7 +141,7 @@ export function Staff({ clef, midi, spelling, color = 'var(--hot)', onPick, pick
       onClick={
         onPick
           ? (e) => {
-              const s = stepFromEvent(e as unknown as React.PointerEvent<SVGSVGElement>)
+              const s = stepFromEvent(e)
               if (s != null) onPick(stepToMidi(s))
             }
           : undefined
@@ -123,8 +160,10 @@ export function Staff({ clef, midi, spelling, color = 'var(--hot)', onPick, pick
           𝄢
         </text>
       )}
-      {hover != null && (note == null || hover !== note.step) && head(hover, 'var(--ink-faint)', '', 0.6)}
-      {note && head(note.step, color, note.accidental)}
+      {hover != null &&
+        !sorted.some((n) => n.step === hover) &&
+        chord([{ step: hover, accidental: '', color: 'var(--ink-faint)', key: 'h' }], 0.6, 'hover')}
+      {chord(sorted)}
     </Svg>
   )
 }
