@@ -6,6 +6,46 @@ let ctx: AudioContext | null = null
 let master: GainNode | null = null
 const pluckCache = new Map<number, AudioBuffer>()
 
+/**
+ * Recorded acoustic guitar, one sample every 3 half-steps (E2 – D5); notes in
+ * between are pitch-shifted from the nearest sample. Samples: tonejs-instruments
+ * by Nicholaus P. Brosowsky, CC BY 3.0.
+ */
+const GUITAR_SAMPLES: Record<number, string> = {
+  40: 'E2',
+  43: 'G2',
+  46: 'As2',
+  49: 'Cs3',
+  52: 'E3',
+  55: 'G3',
+  58: 'As3',
+  61: 'Cs4',
+  64: 'E4',
+  67: 'G4',
+  70: 'As4',
+  73: 'Cs5',
+  74: 'D5',
+}
+const guitarBuffers = new Map<number, AudioBuffer>()
+let guitarLoading: Promise<void> | null = null
+
+function loadGuitar(c: AudioContext) {
+  guitarLoading ??= Promise.all(
+    Object.entries(GUITAR_SAMPLES).map(async ([midi, name]) => {
+      const res = await fetch(`${import.meta.env.BASE_URL}samples/guitar/${name}.mp3`)
+      const buf = await c.decodeAudioData(await res.arrayBuffer())
+      guitarBuffers.set(Number(midi), buf)
+    }),
+  ).then(
+    () => undefined,
+    () => {
+      // Keep the synthesized fallback if the samples can't load
+      guitarLoading = null
+    },
+  )
+  return guitarLoading
+}
+
 function audio() {
   if (!ctx) {
     ctx = new AudioContext()
@@ -13,9 +53,21 @@ function audio() {
     master.gain.value = 0.7
     const comp = ctx.createDynamicsCompressor()
     master.connect(comp).connect(ctx.destination)
+    void loadGuitar(ctx)
   }
   if (ctx.state === 'suspended') void ctx.resume()
   return { ctx, out: master! }
+}
+
+/** Starts loading the guitar samples early, e.g. on the first tap anywhere */
+export function warmUp() {
+  audio()
+}
+
+function nearestSample(midi: number) {
+  let best: number | null = null
+  for (const m of guitarBuffers.keys()) if (best === null || Math.abs(m - midi) < Math.abs(best - midi)) best = m
+  return best
 }
 
 /** Karplus–Strong plucked string, rendered once per pitch and cached */
@@ -49,11 +101,26 @@ function pluckBuffer(c: AudioContext, midi: number) {
   return buf
 }
 
-export function play(midi: number, voice: Voice) {
+/** Plays one note now, or `delay` seconds from now (scheduled on the audio clock) */
+export function play(midi: number, voice: Voice, delay = 0) {
   const { ctx: c, out } = audio()
-  const now = c.currentTime
+  const now = c.currentTime + delay
 
   if (voice === 'guitar') {
+    const base = nearestSample(midi)
+    if (base !== null) {
+      const src = c.createBufferSource()
+      src.buffer = guitarBuffers.get(base)!
+      src.playbackRate.value = 2 ** ((midi - base) / 12)
+      const g = c.createGain()
+      g.gain.setValueAtTime(1.1, now)
+      g.gain.setTargetAtTime(0, now + 2.6, 0.25)
+      src.connect(g).connect(out)
+      src.start(now)
+      src.stop(now + 3.6)
+      return
+    }
+    // Samples still loading: fall back to a synthesized pluck
     const src = c.createBufferSource()
     src.buffer = pluckBuffer(c, midi)
     const g = c.createGain()
@@ -95,9 +162,7 @@ export type ChordStyle = 'block' | 'arpeggio' | 'strum'
 /** Plays several notes: together, one by one, or as a quick guitar strum */
 export function playChord(midis: number[], voice: Voice, style: ChordStyle) {
   const sorted = [...midis].sort((a, b) => a - b)
-  const gap = style === 'block' ? 0 : style === 'strum' ? 35 : 260
-  sorted.forEach((m, i) => {
-    if (gap === 0) play(m, voice)
-    else window.setTimeout(() => play(m, voice), i * gap)
-  })
+  // A real strum is a quick, slightly uneven sweep from the low string up
+  const gap = style === 'block' ? 0 : style === 'strum' ? 0.028 : 0.26
+  sorted.forEach((m, i) => play(m, voice, i * gap + (style === 'strum' ? Math.random() * 0.006 : 0)))
 }

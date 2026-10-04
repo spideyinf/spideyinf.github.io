@@ -6,7 +6,7 @@ import { Staff } from './components/Staff'
 import { Card, CardTitle, PillButton, Segmented, Switch } from './components/ui'
 import { useChord } from './hooks/useChord'
 import { LEVELS, useQuiz, type Level, type Prompt } from './hooks/useQuiz'
-import { play, playChord, type Voice } from './lib/audio'
+import { play, playChord, warmUp, type Voice } from './lib/audio'
 import {
   clefFor,
   describeStaff,
@@ -41,6 +41,12 @@ export default function App() {
   const quiz = useQuiz({ level, naturalsOnly, anyOctave })
   const { q } = quiz
   const chord = useChord(spelling)
+
+  // Browsers only allow audio after a user gesture; start loading samples then
+  useEffect(() => {
+    window.addEventListener('pointerdown', warmUp, { once: true })
+    return () => window.removeEventListener('pointerdown', warmUp)
+  }, [])
 
   const sounding = useCallback((midi: number, voice: Voice) => sound && play(midi, voice), [sound])
 
@@ -326,7 +332,14 @@ export default function App() {
       </Card>
 
       <footer className="mt-10 text-center text-xs text-ink-faint">
-        Built with React, styled-components and Tailwind CSS ·{' '}
+        Built with React, styled-components and Tailwind CSS · Guitar samples from{' '}
+        <a
+          className="underline decoration-rule underline-offset-2 hover:text-ink"
+          href="https://github.com/nbrosowsky/tonejs-instruments"
+        >
+          tonejs-instruments
+        </a>{' '}
+        (CC BY 3.0) ·{' '}
         <a
           className="underline decoration-rule underline-offset-2 hover:text-ink"
           href="https://github.com/spideyinf/spideyinf.github.io"

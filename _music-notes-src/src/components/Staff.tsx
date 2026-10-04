@@ -83,8 +83,7 @@ export function Staff({ clef, notes, onPick, pickRange, crop = [0, H], title }: 
       for (let i = ns.length - 2; i >= 0; i--) shifted[i] = ns[i + 1].step - ns[i].step === 1 && !shifted[i + 1]
     }
     const anyShift = shifted.some(Boolean)
-    const headX = (i: number) =>
-      stemUp ? NOTE_X + (shifted[i] ? 13 : 0) : NOTE_X + (anyShift && !shifted[i] ? 13 : 0)
+    const headX = (i: number) => (stemUp ? NOTE_X + (shifted[i] ? 13 : 0) : NOTE_X + (anyShift && !shifted[i] ? 13 : 0))
     const stemX = stemUp ? NOTE_X + 6 : NOTE_X - 6 + (anyShift ? 13 : 0)
     const stemFrom = stemUp ? yOf(lo) : yOf(hi)
     const stemTo = stemUp ? yOf(hi) - 34 : yOf(lo) + 34

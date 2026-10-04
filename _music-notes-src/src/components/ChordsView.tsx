@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import type { ChordState } from '../hooks/useChord'
 import { ROLE_COLOR } from '../hooks/useChord'
@@ -70,6 +71,7 @@ const Dot = ({ color, children }: { color: string; children: React.ReactNode }) 
 type Props = { c: ChordState; spelling: Spelling; sound: boolean }
 
 export function ChordsView({ c, spelling, sound }: Props) {
+  const header = useRef<HTMLDivElement>(null)
   const say = (midis: number[], voice: 'piano' | 'guitar', style: 'block' | 'arpeggio' | 'strum') =>
     sound && playChord(midis, voice, style)
 
@@ -85,6 +87,7 @@ export function ChordsView({ c, spelling, sound }: Props) {
 
   return (
     <>
+      <ChordBadge c={c} anchor={header} onPlay={() => say(c.voicingShown, 'piano', 'block')} />
       <div className="grid gap-5 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
         <Card>
           <CardTitle>Pick a chord</CardTitle>
@@ -121,7 +124,7 @@ export function ChordsView({ c, spelling, sound }: Props) {
         </Card>
 
         <Card className="flex flex-col">
-          <div className="flex flex-wrap items-start justify-between gap-4">
+          <div ref={header} className="flex scroll-mt-6 flex-wrap items-start justify-between gap-4">
             <div>
               <div className="font-display text-6xl font-semibold leading-none">{c.symbol}</div>
               <p className="mt-2 text-sm text-ink-soft">
@@ -301,5 +304,106 @@ function SemitoneStrip({ c }: { c: ChordState }) {
         Half-steps above the root — the same pattern works from any starting note.
       </p>
     </div>
+  )
+}
+
+const Badge = styled.div<{ $show: boolean }>`
+  position: fixed;
+  right: max(16px, env(safe-area-inset-right));
+  bottom: max(16px, env(safe-area-inset-bottom));
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: calc(100vw - 32px);
+  padding: 10px 14px 10px 16px;
+  border-radius: 18px;
+  border: 1px solid var(--rule);
+  background: color-mix(in srgb, var(--card) 92%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.18),
+    0 2px 6px rgba(0, 0, 0, 0.08);
+  text-align: left;
+  color: var(--ink);
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
+  opacity: ${(p) => (p.$show ? 1 : 0)};
+  transform: translateY(${(p) => (p.$show ? '0' : '16px')});
+  pointer-events: ${(p) => (p.$show ? 'auto' : 'none')};
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+  .back {
+    min-width: 0;
+    text-align: left;
+    color: inherit;
+  }
+  .play {
+    flex: none;
+    border: none;
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--card);
+    font-size: 12px;
+  }
+`
+
+/** Keeps the current chord in view after its header scrolls off screen */
+function ChordBadge({
+  c,
+  anchor,
+  onPlay,
+}: {
+  c: ChordState
+  anchor: React.RefObject<HTMLDivElement | null>
+  onPlay: () => void
+}) {
+  const [show, setShow] = useState(false)
+  useEffect(() => {
+    const el = anchor.current
+    if (!el) return
+    const io = new IntersectionObserver(([e]) => setShow(!e.isIntersecting && e.boundingClientRect.top < 0))
+    io.observe(el)
+    return () => io.disconnect()
+  }, [anchor])
+
+  return (
+    <Badge $show={show} aria-hidden={!show}>
+      <button
+        className="back"
+        tabIndex={show ? 0 : -1}
+        aria-label={`${c.symbol}: back to chord details`}
+        onClick={() => anchor.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+      >
+        <div className="font-display text-3xl font-semibold leading-none">{c.symbol}</div>
+        <div className="mt-1.5 flex flex-wrap items-center gap-1">
+          {c.visible.map((t) => (
+            <span
+              key={t.degree}
+              className="inline-flex items-center gap-1 rounded-full py-0.5 pl-0.5 pr-1.5 text-[11px] font-medium"
+              style={{ background: `color-mix(in srgb, ${ROLE_COLOR[t.role]} 18%, transparent)` }}
+            >
+              <span
+                className="inline-flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[9px] font-bold"
+                style={{ background: ROLE_COLOR[t.role], color: '#1f1b16' }}
+              >
+                {t.degree}
+              </span>
+              {t.name}
+            </span>
+          ))}
+        </div>
+      </button>
+      <button className="play" tabIndex={show ? 0 : -1} aria-label={`Play ${c.symbol}`} onClick={onPlay}>
+        ▶
+      </button>
+    </Badge>
   )
 }
