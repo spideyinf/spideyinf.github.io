@@ -332,7 +332,7 @@ export default function App() {
       </Card>
 
       <footer className="mt-10 text-center text-xs text-ink-faint">
-        Built with React, styled-components and Tailwind CSS · Guitar samples from{' '}
+        Built with React, styled-components and Tailwind CSS · Piano and guitar samples from{' '}
         <a
           className="underline decoration-rule underline-offset-2 hover:text-ink"
           href="https://github.com/nbrosowsky/tonejs-instruments"

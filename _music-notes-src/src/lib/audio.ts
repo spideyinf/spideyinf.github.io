@@ -7,43 +7,45 @@ let master: GainNode | null = null
 const pluckCache = new Map<number, AudioBuffer>()
 
 /**
- * Recorded acoustic guitar, one sample every 3 half-steps (E2 – D5); notes in
- * between are pitch-shifted from the nearest sample. Samples: tonejs-instruments
- * by Nicholaus P. Brosowsky, CC BY 3.0.
+ * Recorded instruments from tonejs-instruments by Nicholaus P. Brosowsky
+ * (CC BY 3.0). One sample every 3 half-steps; notes in between are
+ * pitch-shifted from the nearest sample, at most 1.5 half-steps.
  */
-const GUITAR_SAMPLES: Record<number, string> = {
-  40: 'E2',
-  43: 'G2',
-  46: 'As2',
-  49: 'Cs3',
-  52: 'E3',
-  55: 'G3',
-  58: 'As3',
-  61: 'Cs4',
-  64: 'E4',
-  67: 'G4',
-  70: 'As4',
-  73: 'Cs5',
-  74: 'D5',
-}
-const guitarBuffers = new Map<number, AudioBuffer>()
-let guitarLoading: Promise<void> | null = null
+const NAMES = ['C', 'Cs', 'D', 'Ds', 'E', 'F', 'Fs', 'G', 'Gs', 'A', 'As', 'B']
+const sampleName = (midi: number) => NAMES[midi % 12] + (Math.floor(midi / 12) - 1)
 
-function loadGuitar(c: AudioContext) {
-  guitarLoading ??= Promise.all(
-    Object.entries(GUITAR_SAMPLES).map(async ([midi, name]) => {
-      const res = await fetch(`${import.meta.env.BASE_URL}samples/guitar/${name}.mp3`)
-      const buf = await c.decodeAudioData(await res.arrayBuffer())
-      guitarBuffers.set(Number(midi), buf)
-    }),
-  ).then(
-    () => undefined,
-    () => {
-      // Keep the synthesized fallback if the samples can't load
-      guitarLoading = null
-    },
-  )
-  return guitarLoading
+const range = (from: number, to: number, step = 3) => {
+  const out: number[] = []
+  for (let m = from; m <= to; m += step) out.push(m)
+  return out
+}
+
+const SAMPLES: Record<Voice, { dir: string; notes: number[]; length: number }> = {
+  // C1 … A7 every 3 half-steps, plus the top C8 (covers all 88 keys)
+  piano: { dir: 'piano', notes: [...range(24, 105), 108], length: 4 },
+  // E2 … C♯5 every 3 half-steps, plus D5
+  guitar: { dir: 'guitar', notes: [...range(40, 73), 74], length: 3.2 },
+}
+
+const buffers: Record<Voice, Map<number, AudioBuffer>> = { piano: new Map(), guitar: new Map() }
+let loading = false
+
+function loadSamples(c: AudioContext) {
+  if (loading) return
+  loading = true
+  for (const voice of ['piano', 'guitar'] as Voice[]) {
+    const { dir, notes } = SAMPLES[voice]
+    // Middle of the range first, so the notes you're likely to play arrive soonest
+    const ordered = [...notes].sort((a, b) => Math.abs(a - 62) - Math.abs(b - 62))
+    for (const midi of ordered) {
+      fetch(`${import.meta.env.BASE_URL}samples/${dir}/${sampleName(midi)}.mp3`)
+        .then((r) => (r.ok ? r.arrayBuffer() : Promise.reject(r.status)))
+        .then((data) => c.decodeAudioData(data))
+        .then((buf) => buffers[voice].set(midi, buf))
+        // A missing sample just means that range keeps the synthesized fallback
+        .catch(() => undefined)
+    }
+  }
 }
 
 function audio() {
@@ -53,21 +55,40 @@ function audio() {
     master.gain.value = 0.7
     const comp = ctx.createDynamicsCompressor()
     master.connect(comp).connect(ctx.destination)
-    void loadGuitar(ctx)
+    loadSamples(ctx)
   }
   if (ctx.state === 'suspended') void ctx.resume()
   return { ctx, out: master! }
 }
 
-/** Starts loading the guitar samples early, e.g. on the first tap anywhere */
+/** Starts loading the samples early, e.g. on the first tap anywhere */
 export function warmUp() {
   audio()
 }
 
-function nearestSample(midi: number) {
+/** Closest loaded sample, if one is near enough to sound natural */
+function nearestSample(voice: Voice, midi: number) {
   let best: number | null = null
-  for (const m of guitarBuffers.keys()) if (best === null || Math.abs(m - midi) < Math.abs(best - midi)) best = m
-  return best
+  for (const m of buffers[voice].keys()) if (best === null || Math.abs(m - midi) < Math.abs(best - midi)) best = m
+  if (best === null) return null
+  // Inside the sampled range stay within 3 half-steps; just past either end
+  // (e.g. guitar frets 13–15 on the high E) stretch the edge sample a little more
+  const { notes } = SAMPLES[voice]
+  const outside = midi < notes[0] || midi > notes[notes.length - 1]
+  return Math.abs(best - midi) <= (outside ? 6 : 3) ? best : null
+}
+
+function playSample(c: AudioContext, out: AudioNode, voice: Voice, midi: number, base: number, when: number) {
+  const len = SAMPLES[voice].length
+  const src = c.createBufferSource()
+  src.buffer = buffers[voice].get(base)!
+  src.playbackRate.value = 2 ** ((midi - base) / 12)
+  const g = c.createGain()
+  g.gain.setValueAtTime(voice === 'guitar' ? 1.1 : 0.9, when)
+  g.gain.setTargetAtTime(0, when + len - 0.6, 0.2)
+  src.connect(g).connect(out)
+  src.start(when)
+  src.stop(when + len + 0.4)
 }
 
 /** Karplus–Strong plucked string, rendered once per pitch and cached */
@@ -106,20 +127,13 @@ export function play(midi: number, voice: Voice, delay = 0) {
   const { ctx: c, out } = audio()
   const now = c.currentTime + delay
 
+  const base = nearestSample(voice, midi)
+  if (base !== null) {
+    playSample(c, out, voice, midi, base, now)
+    return
+  }
+
   if (voice === 'guitar') {
-    const base = nearestSample(midi)
-    if (base !== null) {
-      const src = c.createBufferSource()
-      src.buffer = guitarBuffers.get(base)!
-      src.playbackRate.value = 2 ** ((midi - base) / 12)
-      const g = c.createGain()
-      g.gain.setValueAtTime(1.1, now)
-      g.gain.setTargetAtTime(0, now + 2.6, 0.25)
-      src.connect(g).connect(out)
-      src.start(now)
-      src.stop(now + 3.6)
-      return
-    }
     // Samples still loading: fall back to a synthesized pluck
     const src = c.createBufferSource()
     src.buffer = pluckBuffer(c, midi)
@@ -132,7 +146,7 @@ export function play(midi: number, voice: Voice, delay = 0) {
     return
   }
 
-  // Piano-ish: a few decaying partials, higher ones fade faster
+  // Samples still loading: a synthesized piano-ish tone (a few decaying partials)
   const f = frequency(midi)
   const partials = [
     [1, 0.6, 1.6],
