@@ -170,7 +170,7 @@ export default function App() {
       </div>
 
       {mode === 'chords' ? (
-        <ChordsView c={chord} spelling={spelling} sound={sound} />
+        <ChordsView c={chord} spelling={spelling} sound={sound} showNames={labels} />
       ) : (
         <div className="grid gap-5 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
           {mode === 'explore' ? (
@@ -241,7 +241,7 @@ export default function App() {
           )}
 
           <Card>
-            <CardTitle hint={mode === 'explore' ? 'Tap a line or space to pick a note' : undefined}>Staff</CardTitle>
+            <CardTitle hint={mode === 'explore' ? 'Hover a line or space to learn its name · tap to pick it' : undefined}>Staff</CardTitle>
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
                 <p className="mb-1 text-xs font-medium text-ink-soft">Piano — grand staff</p>
@@ -254,6 +254,8 @@ export default function App() {
                     mode === 'quiz' && !q.answered ? 'var(--ink)' : undefined,
                   )}
                   onPick={(m) => press(m, 'piano')}
+                  showNames={labels && reveal}
+                  tips={reveal || prompt !== 'staff'}
                   pickRange={[PIANO_LOW, PIANO_HIGH]}
                 />
                 <Staff
@@ -265,6 +267,8 @@ export default function App() {
                     mode === 'quiz' && !q.answered ? 'var(--ink)' : undefined,
                   )}
                   onPick={(m) => press(m, 'piano')}
+                  showNames={labels && reveal}
+                  tips={reveal || prompt !== 'staff'}
                   pickRange={[PIANO_LOW, PIANO_HIGH]}
                 />
                 <p className="mt-1 text-xs text-ink-faint">
@@ -280,6 +284,8 @@ export default function App() {
                   clef="treble"
                   notes={single(reveal ? current + 12 : null)}
                   onPick={(m) => press(m - 12, 'guitar')}
+                  showNames={labels && reveal}
+                  tips={reveal || prompt !== 'staff'}
                   pickRange={[52, 91]}
                 />
                 <p className="mt-2 text-xs leading-relaxed text-ink-soft">

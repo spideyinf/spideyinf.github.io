@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
-import { CLEF_BOTTOM, stepToMidi, type Clef } from '../lib/music'
+import { CLEF_BOTTOM, ordinal, stepToMidi, type Clef } from '../lib/music'
 import type { StaffNote } from '../lib/types'
 
 const W = 280
@@ -24,7 +24,41 @@ const Svg = styled.svg<{ $interactive: boolean }>`
     font-family: var(--font-music);
     fill: var(--ink);
   }
+  .tip,
+  .name {
+    font-family: var(--font-sans);
+    pointer-events: none;
+  }
 `
+
+const LETTERS = 'CDEFGAB'
+/** Letters of the lines and spaces, bottom to top, for the memory hint */
+const PATTERN: Record<Clef, { lines: string[]; spaces: string[] }> = {
+  treble: { lines: ['E', 'G', 'B', 'D', 'F'], spaces: ['F', 'A', 'C', 'E'] },
+  bass: { lines: ['G', 'B', 'D', 'F', 'A'], spaces: ['A', 'C', 'E', 'G'] },
+}
+
+const stepName = (step: number, accidental = '') => LETTERS[((step % 7) + 7) % 7] + accidental + Math.floor(step / 7)
+
+/** Where a step sits, in words: "2nd line", "3rd space", "1st ledger line below"… */
+function whereOnStaff(step: number, bottom: number) {
+  const off = step - bottom
+  if (off >= 0 && off <= 8) {
+    return off % 2 === 0
+      ? { text: `${ordinal(off / 2 + 1)} line`, kind: 'lines' as const, index: off / 2 }
+      : { text: `${ordinal((off + 1) / 2)} space`, kind: 'spaces' as const, index: (off - 1) / 2 }
+  }
+  if (off === -1) return { text: 'below the staff', kind: null, index: -1 }
+  if (off === 9) return { text: 'above the staff', kind: null, index: -1 }
+  const below = off < 0
+  const n = below ? Math.floor(-off / 2) : Math.floor((off - 8) / 2)
+  const onLine = off % 2 === 0
+  return {
+    text: onLine ? `ledger line ${n} ${below ? 'below' : 'above'}` : `${below ? 'below' : 'above'} ledger line ${n}`,
+    kind: null,
+    index: -1,
+  }
+}
 
 type Props = {
   clef: Clef
@@ -34,13 +68,19 @@ type Props = {
   onPick?: (midi: number) => void
   /** Restrict which picked notes are allowed */
   pickRange?: [number, number]
+  /** Show the name of each note on the staff */
+  showNames?: boolean
+  /** Hovering a line or space shows its name (off while a quiz asks you to read it) */
+  tips?: boolean
   /** Visible vertical slice of the drawing, to stack staves tightly */
   crop?: [number, number]
   title: string
 }
 
-export function Staff({ clef, notes, onPick, pickRange, crop = [0, H], title }: Props) {
+export function Staff({ clef, notes, onPick, pickRange, crop = [0, H], title, showNames = false, tips = true }: Props) {
   const [hover, setHover] = useState<number | null>(null)
+  const touchTimer = useRef<number | undefined>(undefined)
+  useEffect(() => () => window.clearTimeout(touchTimer.current), [])
   const bottom = CLEF_BOTTOM[clef]
   const yOf = (step: number) => BOTTOM_Y - (step - bottom) * STEP
 
@@ -97,6 +137,9 @@ export function Staff({ clef, notes, onPick, pickRange, crop = [0, H], title }: 
       cols.push({ step: ns[i].step, col })
       accX[i] = NOTE_X - 17 - col * 12
     }
+    // Names of notes a step apart would overlap, so every other one moves right
+    const crowded: boolean[] = ns.map(() => false)
+    for (let i = 1; i < ns.length; i++) crowded[i] = ns[i].step - ns[i - 1].step <= 1 && !crowded[i - 1]
     const stemColor = ns.length === 1 ? ns[0].color : 'var(--ink)'
     return (
       <g opacity={opacity} key={key}>
@@ -110,6 +153,18 @@ export function Staff({ clef, notes, onPick, pickRange, crop = [0, H], title }: 
           return (
             <g key={n.key}>
               <ellipse cx={x} cy={y} rx={6.6} ry={4.8} fill={n.color} transform={`rotate(-22 ${x} ${y})`} />
+              {showNames && opacity === 1 && (
+                <text
+                  className="name"
+                  x={NOTE_X + (anyShift ? 13 : 0) + (stemUp ? 14 : 12) + (crowded[i] ? 20 : 0)}
+                  y={y + 3.5}
+                  fontSize={10}
+                  fontWeight={600}
+                  style={{ fill: n.color }}
+                >
+                  {stepName(n.step, n.accidental)}
+                </text>
+              )}
               {n.accidental && (
                 <text
                   x={accX[i]}
@@ -129,14 +184,61 @@ export function Staff({ clef, notes, onPick, pickRange, crop = [0, H], title }: 
     )
   }
 
+  /** Small card beside the hovered line or space: its name, place and memory hint */
+  const tip = (step: number) => {
+    const placed = sorted.find((n) => n.step === step)
+    const name = stepName(step, placed?.accidental ?? '')
+    const where = whereOnStaff(step, bottom)
+    const hint = where.kind ? PATTERN[clef][where.kind] : null
+    const w = 92
+    const h = hint ? 46 : 33
+    // Sits between the clef and the notes, so it never covers note names or stems
+    const x = 44
+    const y = Math.min(Math.max(yOf(step) - h / 2, view[0] + 2), view[1] - h - 2)
+    return (
+      <g className="tip">
+        <line x1={x + w} x2={NOTE_X - 22} y1={yOf(step)} y2={yOf(step)} stroke="var(--hot)" strokeDasharray="2 2" />
+        <rect x={x} y={y} width={w} height={h} rx={7} fill="var(--ink)" />
+        <text x={x + 8} y={y + 15} fontSize={12} fontWeight={700} style={{ fill: 'var(--card)' }}>
+          {name}
+        </text>
+        <text x={x + 8} y={y + 27} fontSize={8.5} style={{ fill: 'var(--card)', opacity: 0.75 }}>
+          {where.text}
+        </text>
+        {hint && (
+          <text x={x + 8} y={y + 39} fontSize={8.5} letterSpacing={1.5} style={{ fill: 'var(--card)', opacity: 0.55 }}>
+            {hint.map((l, i) => (
+              <tspan
+                key={i}
+                fontWeight={i === where.index ? 800 : 400}
+                style={i === where.index ? { fill: 'var(--hot)', opacity: 1 } : undefined}
+              >
+                {l}
+                {i < hint.length - 1 ? ' ' : ''}
+              </tspan>
+            ))}
+          </text>
+        )}
+      </g>
+    )
+  }
+
   return (
     <Svg
       viewBox={`0 ${view[0]} ${W} ${view[1] - view[0]}`}
       role="img"
       aria-label={title}
       $interactive={!!onPick}
-      onPointerMove={onPick ? (e) => setHover(stepFromEvent(e)) : undefined}
-      onPointerLeave={() => setHover(null)}
+      onPointerMove={onPick || tips ? (e) => setHover(stepFromEvent(e)) : undefined}
+      onPointerDown={(e) => {
+        window.clearTimeout(touchTimer.current)
+        if (onPick || tips) setHover(stepFromEvent(e))
+      }}
+      onPointerLeave={(e) => {
+        // On touch screens keep the tip up for a moment after lifting the finger
+        if (e.pointerType === 'touch') touchTimer.current = window.setTimeout(() => setHover(null), 1800)
+        else setHover(null)
+      }}
       onClick={
         onPick
           ? (e) => {
@@ -163,6 +265,7 @@ export function Staff({ clef, notes, onPick, pickRange, crop = [0, H], title }: 
         !sorted.some((n) => n.step === hover) &&
         chord([{ step: hover, accidental: '', color: 'var(--ink-faint)', key: 'h' }], 0.6, 'hover')}
       {chord(sorted)}
+      {tips && hover != null && tip(hover)}
     </Svg>
   )
 }

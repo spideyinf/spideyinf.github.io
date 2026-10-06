@@ -68,9 +68,9 @@ const Dot = ({ color, children }: { color: string; children: React.ReactNode }) 
   </span>
 )
 
-type Props = { c: ChordState; spelling: Spelling; sound: boolean }
+type Props = { c: ChordState; spelling: Spelling; sound: boolean; showNames: boolean }
 
-export function ChordsView({ c, spelling, sound }: Props) {
+export function ChordsView({ c, spelling, sound, showNames }: Props) {
   const header = useRef<HTMLDivElement>(null)
   const say = (midis: number[], voice: 'piano' | 'guitar', style: 'block' | 'arpeggio' | 'strum') =>
     sound && playChord(midis, voice, style)
@@ -182,16 +182,16 @@ export function ChordsView({ c, spelling, sound }: Props) {
 
       <div className="mt-5 grid gap-5 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
         <Card>
-          <CardTitle hint="Colors match on every instrument">Staff</CardTitle>
+          <CardTitle hint="Colors match on every instrument · hover to name a line or space">Staff</CardTitle>
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
               <p className="mb-1 text-xs font-medium text-ink-soft">Piano — grand staff</p>
-              <Staff title="Treble staff" clef="treble" crop={[18, 132]} notes={treble} />
-              <Staff title="Bass staff" clef="bass" crop={[40, 150]} notes={bass} />
+              <Staff title="Treble staff" clef="treble" crop={[18, 132]} notes={treble} showNames={showNames} />
+              <Staff title="Bass staff" clef="bass" crop={[40, 150]} notes={bass} showNames={showNames} />
             </div>
             <div>
               <p className="mb-1 text-xs font-medium text-ink-soft">Guitar — this shape, written one octave up</p>
-              <Staff title="Guitar staff" clef="treble" notes={guitarStaff} />
+              <Staff title="Guitar staff" clef="treble" notes={guitarStaff} showNames={showNames} />
             </div>
           </div>
           <Legend c={c} />
