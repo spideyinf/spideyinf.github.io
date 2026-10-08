@@ -143,7 +143,7 @@ export function Fretboard({ paint, muted, spelling, showLabels, onPress }: Props
                     textAnchor="middle"
                     fontSize={strong ? 11 : 10}
                     className="lbl"
-                    fill={strong ? '#1f1b16' : fill ? 'var(--ink)' : '#d6d6dc'}
+                    fill={strong ? '#1f1b16' : fill ? 'var(--ink)' : '#e5e7eb'}
                     opacity={fill ? 1 : 0.75}
                   >
                     {p?.label ?? noteName(midi, spelling, false)}

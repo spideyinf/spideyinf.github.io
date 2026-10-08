@@ -19,26 +19,22 @@
 }
 
 :root {
-  /*
-   * Neutral gray scale, darkest to lightest. Each surface steps up in
-   * lightness so cards read clearly against the page without borders
-   * doing all the work.
-   */
-  --gray-950: #121214;
-  --gray-900: #1b1b1e; /* page */
-  --gray-850: #232327;
-  --gray-800: #2b2b30; /* cards */
-  --gray-750: #34343a; /* controls inside cards */
-  --gray-700: #3e3e45; /* hairlines */
-  --gray-500: #6f6f78;
-  --gray-400: #8e8e97;
-  --gray-300: #b4b4bc;
-  --gray-100: #e6e6ea;
-  --gray-50: #f4f4f6;
+  /* Tailwind CSS gray palette */
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+  --gray-950: #030712;
 
-  --paper: var(--gray-900);
-  --card: var(--gray-800);
-  --well: var(--gray-850);
+  --paper: var(--gray-900); /* page */
+  --card: var(--gray-800); /* cards */
+  --well: var(--gray-900); /* controls set into cards */
   --ink: var(--gray-50);
   --ink-soft: var(--gray-300);
   --ink-faint: var(--gray-500);
@@ -51,11 +47,11 @@
 
   --wood: #3f3026;
   --wood-dark: #261d17;
-  --fret: #8e8e97;
-  --string: #c4c4cc;
-  --nut: #dcdce2;
-  --white-key: #ececf0;
-  --black-key: #111113;
+  --fret: var(--gray-400);
+  --string: var(--gray-300);
+  --nut: var(--gray-200);
+  --white-key: var(--gray-100);
+  --black-key: var(--gray-950);
 
   --role-r: #f0a540;
   --role-3: #5cc6a3;
