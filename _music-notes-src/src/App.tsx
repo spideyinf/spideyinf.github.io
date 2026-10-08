@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { ChordsView } from './components/ChordsView'
 import { Fretboard } from './components/Fretboard'
 import { Piano } from './components/Piano'
+import { Grip, Handle, SortableStack } from './components/SortableStack'
 import { Staff } from './components/Staff'
 import { Card, CardTitle, PillButton, Segmented, Switch } from './components/ui'
 import { useChord } from './hooks/useChord'
@@ -241,7 +242,11 @@ export default function App() {
           )}
 
           <Card>
-            <CardTitle hint={mode === 'explore' ? 'Hover a line or space to learn its name · tap to pick it' : undefined}>Staff</CardTitle>
+            <CardTitle
+              hint={mode === 'explore' ? 'Hover a line or space to learn its name · tap to pick it' : undefined}
+            >
+              Staff
+            </CardTitle>
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
                 <p className="mb-1 text-xs font-medium text-ink-soft">Piano — grand staff</p>
@@ -299,43 +304,60 @@ export default function App() {
         </div>
       )}
 
-      <Card className="mt-5">
-        <CardTitle
-          hint={
-            mode === 'chords'
-              ? 'Tap any key to make it the root · labels show note and degree'
-              : '88 keys, A0 – C8 · scroll sideways · each key is one half-step'
+      <div className="mt-5">
+        <SortableStack
+          initial={['piano', 'guitar']}
+          render={(id, handle) =>
+            id === 'piano' ? (
+              <Card>
+                <CardTitle
+                  hint={
+                    mode === 'chords'
+                      ? 'Tap any key to make it the root · labels show note and degree'
+                      : '88 keys, A0 – C8 · scroll sideways · each key is one half-step'
+                  }
+                >
+                  <Handle {...handle}>
+                    <Grip />
+                    Drag
+                  </Handle>
+                  Piano
+                </CardTitle>
+                <Piano
+                  paint={paint}
+                  spelling={spelling}
+                  showLabels={labels}
+                  focus={pianoFocus}
+                  onPress={(m) => press(m, 'piano')}
+                />
+              </Card>
+            ) : (
+              <Card>
+                <CardTitle
+                  hint={
+                    mode === 'chords'
+                      ? 'Big dots = the chord shape (degree shown) · × = string not played'
+                      : 'Standard tuning E A D G B E · each fret is one half-step'
+                  }
+                >
+                  <Handle {...handle}>
+                    <Grip />
+                    Drag
+                  </Handle>
+                  Guitar
+                </CardTitle>
+                <Fretboard
+                  paint={paint}
+                  muted={mode === 'chords' ? chord.muted : undefined}
+                  spelling={spelling}
+                  showLabels={labels}
+                  onPress={(m) => press(m, 'guitar')}
+                />
+              </Card>
+            )
           }
-        >
-          Piano
-        </CardTitle>
-        <Piano
-          paint={paint}
-          spelling={spelling}
-          showLabels={labels}
-          focus={pianoFocus}
-          onPress={(m) => press(m, 'piano')}
         />
-      </Card>
-
-      <Card className="mt-5">
-        <CardTitle
-          hint={
-            mode === 'chords'
-              ? 'Big dots = the chord shape (degree shown) · × = string not played'
-              : 'Standard tuning E A D G B E · each fret is one half-step'
-          }
-        >
-          Guitar
-        </CardTitle>
-        <Fretboard
-          paint={paint}
-          muted={mode === 'chords' ? chord.muted : undefined}
-          spelling={spelling}
-          showLabels={labels}
-          onPress={(m) => press(m, 'guitar')}
-        />
-      </Card>
+      </div>
 
       <footer className="mt-10 text-center text-xs text-ink-faint">
         Built with React, styled-components and Tailwind CSS · Piano and guitar samples from{' '}

@@ -18,7 +18,7 @@ const Track = styled.div`
   display: inline-flex;
   padding: 3px;
   border-radius: 999px;
-  background: var(--paper);
+  background: var(--well);
   border: 1px solid var(--rule);
 `
 

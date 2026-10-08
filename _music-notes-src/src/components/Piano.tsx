@@ -43,7 +43,7 @@ const Key = styled.button<{ $black?: boolean; $paint?: Paint; $left?: number }>`
           border-radius: 0 0 4px 4px;
           padding-bottom: 6px;
           background: ${p.$paint?.fill ?? 'var(--black-key)'};
-          color: ${p.$paint?.strong ? DARK_TEXT : p.$paint ? 'var(--ink)' : '#d8cfbf'};
+          color: ${p.$paint?.strong ? DARK_TEXT : p.$paint ? 'var(--ink)' : '#9a9aa3'};
           box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.35);
         `
       : css`
@@ -52,7 +52,7 @@ const Key = styled.button<{ $black?: boolean; $paint?: Paint; $left?: number }>`
           flex: none;
           border-radius: 0 0 6px 6px;
           background: ${p.$paint?.fill ?? 'var(--white-key)'};
-          color: ${p.$paint?.strong ? DARK_TEXT : p.$paint ? 'var(--ink)' : '#8c806f'};
+          color: ${p.$paint?.strong ? DARK_TEXT : p.$paint ? 'var(--ink)' : '#7a7a83'};
           box-shadow:
             inset -1px 0 0 rgba(0, 0, 0, 0.18),
             inset 0 -5px 0 rgba(0, 0, 0, 0.08);

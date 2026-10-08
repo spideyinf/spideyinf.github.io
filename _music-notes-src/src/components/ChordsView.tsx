@@ -284,7 +284,7 @@ function SemitoneStrip({ c }: { c: ChordState }) {
               key={i}
               className="flex h-9 items-center justify-center rounded-md text-[11px] font-bold"
               style={{
-                background: on ? ROLE_COLOR[t.role] : t ? 'var(--rule)' : 'var(--paper)',
+                background: on ? ROLE_COLOR[t.role] : t ? 'var(--rule)' : 'var(--well)',
                 color: on ? '#1f1b16' : 'var(--ink-faint)',
                 border: '1px solid var(--rule)',
               }}
