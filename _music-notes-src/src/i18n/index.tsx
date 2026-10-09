@@ -4,10 +4,6 @@ import { en, type MessageId } from './en'
 import { vi } from './vi'
 
 export type Locale = 'en' | 'vi'
-export const LOCALES: { value: Locale; label: string }[] = [
-  { value: 'en', label: 'EN' },
-  { value: 'vi', label: 'VI' },
-]
 const MESSAGES: Record<Locale, Record<MessageId, string>> = { en, vi }
 const KEY = 'note-map:locale'
 

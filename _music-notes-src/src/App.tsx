@@ -7,7 +7,8 @@ import { Grip, Handle, SortableStack } from './components/SortableStack'
 import { Staff } from './components/Staff'
 import { Card, CardTitle, PillButton, Segmented, Switch } from './components/ui'
 import { useChord } from './hooks/useChord'
-import { LOCALES, useLocale, useT } from './i18n'
+import { LanguageSwitch } from './components/LanguageSwitch'
+import { useT } from './i18n'
 import { LEVELS, useQuiz, type Level, type Prompt } from './hooks/useQuiz'
 import { play, playChord, warmUp, type Voice } from './lib/audio'
 import {
@@ -30,7 +31,6 @@ type Mode = 'explore' | 'chords' | 'quiz'
 
 export default function App() {
   const t = useT()
-  const { locale, setLocale } = useLocale()
   const fretLabel = (f: number) => (f === 0 ? t('fret.open') : t('fret.n', { n: f }))
   const [mode, setMode] = useState<Mode>('explore')
   const [spelling, setSpelling] = useState<Spelling>('sharp')
@@ -124,26 +124,26 @@ export default function App() {
   }, [chord.rootPc, chord.quality.id, chord.inversion])
 
   return (
-    <div className="mx-auto max-w-6xl px-4 pb-16 pt-8 sm:px-6">
+    <div className="mx-auto max-w-6xl px-4 pb-16 pt-5 sm:px-6">
+      <div className="mb-3 flex items-center justify-between gap-4">
+        <p className="text-xs font-medium uppercase tracking-[0.18em] text-hot">{t('app.eyebrow')}</p>
+        <LanguageSwitch />
+      </div>
       <header className="mb-6 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="mb-1 text-xs font-medium uppercase tracking-[0.18em] text-hot">{t('app.eyebrow')}</p>
           <h1 className="font-display text-4xl font-semibold leading-tight sm:text-5xl">{t('app.title')}</h1>
           <p className="mt-2 max-w-xl text-ink-soft">{t('app.tagline')}</p>
         </div>
-        <div className="flex flex-wrap items-center gap-3">
-          <Segmented
-            label={t('mode.label')}
-            value={mode}
-            onChange={setMode}
-            options={[
-              { value: 'explore', label: t('mode.explore') },
-              { value: 'chords', label: t('mode.chords') },
-              { value: 'quiz', label: t('mode.quiz') },
-            ]}
-          />
-          <Segmented label={t('lang.label')} value={locale} onChange={setLocale} options={LOCALES} />
-        </div>
+        <Segmented
+          label={t('mode.label')}
+          value={mode}
+          onChange={setMode}
+          options={[
+            { value: 'explore', label: t('mode.explore') },
+            { value: 'chords', label: t('mode.chords') },
+            { value: 'quiz', label: t('mode.quiz') },
+          ]}
+        />
       </header>
 
       <div className="mb-5 flex flex-wrap items-center gap-x-6 gap-y-3 rounded-2xl border border-rule bg-card px-4 py-3">
