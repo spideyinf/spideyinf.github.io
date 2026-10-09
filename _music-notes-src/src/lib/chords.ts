@@ -15,12 +15,9 @@ export type Tone = {
 
 export type Quality = {
   id: string
-  name: string
   /** Suffix after the root, e.g. "m7" */
   suffix: string
   tones: Tone[]
-  sound: string
-  rule: string
 }
 
 const R: Tone = { semis: 0, degree: 'R', role: 'R', letters: 0 }
@@ -37,91 +34,50 @@ const M7: Tone = { semis: 11, degree: '7', role: '7', letters: 6 }
 export const QUALITIES: Quality[] = [
   {
     id: 'maj',
-    name: 'Major',
     suffix: '',
     tones: [R, M3, P5],
-    sound: 'Bright, stable, “home”. The chord most songs start and end on.',
-    rule: 'Major 3rd (4 half-steps) on the bottom, minor 3rd (3) on top.',
   },
   {
     id: 'min',
-    name: 'Minor',
     suffix: 'm',
     tones: [R, m3, P5],
-    sound: 'Darker, sad or serious. Only one note differs from major.',
-    rule: 'Lower the major chord’s 3rd by one half-step: minor 3rd (3) then major 3rd (4).',
   },
   {
     id: 'dim',
-    name: 'Diminished',
     suffix: 'dim',
     tones: [R, m3, d5],
-    sound: 'Tense and unstable — it wants to move to another chord.',
-    rule: 'Two minor 3rds stacked (3 + 3). Like minor, but the 5th is lowered too.',
   },
   {
     id: 'aug',
-    name: 'Augmented',
     suffix: 'aug',
     tones: [R, M3, A5],
-    sound: 'Dreamy and floating, a bit eerie. Used as a passing chord.',
-    rule: 'Two major 3rds stacked (4 + 4). Like major, but the 5th is raised.',
   },
   {
     id: 'sus2',
-    name: 'Suspended 2nd',
     suffix: 'sus2',
     tones: [R, M2, P5],
-    sound: 'Open and airy — neither happy nor sad, because there’s no 3rd.',
-    rule: 'Replace the 3rd with the 2nd (2 half-steps above the root).',
   },
   {
     id: 'sus4',
-    name: 'Suspended 4th',
     suffix: 'sus4',
     tones: [R, P4, P5],
-    sound: 'Hanging tension that usually falls back to the major chord (4 → 3).',
-    rule: 'Replace the 3rd with the 4th (5 half-steps above the root).',
   },
   {
     id: '7',
-    name: 'Dominant 7th',
     suffix: '7',
     tones: [R, M3, P5, m7],
-    sound: 'Bluesy and restless; pulls hard toward the chord a 5th below (G7 → C).',
-    rule: 'Major triad plus a minor 7th (10 half-steps above the root).',
   },
   {
     id: 'maj7',
-    name: 'Major 7th',
     suffix: 'maj7',
     tones: [R, M3, P5, M7],
-    sound: 'Soft, warm and jazzy. Common in ballads, bossa nova and city pop.',
-    rule: 'Major triad plus a major 7th — one half-step below the octave.',
   },
   {
     id: 'm7',
-    name: 'Minor 7th',
     suffix: 'm7',
     tones: [R, m3, P5, m7],
-    sound: 'Mellow and smooth; a staple of soul, R&B and jazz.',
-    rule: 'Minor triad plus a minor 7th (10 half-steps above the root).',
   },
 ]
-
-export const INTERVAL_NAMES: Record<number, string> = {
-  2: 'major 2nd',
-  3: 'minor 3rd',
-  4: 'major 3rd',
-  5: 'perfect 4th',
-  6: 'diminished 5th',
-  7: 'perfect 5th',
-  8: 'augmented 5th',
-  10: 'minor 7th',
-  11: 'major 7th',
-}
-
-export const INVERSIONS = ['Root position', '1st inversion', '2nd inversion', '3rd inversion']
 
 const LETTERS = ['C', 'D', 'E', 'F', 'G', 'A', 'B']
 const NATURAL = [0, 2, 4, 5, 7, 9, 11]

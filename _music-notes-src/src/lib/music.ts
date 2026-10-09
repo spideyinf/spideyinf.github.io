@@ -1,10 +1,11 @@
+import type { T } from '../i18n'
+import type { MessageId } from '../i18n/en'
 export type Spelling = 'sharp' | 'flat'
 export type Clef = 'treble' | 'bass'
 
 const SHARP_NAMES = ['C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B']
 const FLAT_NAMES = ['C', 'D♭', 'D', 'E♭', 'E', 'F', 'G♭', 'G', 'A♭', 'A', 'B♭', 'B']
 const LETTERS = ['C', 'D', 'E', 'F', 'G', 'A', 'B'] as const
-const SOLFEGE: Record<string, string> = { C: 'Do', D: 'Re', E: 'Mi', F: 'Fa', G: 'Sol', A: 'La', B: 'Si' }
 
 /** Full 88-key piano: A0 – C8 */
 export const PIANO_LOW = 21
@@ -30,9 +31,10 @@ export function noteName(midi: number, spelling: Spelling, withOctave = true) {
   return withOctave ? `${n}${octaveOf(midi)}` : n
 }
 
-export function solfege(midi: number, spelling: Spelling) {
+/** Do / Re / Mi… (Đô / Rê / Mi… in Vietnamese), keeping any ♯ or ♭ */
+export function solfege(midi: number, spelling: Spelling, t: T) {
   const n = noteName(midi, spelling, false)
-  return SOLFEGE[n[0]] + n.slice(1)
+  return t(`solfege.${n[0]}` as MessageId) + n.slice(1)
 }
 
 export const frequency = (midi: number) => 440 * 2 ** ((midi - 69) / 12)
@@ -83,26 +85,20 @@ export function guitarPositions(midi: number) {
 
 export const midiAt = (stringIdx: number, fret: number) => GUITAR_STRINGS[stringIdx].midi + fret
 
-export const ordinal = (n: number) =>
-  `${n}${n % 10 === 1 && n !== 11 ? 'st' : n % 10 === 2 && n !== 12 ? 'nd' : n % 10 === 3 && n !== 13 ? 'rd' : 'th'}`
-
 /** Plain-language position, e.g. "2nd line of the treble staff" */
-export function describeStaff(midi: number, clef: Clef, spelling: Spelling) {
+export function describeStaff(midi: number, clef: Clef, spelling: Spelling, t: T) {
   const { step } = staffSpelling(midi, spelling)
   const off = step - CLEF_BOTTOM[clef]
-  const where = `${clef} staff`
   if (off >= 0 && off <= 8) {
     return off % 2 === 0
-      ? `${ordinal(off / 2 + 1)} line of the ${where}`
-      : `${ordinal((off + 1) / 2)} space of the ${where}`
+      ? t('desc.line', { ord: t('ord', { n: off / 2 + 1 }), clef })
+      : t('desc.space', { ord: t('ord', { n: (off + 1) / 2 }), clef })
   }
-  if (off === -1) return `just below the ${where}`
-  if (off === 9) return `just above the ${where}`
+  if (off === -1) return t('desc.justBelow', { clef })
+  if (off === 9) return t('desc.justAbove', { clef })
   const dir = off < 0 ? 'below' : 'above'
   const n = off < 0 ? Math.floor(-off / 2) : Math.floor((off - 8) / 2)
-  return off % 2 === 0
-    ? `on the ${ordinal(n)} ledger line ${dir} the ${where}`
-    : `just ${dir} the ${ordinal(n)} ledger line ${dir} the ${where}`
+  return t(off % 2 === 0 ? 'desc.ledgerOn' : 'desc.ledgerNear', { ord: t('ord', { n }), dir, clef })
 }
 
 export const STAFF_LINE_NAMES: Record<Clef, { lines: string; spaces: string }> = {

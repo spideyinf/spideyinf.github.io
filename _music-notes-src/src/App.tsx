@@ -1,3 +1,4 @@
+import { FormattedMessage } from 'react-intl'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { ChordsView } from './components/ChordsView'
 import { Fretboard } from './components/Fretboard'
@@ -6,6 +7,7 @@ import { Grip, Handle, SortableStack } from './components/SortableStack'
 import { Staff } from './components/Staff'
 import { Card, CardTitle, PillButton, Segmented, Switch } from './components/ui'
 import { useChord } from './hooks/useChord'
+import { LOCALES, useLocale, useT } from './i18n'
 import { LEVELS, useQuiz, type Level, type Prompt } from './hooks/useQuiz'
 import { play, playChord, warmUp, type Voice } from './lib/audio'
 import {
@@ -14,7 +16,6 @@ import {
   frequency,
   guitarPositions,
   noteName,
-  ordinal,
   PIANO_HIGH,
   PIANO_LOW,
   pitchClass,
@@ -28,6 +29,9 @@ import { markPaint, type MarkFn, type PaintFn, type StaffNote } from './lib/type
 type Mode = 'explore' | 'chords' | 'quiz'
 
 export default function App() {
+  const t = useT()
+  const { locale, setLocale } = useLocale()
+  const fretLabel = (f: number) => (f === 0 ? t('fret.open') : t('fret.n', { n: f }))
   const [mode, setMode] = useState<Mode>('explore')
   const [spelling, setSpelling] = useState<Spelling>('sharp')
   const [labels, setLabels] = useState(false)
@@ -123,50 +127,50 @@ export default function App() {
     <div className="mx-auto max-w-6xl px-4 pb-16 pt-8 sm:px-6">
       <header className="mb-6 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="mb-1 text-xs font-medium uppercase tracking-[0.18em] text-hot">Piano · staff · guitar</p>
-          <h1 className="font-display text-4xl font-semibold leading-tight sm:text-5xl">Note map</h1>
-          <p className="mt-2 max-w-xl text-ink-soft">
-            Tap a key, a fret, or a spot on the staff — the same note or chord lights up everywhere, so you learn both
-            instruments from one picture.
-          </p>
+          <p className="mb-1 text-xs font-medium uppercase tracking-[0.18em] text-hot">{t('app.eyebrow')}</p>
+          <h1 className="font-display text-4xl font-semibold leading-tight sm:text-5xl">{t('app.title')}</h1>
+          <p className="mt-2 max-w-xl text-ink-soft">{t('app.tagline')}</p>
         </div>
-        <Segmented
-          label="Mode"
-          value={mode}
-          onChange={setMode}
-          options={[
-            { value: 'explore', label: 'Notes' },
-            { value: 'chords', label: 'Chords' },
-            { value: 'quiz', label: 'Quiz' },
-          ]}
-        />
+        <div className="flex flex-wrap items-center gap-3">
+          <Segmented
+            label={t('mode.label')}
+            value={mode}
+            onChange={setMode}
+            options={[
+              { value: 'explore', label: t('mode.explore') },
+              { value: 'chords', label: t('mode.chords') },
+              { value: 'quiz', label: t('mode.quiz') },
+            ]}
+          />
+          <Segmented label={t('lang.label')} value={locale} onChange={setLocale} options={LOCALES} />
+        </div>
       </header>
 
       <div className="mb-5 flex flex-wrap items-center gap-x-6 gap-y-3 rounded-2xl border border-rule bg-card px-4 py-3">
         <Segmented
-          label="Accidentals"
+          label={t('settings.accidentals')}
           value={spelling}
           onChange={setSpelling}
           options={[
-            { value: 'sharp', label: '♯ Sharps' },
-            { value: 'flat', label: '♭ Flats' },
+            { value: 'sharp', label: t('settings.sharps') },
+            { value: 'flat', label: t('settings.flats') },
           ]}
         />
         <Switch on={labels} onChange={setLabels}>
-          All note names
+          {t('settings.allNames')}
         </Switch>
         {mode === 'explore' && (
           <Switch on={allOctaves} onChange={setAllOctaves}>
-            Same note, other octaves
+            {t('settings.octaves')}
           </Switch>
         )}
         {mode === 'chords' && (
           <Switch on={chord.everywhere} onChange={chord.setEverywhere}>
-            Chord tones everywhere
+            {t('settings.everywhere')}
           </Switch>
         )}
         <Switch on={sound} onChange={setSound}>
-          Sound
+          {t('settings.sound')}
         </Switch>
       </div>
 
@@ -183,47 +187,53 @@ export default function App() {
                     <span className="text-4xl text-ink-faint">{Math.floor(current / 12) - 1}</span>
                   </div>
                   <p className="mt-2 text-sm text-ink-soft">
-                    {solfege(current, spelling)} · {frequency(current).toFixed(1)} Hz
+                    {solfege(current, spelling, t)} · {frequency(current).toFixed(1)} Hz
                     {current === 60 && (
-                      <span className="ml-2 rounded-full bg-hot-soft px-2 py-0.5 text-xs text-ink">Middle C</span>
+                      <span className="ml-2 rounded-full bg-hot-soft px-2 py-0.5 text-xs text-ink">
+                        {t('note.middleC')}
+                      </span>
                     )}
                   </p>
                 </div>
                 <div className="flex flex-col gap-2">
-                  <PillButton onClick={() => play(current, 'piano')}>▶ Piano</PillButton>
-                  <PillButton onClick={() => play(current, 'guitar')}>▶ Guitar</PillButton>
+                  <PillButton onClick={() => play(current, 'piano')}>{t('play.piano')}</PillButton>
+                  <PillButton onClick={() => play(current, 'guitar')}>{t('play.guitar')}</PillButton>
                 </div>
               </div>
 
               <dl className="mt-5 space-y-3 text-sm">
                 <div>
-                  <dt className="text-xs font-medium uppercase tracking-wider text-ink-faint">Staff (sounding)</dt>
-                  <dd className="mt-0.5">{describeStaff(current, clef, spelling)}</dd>
+                  <dt className="text-xs font-medium uppercase tracking-wider text-ink-faint">
+                    {t('note.staffSounding')}
+                  </dt>
+                  <dd className="mt-0.5">{describeStaff(current, clef, spelling, t)}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs font-medium uppercase tracking-wider text-ink-faint">Guitar sheet music</dt>
+                  <dt className="text-xs font-medium uppercase tracking-wider text-ink-faint">
+                    {t('note.guitarSheet')}
+                  </dt>
                   <dd className="mt-0.5">
-                    Written an octave higher: {describeStaff(current + 12, 'treble', spelling)}
+                    {t('note.writtenHigher', { where: describeStaff(current + 12, 'treble', spelling, t) })}
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-xs font-medium uppercase tracking-wider text-ink-faint">On guitar</dt>
+                  <dt className="text-xs font-medium uppercase tracking-wider text-ink-faint">{t('note.onGuitar')}</dt>
                   <dd className="mt-1 flex flex-wrap gap-1.5">
                     {positions.length ? (
                       positions.map((p) => (
                         <span key={p.string} className="rounded-full border border-rule px-2.5 py-0.5 text-xs">
-                          {ordinal(p.number)} string · {p.fret === 0 ? 'open' : `fret ${p.fret}`}
+                          {t('note.position', { ord: t('ord', { n: p.number }), fret: fretLabel(p.fret) })}
                         </span>
                       ))
                     ) : (
                       <span className="text-ink-soft">
-                        {current < 40 ? 'Below the lowest guitar string (E2)' : 'Above fret 15 on the high E string'}
+                        {current < 40 ? t('note.belowGuitar') : t('note.aboveGuitar')}
                       </span>
                     )}
                   </dd>
                 </div>
               </dl>
-              <p className="mt-auto pt-5 text-xs text-ink-faint">Tip: use ← → to step by half-steps.</p>
+              <p className="mt-auto pt-5 text-xs text-ink-faint">{t('note.tip')}</p>
             </Card>
           ) : (
             <QuizCard
@@ -242,16 +252,12 @@ export default function App() {
           )}
 
           <Card>
-            <CardTitle
-              hint={mode === 'explore' ? 'Hover a line or space to learn its name · tap to pick it' : undefined}
-            >
-              Staff
-            </CardTitle>
+            <CardTitle hint={mode === 'explore' ? t('staff.hint') : undefined}>{t('staff.title')}</CardTitle>
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <p className="mb-1 text-xs font-medium text-ink-soft">Piano — grand staff</p>
+                <p className="mb-1 text-xs font-medium text-ink-soft">{t('staff.pianoGrand')}</p>
                 <Staff
-                  title="Treble staff"
+                  title={t('staff.treble')}
                   clef="treble"
                   crop={[18, 132]}
                   notes={single(
@@ -264,7 +270,7 @@ export default function App() {
                   pickRange={[PIANO_LOW, PIANO_HIGH]}
                 />
                 <Staff
-                  title="Bass staff"
+                  title={t('staff.bass')}
                   clef="bass"
                   crop={[40, 150]}
                   notes={single(
@@ -277,15 +283,15 @@ export default function App() {
                   pickRange={[PIANO_LOW, PIANO_HIGH]}
                 />
                 <p className="mt-1 text-xs text-ink-faint">
-                  Treble lines {STAFF_LINE_NAMES.treble.lines} · spaces {STAFF_LINE_NAMES.treble.spaces}
+                  {t('staff.trebleNames', STAFF_LINE_NAMES.treble)}
                   <br />
-                  Bass lines {STAFF_LINE_NAMES.bass.lines} · spaces {STAFF_LINE_NAMES.bass.spaces}
+                  {t('staff.bassNames', STAFF_LINE_NAMES.bass)}
                 </p>
               </div>
               <div>
-                <p className="mb-1 text-xs font-medium text-ink-soft">Guitar — written one octave up</p>
+                <p className="mb-1 text-xs font-medium text-ink-soft">{t('staff.guitarWritten')}</p>
                 <Staff
-                  title="Guitar staff"
+                  title={t('staff.guitar')}
                   clef="treble"
                   notes={single(reveal ? current + 12 : null)}
                   onPick={(m) => press(m - 12, 'guitar')}
@@ -293,11 +299,7 @@ export default function App() {
                   tips={reveal || prompt !== 'staff'}
                   pickRange={[52, 91]}
                 />
-                <p className="mt-2 text-xs leading-relaxed text-ink-soft">
-                  Guitar parts use a treble clef but sound an octave lower than written, so they stay on the staff
-                  instead of piling up ledger lines. A guitar note written in the 3rd space (C5) sounds like piano's
-                  middle C (C4).
-                </p>
+                <p className="mt-2 text-xs leading-relaxed text-ink-soft">{t('staff.guitarExplain')}</p>
               </div>
             </div>
           </Card>
@@ -307,21 +309,15 @@ export default function App() {
       <div className="mt-5">
         <SortableStack
           initial={['piano', 'guitar']}
+          label={(id, dir) => t('drag.label', { name: t(id === 'piano' ? 'piano.title' : 'guitar.title'), dir })}
           render={(id, handle) =>
             id === 'piano' ? (
               <Card>
-                <CardTitle
-                  hint={
-                    mode === 'chords'
-                      ? 'Tap any key to make it the root · labels show note and degree'
-                      : '88 keys, A0 – C8 · scroll sideways · each key is one half-step'
-                  }
-                >
+                <CardTitle hint={mode === 'chords' ? t('piano.hintChords') : t('piano.hint')}>
                   <Handle {...handle}>
                     <Grip />
-                    Drag
+                    {t('piano.title')}
                   </Handle>
-                  Piano
                 </CardTitle>
                 <Piano
                   paint={paint}
@@ -333,18 +329,11 @@ export default function App() {
               </Card>
             ) : (
               <Card>
-                <CardTitle
-                  hint={
-                    mode === 'chords'
-                      ? 'Big dots = the chord shape (degree shown) · × = string not played'
-                      : 'Standard tuning E A D G B E · each fret is one half-step'
-                  }
-                >
+                <CardTitle hint={mode === 'chords' ? t('guitar.hintChords') : t('guitar.hint')}>
                   <Handle {...handle}>
                     <Grip />
-                    Drag
+                    {t('guitar.title')}
                   </Handle>
-                  Guitar
                 </CardTitle>
                 <Fretboard
                   paint={paint}
@@ -360,20 +349,27 @@ export default function App() {
       </div>
 
       <footer className="mt-10 text-center text-xs text-ink-faint">
-        Built with React, styled-components and Tailwind CSS · Piano and guitar samples from{' '}
-        <a
-          className="underline decoration-rule underline-offset-2 hover:text-ink"
-          href="https://github.com/nbrosowsky/tonejs-instruments"
-        >
-          tonejs-instruments
-        </a>{' '}
-        (CC BY 3.0) ·{' '}
-        <a
-          className="underline decoration-rule underline-offset-2 hover:text-ink"
-          href="https://github.com/spideyinf/spideyinf.github.io"
-        >
-          source
-        </a>
+        <FormattedMessage
+          id="footer.text"
+          values={{
+            samples: (
+              <a
+                className="underline decoration-rule underline-offset-2 hover:text-ink"
+                href="https://github.com/nbrosowsky/tonejs-instruments"
+              >
+                tonejs-instruments
+              </a>
+            ),
+            source: (
+              <a
+                className="underline decoration-rule underline-offset-2 hover:text-ink"
+                href="https://github.com/spideyinf/spideyinf.github.io"
+              >
+                {t('footer.source')}
+              </a>
+            ),
+          }}
+        />
       </footer>
     </div>
   )
@@ -392,35 +388,37 @@ function QuizCard(props: {
   quiz: ReturnType<typeof useQuiz>
   replay: () => void
 }) {
+  const t = useT()
   const { prompt, quiz, spelling } = props
   const { q } = quiz
   const name = noteName(q.target, spelling, !props.anyOctave)
   const ask =
     prompt === 'staff' ? (
-      'Find the note shown on the staff'
+      t('quiz.askStaff')
     ) : prompt === 'name' ? (
-      <>
-        Find <span className="font-display text-2xl font-semibold text-ink">{name}</span>
-      </>
+      <FormattedMessage
+        id="quiz.askName"
+        values={{ note: <span className="font-display text-2xl font-semibold text-ink">{name}</span> }}
+      />
     ) : (
-      'Listen, then find the note'
+      t('quiz.askEar')
     )
 
   return (
     <Card className="flex flex-col">
       <div className="flex flex-wrap items-center gap-3">
         <Segmented
-          label="Prompt"
+          label={t('quiz.prompt')}
           value={prompt}
           onChange={props.setPrompt}
           options={[
-            { value: 'staff', label: 'Read' },
-            { value: 'name', label: 'Name' },
-            { value: 'sound', label: 'Ear' },
+            { value: 'staff', label: t('quiz.read') },
+            { value: 'name', label: t('quiz.name') },
+            { value: 'sound', label: t('quiz.ear') },
           ]}
         />
         <Segmented
-          label="Range"
+          label={t('quiz.range')}
           value={props.level}
           onChange={props.setLevel}
           options={(Object.keys(LEVELS) as Level[]).map((l) => ({ value: l, label: LEVELS[l].label }))}
@@ -428,48 +426,55 @@ function QuizCard(props: {
       </div>
       <div className="mt-2 flex flex-wrap gap-x-5">
         <Switch on={!props.naturalsOnly} onChange={(v) => props.setNaturalsOnly(!v)}>
-          Include ♯/♭
+          {t('quiz.accidentals')}
         </Switch>
         <Switch on={props.anyOctave} onChange={props.setAnyOctave}>
-          Any octave counts
+          {t('quiz.anyOctave')}
         </Switch>
       </div>
 
       <div className="my-6 min-h-[88px]" aria-live="polite">
         <p className="text-lg text-ink-soft">{ask}</p>
-        <p className="mt-1 text-sm text-ink-faint">Answer on the piano, the fretboard, or the staff.</p>
+        <p className="mt-1 text-sm text-ink-faint">{t('quiz.answerOn')}</p>
         {q.answered ? (
           <p className={`mt-3 font-medium ${q.solved ? 'text-good' : 'text-hot'}`}>
-            {q.solved ? `${noteName(q.target, spelling)} ✓` : `It's ${noteName(q.target, spelling)}`}{' '}
+            {t(q.solved ? 'quiz.correct' : 'quiz.itIs', { note: noteName(q.target, spelling) })}{' '}
             <span className="font-normal text-ink-soft">
               —{' '}
               {guitarPositions(q.target)
-                .map((p) => `${ordinal(p.number)} string ${p.fret === 0 ? 'open' : `fret ${p.fret}`}`)
+                .map((p) =>
+                  t('note.position', {
+                    ord: t('ord', { n: p.number }),
+                    fret: p.fret === 0 ? t('fret.open') : t('fret.n', { n: p.fret }),
+                  }),
+                )
                 .join(', ')}
             </span>
           </p>
         ) : (
-          q.wrong != null && <p className="mt-3 font-medium text-bad">Not {noteName(q.wrong, spelling)} — try again</p>
+          q.wrong != null && (
+            <p className="mt-3 font-medium text-bad">{t('quiz.wrong', { note: noteName(q.wrong, spelling) })}</p>
+          )
         )}
       </div>
 
       <div className="mt-auto flex flex-wrap items-end justify-between gap-4">
         <div className="flex gap-6">
-          <Stat label="Score" value={`${q.score}/${q.total}`} />
-          <Stat label="Streak" value={q.streak} />
-          <Stat label="Best" value={q.best} />
+          <Stat label={t('quiz.score')} value={`${q.score}/${q.total}`} />
+          <Stat label={t('quiz.streak')} value={q.streak} />
+          <Stat label={t('quiz.best')} value={q.best} />
         </div>
         <div className="flex flex-wrap gap-2">
-          {prompt === 'sound' && <PillButton onClick={props.replay}>▶ Replay</PillButton>}
-          {!q.answered && <PillButton onClick={quiz.reveal}>Show me</PillButton>}
+          {prompt === 'sound' && <PillButton onClick={props.replay}>{t('quiz.replay')}</PillButton>}
+          {!q.answered && <PillButton onClick={quiz.reveal}>{t('quiz.showMe')}</PillButton>}
           <PillButton $primary onClick={quiz.next}>
-            Next →
+            {t('quiz.next')}
           </PillButton>
         </div>
       </div>
       {q.total > 0 && (
         <button className="mt-3 self-start text-xs text-ink-faint underline underline-offset-2" onClick={quiz.reset}>
-          Reset score
+          {t('quiz.reset')}
         </button>
       )}
     </Card>

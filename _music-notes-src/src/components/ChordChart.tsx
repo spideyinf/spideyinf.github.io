@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { useT } from '../i18n'
 import type { Shape } from '../lib/chords'
 import { GUITAR_STRINGS } from '../lib/music'
 
@@ -27,6 +28,7 @@ type Props = {
 
 /** Classic chord-chart view: strings vertical (low E on the left), frets horizontal */
 export function ChordChart({ shape, dot }: Props) {
+  const t = useT()
   const fretted = shape.frets.filter((f): f is number => f !== null && f > 0)
   const maxF = fretted.length ? Math.max(...fretted) : 0
   const start = maxF <= FRETS_SHOWN ? 1 : Math.min(...fretted)
@@ -37,7 +39,7 @@ export function ChordChart({ shape, dot }: Props) {
   const height = TOP + FRETS_SHOWN * ROW + 34
 
   return (
-    <Svg viewBox={`0 0 ${width} ${height}`} role="img" aria-label="Chord chart">
+    <Svg viewBox={`0 0 ${width} ${height}`} role="img" aria-label={t('chart.aria')}>
       {/* nut or position marker */}
       {start === 1 ? (
         <rect x={LEFT - 2} y={TOP - 5} width={5 * COL + 4} height={6} rx={1} fill="var(--ink)" />
@@ -50,7 +52,7 @@ export function ChordChart({ shape, dot }: Props) {
           fontWeight={600}
           fill="var(--ink-soft)"
         >
-          {start}fr
+          {t('chart.fret', { n: start })}
         </text>
       )}
       {Array.from({ length: FRETS_SHOWN + 1 }, (_, i) => (

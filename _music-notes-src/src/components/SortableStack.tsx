@@ -35,26 +35,32 @@ const Item = styled.div<{ $dragging: boolean }>`
   `}
 `
 
+/** Drag handle that doubles as the card title: grip dots + the instrument name */
 export const Handle = styled.button`
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  margin-right: 8px;
-  padding: 4px 8px 4px 6px;
-  border: 1px solid var(--rule);
-  border-radius: 8px;
-  background: var(--well);
-  color: var(--ink-soft);
-  font-family: var(--font-sans);
-  font-size: 11px;
-  font-weight: 500;
-  vertical-align: middle;
+  gap: 8px;
+  margin: -4px 0 -4px -8px;
+  padding: 4px 10px 4px 8px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
   cursor: grab;
   touch-action: none;
   user-select: none;
-  &:hover {
-    color: var(--ink);
-    border-color: var(--ink-faint);
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+  &:hover,
+  &:focus-visible {
+    background: var(--well);
+    border-color: var(--rule);
+  }
+  &:hover .grip,
+  &:focus-visible .grip {
+    color: var(--ink-soft);
   }
   &:active {
     cursor: grabbing;
@@ -62,7 +68,9 @@ export const Handle = styled.button`
   .grip {
     display: grid;
     grid-template-columns: repeat(2, 3px);
-    gap: 2px;
+    gap: 3px;
+    color: var(--ink-faint);
+    transition: color 0.15s;
   }
   .grip i {
     width: 3px;
@@ -93,8 +101,11 @@ type HandleProps = {
 export function SortableStack<T extends string>({
   initial,
   render,
+  label,
 }: {
   initial: T[]
+  /** Accessible name for an item's handle, given the direction it can move */
+  label: (id: T, dir: 'up' | 'down') => string
   render: (id: T, handle: HandleProps, dragging: boolean) => ReactNode
 }) {
   const [order, setOrder] = useState<T[]>(() => loadOrder(initial))
@@ -210,7 +221,7 @@ export function SortableStack<T extends string>({
                   move(id, e.key === 'ArrowUp' ? -1 : 1)
                 }
               },
-              'aria-label': `Move ${id} ${i === 0 ? 'down' : 'up'} (drag, or use the arrow keys)`,
+              'aria-label': label(id, i === 0 ? 'down' : 'up'),
             },
             dragging === id,
           )}

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
-import { CLEF_BOTTOM, ordinal, stepToMidi, type Clef } from '../lib/music'
+import { useT, type T } from '../i18n'
+import { CLEF_BOTTOM, stepToMidi, type Clef } from '../lib/music'
 import type { StaffNote } from '../lib/types'
 
 const W = 280
@@ -40,24 +41,19 @@ const PATTERN: Record<Clef, { lines: string[]; spaces: string[] }> = {
 
 const stepName = (step: number, accidental = '') => LETTERS[((step % 7) + 7) % 7] + accidental + Math.floor(step / 7)
 
-/** Where a step sits, in words: "2nd line", "3rd space", "1st ledger line below"… */
-function whereOnStaff(step: number, bottom: number) {
+/** Where a step sits, in words: "2nd line", "3rd space", "ledger line 1 below"… */
+function whereOnStaff(step: number, bottom: number, t: T) {
   const off = step - bottom
   if (off >= 0 && off <= 8) {
     return off % 2 === 0
-      ? { text: `${ordinal(off / 2 + 1)} line`, kind: 'lines' as const, index: off / 2 }
-      : { text: `${ordinal((off + 1) / 2)} space`, kind: 'spaces' as const, index: (off - 1) / 2 }
+      ? { text: t('tip.line', { ord: t('ord', { n: off / 2 + 1 }) }), kind: 'lines' as const, index: off / 2 }
+      : { text: t('tip.space', { ord: t('ord', { n: (off + 1) / 2 }) }), kind: 'spaces' as const, index: (off - 1) / 2 }
   }
-  if (off === -1) return { text: 'below the staff', kind: null, index: -1 }
-  if (off === 9) return { text: 'above the staff', kind: null, index: -1 }
-  const below = off < 0
-  const n = below ? Math.floor(-off / 2) : Math.floor((off - 8) / 2)
-  const onLine = off % 2 === 0
-  return {
-    text: onLine ? `ledger line ${n} ${below ? 'below' : 'above'}` : `${below ? 'below' : 'above'} ledger line ${n}`,
-    kind: null,
-    index: -1,
-  }
+  if (off === -1) return { text: t('tip.belowStaff'), kind: null, index: -1 }
+  if (off === 9) return { text: t('tip.aboveStaff'), kind: null, index: -1 }
+  const dir = off < 0 ? 'below' : 'above'
+  const n = off < 0 ? Math.floor(-off / 2) : Math.floor((off - 8) / 2)
+  return { text: t(off % 2 === 0 ? 'tip.ledgerOn' : 'tip.ledgerOff', { n, dir }), kind: null, index: -1 }
 }
 
 type Props = {
@@ -78,6 +74,7 @@ type Props = {
 }
 
 export function Staff({ clef, notes, onPick, pickRange, crop = [0, H], title, showNames = false, tips = true }: Props) {
+  const t = useT()
   const [hover, setHover] = useState<number | null>(null)
   const touchTimer = useRef<number | undefined>(undefined)
   useEffect(() => () => window.clearTimeout(touchTimer.current), [])
@@ -188,9 +185,9 @@ export function Staff({ clef, notes, onPick, pickRange, crop = [0, H], title, sh
   const tip = (step: number) => {
     const placed = sorted.find((n) => n.step === step)
     const name = stepName(step, placed?.accidental ?? '')
-    const where = whereOnStaff(step, bottom)
+    const where = whereOnStaff(step, bottom, t)
     const hint = where.kind ? PATTERN[clef][where.kind] : null
-    const w = 92
+    const w = 104
     const h = hint ? 46 : 33
     // Sits between the clef and the notes, so it never covers note names or stems
     const x = 44

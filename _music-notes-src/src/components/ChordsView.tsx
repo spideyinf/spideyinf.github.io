@@ -3,8 +3,18 @@ import styled from 'styled-components'
 import type { ChordState } from '../hooks/useChord'
 import { ROLE_COLOR } from '../hooks/useChord'
 import { playChord } from '../lib/audio'
-import { guitarRules, intervalLabel, pianoRules, staffRules } from '../lib/chordRules'
-import { INVERSIONS, QUALITIES, shapeString } from '../lib/chords'
+import { useT, type T } from '../i18n'
+import type { MessageId } from '../i18n/en'
+import {
+  guitarRules,
+  intervalLabel,
+  inversionName,
+  pianoRules,
+  qualityName,
+  qualityText,
+  staffRules,
+} from '../lib/chordRules'
+import { QUALITIES, shapeString } from '../lib/chords'
 import { GUITAR_STRINGS, noteName, type Spelling } from '../lib/music'
 import type { StaffNote } from '../lib/types'
 import { ChordChart } from './ChordChart'
@@ -71,6 +81,7 @@ const Dot = ({ color, children }: { color: string; children: React.ReactNode }) 
 type Props = { c: ChordState; spelling: Spelling; sound: boolean; showNames: boolean }
 
 export function ChordsView({ c, spelling, sound, showNames }: Props) {
+  const t = useT()
   const header = useRef<HTMLDivElement>(null)
   const say = (midis: number[], voice: 'piano' | 'guitar', style: 'block' | 'arpeggio' | 'strum') =>
     sound && playChord(midis, voice, style)
@@ -80,9 +91,9 @@ export function ChordsView({ c, spelling, sound, showNames }: Props) {
   const bass = c.staffNotes(c.voicing.filter((m) => m < 60))
   const guitarStaff: StaffNote[] = c.staffNotes(c.guitarMidis, 12)
   const rules = [
-    pianoRules(c.tones, c.quality, c.inversion),
-    staffRules(c.tones, c.quality, c.inversion, piano),
-    guitarRules(c.tones, c.inversion, c.shape, c.guitarMidis),
+    pianoRules(c.tones, c.quality, c.inversion, t),
+    staffRules(c.tones, c.quality, c.inversion, piano, t),
+    guitarRules(c.tones, c.inversion, c.shape, c.guitarMidis, t),
   ]
 
   return (
@@ -90,8 +101,8 @@ export function ChordsView({ c, spelling, sound, showNames }: Props) {
       <ChordBadge c={c} anchor={header} onPlay={() => say(c.voicingShown, 'piano', 'block')} />
       <div className="grid gap-5 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
         <Card>
-          <CardTitle>Pick a chord</CardTitle>
-          <p className="mb-1.5 text-xs font-medium uppercase tracking-wider text-ink-faint">Root</p>
+          <CardTitle>{t('chords.pick')}</CardTitle>
+          <p className="mb-1.5 text-xs font-medium uppercase tracking-wider text-ink-faint">{t('chords.root')}</p>
           <div className="grid grid-cols-6 gap-1.5">
             {Array.from({ length: 12 }, (_, pc) => (
               <Choice key={pc} $on={c.rootPc === pc} onClick={() => c.setRootPc(pc)}>
@@ -99,26 +110,26 @@ export function ChordsView({ c, spelling, sound, showNames }: Props) {
               </Choice>
             ))}
           </div>
-          <p className="mb-1.5 mt-4 text-xs font-medium uppercase tracking-wider text-ink-faint">Type</p>
+          <p className="mb-1.5 mt-4 text-xs font-medium uppercase tracking-wider text-ink-faint">{t('chords.type')}</p>
           <div className="grid grid-cols-3 gap-1.5">
             {QUALITIES.map((q) => (
               <Choice key={q.id} $on={c.quality.id === q.id} onClick={() => c.setQuality(q.id)}>
                 {c.tones[0].name}
                 {q.suffix}
-                <small>{q.name}</small>
+                <small>{qualityName(q, t)}</small>
               </Choice>
             ))}
           </div>
           <p className="mb-1.5 mt-4 text-xs font-medium uppercase tracking-wider text-ink-faint">
-            Which note is lowest
+            {t('chords.lowest')}
           </p>
           <Segmented
-            label="Inversion"
+            label={t('chords.inversion')}
             value={String(c.inversion)}
             onChange={(v) => c.setInversion(Number(v))}
             options={c.quality.tones.map((_, i) => ({
               value: String(i),
-              label: i === 0 ? 'Root' : `${ordinal(i)} inv`,
+              label: i === 0 ? t('chords.invRoot') : t('chords.invN', { ord: t('ord', { n: i }), n: i }),
             }))}
           />
         </Card>
@@ -128,50 +139,52 @@ export function ChordsView({ c, spelling, sound, showNames }: Props) {
             <div>
               <div className="font-display text-6xl font-semibold leading-none">{c.symbol}</div>
               <p className="mt-2 text-sm text-ink-soft">
-                {c.tones[0].name} {c.quality.name.toLowerCase()}
-                {c.inversion > 0 && ` · ${INVERSIONS[c.inversion].toLowerCase()}`}
+                {t('chords.subtitle', { root: c.tones[0].name, quality: qualityName(c.quality, t).toLowerCase() })}
+                {c.inversion > 0 && ` · ${inversionName(c.inversion, t).toLowerCase()}`}
               </p>
             </div>
             <div className="flex flex-wrap gap-2">
-              <PillButton onClick={() => say(c.voicingShown, 'piano', 'block')}>▶ Piano</PillButton>
-              <PillButton onClick={() => say(c.voicingShown, 'piano', 'arpeggio')}>▶ One by one</PillButton>
+              <PillButton onClick={() => say(c.voicingShown, 'piano', 'block')}>{t('play.piano')}</PillButton>
+              <PillButton onClick={() => say(c.voicingShown, 'piano', 'arpeggio')}>{t('play.oneByOne')}</PillButton>
               <PillButton onClick={() => say(c.guitarShown, 'guitar', 'strum')} disabled={!c.shape}>
-                ▶ Strum
+                {t('play.strum')}
               </PillButton>
             </div>
           </div>
 
-          <p className="mt-4 text-[15px] leading-relaxed">{c.quality.sound}</p>
+          <p className="mt-4 text-[15px] leading-relaxed">{qualityText(c.quality, 'sound', t)}</p>
           <p className="mt-1 text-sm text-ink-soft">
-            <span className="font-medium text-ink">Rule:</span> {c.quality.rule}
+            <span className="font-medium text-ink">{t('chords.rule')}</span> {qualityText(c.quality, 'rule', t)}
           </p>
 
           <SemitoneStrip c={c} />
 
           <p className="mb-2 mt-5 text-xs font-medium uppercase tracking-wider text-ink-faint">
-            Build it step by step — tap to add each note
+            {t('chords.buildTitle')}
           </p>
           <div className="flex flex-wrap gap-2">
-            {c.tones.map((t, i) => {
+            {c.tones.map((tone, i) => {
               const prev = i > 0 ? c.tones[i - 1] : null
               return (
                 <Step
-                  key={t.degree}
+                  key={tone.degree}
                   $on={i < c.shown}
-                  $color={ROLE_COLOR[t.role]}
+                  $color={ROLE_COLOR[tone.role]}
                   onClick={() => {
                     c.setBuild(i + 1)
-                    const added = c.voicing.filter((m) => m % 12 === t.pc)
+                    const added = c.voicing.filter((m) => m % 12 === tone.pc)
                     say(added, 'piano', 'block')
                   }}
                 >
-                  <span className="n">Step {i + 1}</span>
+                  <span className="n">{t('chords.step', { n: i + 1 })}</span>
                   <span className="t">
-                    {i === 0 ? 'Root' : `+ ${t.degree === '2' || t.degree === '4' ? t.degree + 'th' : t.degree}`} ·{' '}
-                    {t.name}
+                    {i === 0 ? t('chords.stepRoot') : t('chords.stepAdd', { degree: degreeLabel(tone.degree, t) })} ·{' '}
+                    {tone.name}
                   </span>
                   <span className="i">
-                    {prev ? `${t.semis - prev.semis} up · ${intervalLabel(t.semis)} from root` : 'the chord’s name'}
+                    {prev
+                      ? t('chords.stepGap', { up: tone.semis - prev.semis, interval: intervalLabel(tone.semis, t) })
+                      : t('chords.stepFirst')}
                   </span>
                 </Step>
               )
@@ -182,23 +195,23 @@ export function ChordsView({ c, spelling, sound, showNames }: Props) {
 
       <div className="mt-5 grid gap-5 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
         <Card>
-          <CardTitle hint="Colors match on every instrument · hover to name a line or space">Staff</CardTitle>
+          <CardTitle hint={t('chords.staffHint')}>{t('staff.title')}</CardTitle>
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <p className="mb-1 text-xs font-medium text-ink-soft">Piano — grand staff</p>
-              <Staff title="Treble staff" clef="treble" crop={[18, 132]} notes={treble} showNames={showNames} />
-              <Staff title="Bass staff" clef="bass" crop={[40, 150]} notes={bass} showNames={showNames} />
+              <p className="mb-1 text-xs font-medium text-ink-soft">{t('staff.pianoGrand')}</p>
+              <Staff title={t('staff.treble')} clef="treble" crop={[18, 132]} notes={treble} showNames={showNames} />
+              <Staff title={t('staff.bass')} clef="bass" crop={[40, 150]} notes={bass} showNames={showNames} />
             </div>
             <div>
-              <p className="mb-1 text-xs font-medium text-ink-soft">Guitar — this shape, written one octave up</p>
-              <Staff title="Guitar staff" clef="treble" notes={guitarStaff} showNames={showNames} />
+              <p className="mb-1 text-xs font-medium text-ink-soft">{t('chords.guitarThisShape')}</p>
+              <Staff title={t('staff.guitar')} clef="treble" notes={guitarStaff} showNames={showNames} />
             </div>
           </div>
           <Legend c={c} />
         </Card>
 
         <Card>
-          <CardTitle hint={c.shape ? shapeString(c.shape) : undefined}>Guitar shape</CardTitle>
+          <CardTitle hint={c.shape ? shapeString(c.shape) : undefined}>{t('chords.shapeTitle')}</CardTitle>
           {c.shape ? (
             <>
               <ChordChart
@@ -214,27 +227,27 @@ export function ChordsView({ c, spelling, sound, showNames }: Props) {
               {c.shapes.length > 1 && (
                 <div className="mt-3 flex justify-center">
                   <Segmented
-                    label="Shape"
+                    label={t('chords.shape')}
                     value={String(c.shapeIdx)}
                     onChange={(v) => c.setShapeIdx(Number(v))}
                     options={c.shapes.map((s, i) => ({
                       value: String(i),
                       label: s.frets.includes(0)
-                        ? 'Open'
-                        : `Fret ${Math.min(...s.frets.filter((f): f is number => !!f))}`,
+                        ? t('chords.open')
+                        : t('chords.fretN', { n: Math.min(...s.frets.filter((f): f is number => !!f)) }),
                     }))}
                   />
                 </div>
               )}
             </>
           ) : (
-            <p className="text-sm text-ink-soft">No common shape for this voicing — use the fretboard below.</p>
+            <p className="text-sm text-ink-soft">{t('chords.noShape')}</p>
           )}
         </Card>
       </div>
 
       <Card className="mt-5">
-        <CardTitle hint="Updates for the chord you picked">How to find {c.symbol} on each instrument</CardTitle>
+        <CardTitle hint={t('chords.howHint')}>{t('chords.howTitle', { symbol: c.symbol })}</CardTitle>
         <div className="grid gap-6 md:grid-cols-3">
           {rules.map((r) => (
             <div key={r.title}>
@@ -255,7 +268,9 @@ export function ChordsView({ c, spelling, sound, showNames }: Props) {
   )
 }
 
-const ordinal = (n: number) => ['', '1st', '2nd', '3rd'][n]
+/** "2nd" / "bậc 2" for sus degrees; other degrees read fine as symbols (3, ♭3, 5, 7…) */
+const degreeLabel = (degree: string, t: T) =>
+  degree === '2' || degree === '4' ? t(`degree.${degree}` as MessageId) : degree
 
 function Legend({ c }: { c: ChordState }) {
   return (
@@ -272,6 +287,7 @@ function Legend({ c }: { c: ChordState }) {
 
 /** One octave of half-steps, with the chord's notes marked — the chord as a pattern of distances */
 function SemitoneStrip({ c }: { c: ChordState }) {
+  const t = useT()
   const cells = Array.from({ length: 12 }, (_, i) => i)
   return (
     <div className="mt-4">
@@ -300,9 +316,7 @@ function SemitoneStrip({ c }: { c: ChordState }) {
           <span key={i}>{i}</span>
         ))}
       </div>
-      <p className="mt-1 text-xs text-ink-faint">
-        Half-steps above the root — the same pattern works from any starting note.
-      </p>
+      <p className="mt-1 text-xs text-ink-faint">{t('strip.note')}</p>
     </div>
   )
 }
@@ -365,6 +379,7 @@ function ChordBadge({
   anchor: React.RefObject<HTMLDivElement | null>
   onPlay: () => void
 }) {
+  const t = useT()
   const [show, setShow] = useState(false)
   useEffect(() => {
     const el = anchor.current
@@ -379,7 +394,7 @@ function ChordBadge({
       <button
         className="back"
         tabIndex={show ? 0 : -1}
-        aria-label={`${c.symbol}: back to chord details`}
+        aria-label={t('badge.back', { symbol: c.symbol })}
         onClick={() => anchor.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
       >
         <div className="font-display text-3xl font-semibold leading-none">{c.symbol}</div>
@@ -401,7 +416,12 @@ function ChordBadge({
           ))}
         </div>
       </button>
-      <button className="play" tabIndex={show ? 0 : -1} aria-label={`Play ${c.symbol}`} onClick={onPlay}>
+      <button
+        className="play"
+        tabIndex={show ? 0 : -1}
+        aria-label={t('badge.play', { symbol: c.symbol })}
+        onClick={onPlay}
+      >
         ▶
       </button>
     </Badge>

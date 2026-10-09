@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { useT } from '../i18n'
 import { FRETS, GUITAR_STRINGS, midiAt, noteName, type Spelling } from '../lib/music'
 import type { PaintFn } from '../lib/types'
 
@@ -48,9 +49,10 @@ type Props = {
 }
 
 export function Fretboard({ paint, muted, spelling, showLabels, onPress }: Props) {
+  const t = useT()
   return (
     <div className="overflow-x-auto pb-2 [scrollbar-width:thin]">
-      <Svg viewBox={`0 0 ${END_X + 20} ${H}`} role="img" aria-label="Guitar fretboard, standard tuning">
+      <Svg viewBox={`0 0 ${END_X + 20} ${H}`} role="img" aria-label={t('fretboard.aria')}>
         <rect x={NUT_X} y={TOP - 16} width={END_X - NUT_X} height={BOARD_BOTTOM - TOP + 16} rx={3} fill="var(--wood)" />
         {INLAYS.map((f) => (
           <circle
@@ -74,7 +76,7 @@ export function Fretboard({ paint, muted, spelling, showLabels, onPress }: Props
         ))}
         <rect x={NUT_X - 5} y={TOP - 16} width={7} height={BOARD_BOTTOM - TOP + 16} fill="var(--nut)" />
         <text x={cellX(0)} y={H - 10} textAnchor="middle" fontSize={11} fill="var(--ink-faint)" className="lbl">
-          open
+          {t('fret.open')}
         </text>
 
         {GUITAR_STRINGS.map((s, i) => (
@@ -132,7 +134,11 @@ export function Fretboard({ paint, muted, spelling, showLabels, onPress }: Props
                   height={GAP}
                   onClick={() => onPress(midi, i, f)}
                   role="button"
-                  aria-label={`${noteName(midi, spelling)}, string ${i + 1}, ${f === 0 ? 'open' : `fret ${f}`}`}
+                  aria-label={t('fretboard.cell', {
+                    note: noteName(midi, spelling),
+                    n: i + 1,
+                    fret: f === 0 ? t('fret.open') : t('fret.n', { n: f }),
+                  })}
                 />
                 <circle className="hover-dot" cx={x} cy={y} r={11} fill="var(--white-key)" />
                 {fill && <circle cx={x} cy={y} r={strong ? 12 : 10.5} fill={fill} pointerEvents="none" />}
