@@ -1,6 +1,11 @@
 # spideyinf.github.io
 ## Projects
 
+#### [Daily Hand](https://spideyinf.github.io/calligraphy/) - Daily calligraphy practice, after William Zinsser's *Writing to Learn*. October 2026
+  - ABC: Copperplate capitals with business-cursive lowercase, traced on proper guidelines with a pointed-pen ink that swells on downstrokes.
+  - Paragraph: write quotes or your own words on ruled pages; save pages and keep a daily streak (stored on your device).
+  - Mobile-first. React + TypeScript, styled-components and Tailwind CSS, built with Vite. Source in [`_calligraphy-src`](https://github.com/spideyinf/spideyinf.github.io/tree/master/_calligraphy-src); run `npm run build` there to rebuild `calligraphy/`.
+
 #### [Note map](https://spideyinf.github.io/music-notes/) - Piano, staff and guitar note explorer. October 2026
   - See any note or chord on the piano, the grand staff, guitar sheet music and the fretboard at once, hear it, and quiz yourself (read, name or ear).
   - English and Vietnamese UI (react-intl).
