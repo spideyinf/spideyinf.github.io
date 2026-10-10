@@ -15,7 +15,9 @@ export type Row = RowSpec & { top: number; baseline: number; height: number }
 
 export type SheetLayout = { rows: Row[]; width: number; height: number }
 
-export const MARGIN = 18
+// Rules run edge to edge; written text keeps a small inset from the screen edge.
+export const MARGIN = 0
+export const TEXT_INSET = 14
 
 export function stackRows(specs: RowSpec[], width: number, height: number, fillXh?: number): SheetLayout {
   const rows: Row[] = []
@@ -46,7 +48,7 @@ export function paginateText(
   height: number,
   alpha = 0.3,
 ): RowSpec[][] {
-  const lines = wrapHand(ctx, m, text, xh, width - MARGIN * 2 - xh)
+  const lines = wrapHand(ctx, m, text, xh, width - TEXT_INSET * 2 - xh * 0.5)
   const perPage = Math.max(1, Math.floor((height - 6) / (xh * ROW_IN_X)) - 1)
   const pages: RowSpec[][] = []
   for (let i = 0; i < lines.length; i += perPage) {
@@ -111,7 +113,7 @@ export function drawSheet(
     const gap = (r.gap ?? 1.4) * r.xh
     const total =
       r.segments.reduce((w, s) => w + measureHand(ctx, m, s.text, r.xh), 0) + gap * (r.segments.length - 1)
-    let x = r.align === 'center' ? (width - total) / 2 : x0 + r.xh * 0.6
+    let x = r.align === 'center' ? (width - total) / 2 : TEXT_INSET + r.xh * 0.3
     for (const s of r.segments) {
       ctx.fillStyle = rgba(ink, s.alpha)
       x += drawHand(ctx, m, s.text, x, r.baseline, r.xh) + gap

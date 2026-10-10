@@ -3,13 +3,14 @@ import { useSyncExternalStore } from 'react'
 // Hash routing keeps deep links working on GitHub Pages without a 404 fallback.
 export type Route =
   | { name: 'home' }
+  | { name: 'letters' }
   | { name: 'abc'; letter: string }
   | { name: 'quotes' }
   | { name: 'write'; quoteId: string }
 
 export function parse(hash: string): Route {
   const [, a, b] = hash.replace(/^#/, '').split('/')
-  if (a === 'abc') return { name: 'abc', letter: /^[A-Z]$/.test(b ?? '') ? b : 'A' }
+  if (a === 'abc') return /^[A-Z]$/.test(b ?? '') ? { name: 'abc', letter: b } : { name: 'letters' }
   if (a === 'paragraph' && b) return { name: 'write', quoteId: decodeURIComponent(b) }
   if (a === 'paragraph') return { name: 'quotes' }
   return { name: 'home' }
@@ -17,6 +18,7 @@ export function parse(hash: string): Route {
 
 export const href = {
   home: '#/',
+  letters: '#/abc',
   abc: (l: string) => `#/abc/${l}`,
   quotes: '#/paragraph',
   write: (id: string) => `#/paragraph/${encodeURIComponent(id)}`,

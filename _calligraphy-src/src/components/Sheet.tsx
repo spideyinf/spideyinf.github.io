@@ -1,14 +1,12 @@
 import { useCallback, useEffect, useImperativeHandle, useRef, useState, type Ref } from 'react'
 import styled from 'styled-components'
 import { loadHand, type Metrics } from '../lib/hand'
+import { finishStroke, INK_OPACITY, INKS, NIBS, paintStroke, sample, type InkStroke, type PenSettings } from '../lib/pen'
 import { drawSheet, rowAt, type SheetLayout } from '../lib/sheet'
 import { theme } from '../theme'
 
-type Pt = { x: number; y: number; w: number }
-type Stroke = Pt[]
-
 // Ink survives moving between letters/pages within a session.
-const inkByPage = new Map<string, Stroke[]>()
+const inkByPage = new Map<string, InkStroke[]>()
 
 export type SheetHandle = {
   undo: () => void
@@ -20,6 +18,7 @@ export type SheetHandle = {
 type Props = {
   pageKey: string
   showModel: boolean
+  pen: PenSettings
   build: (ctx: CanvasRenderingContext2D, m: Metrics, width: number, height: number) => SheetLayout
   onInkChange?: (hasInk: boolean) => void
   ref?: Ref<SheetHandle>
@@ -35,40 +34,34 @@ const Wrap = styled.div`
     width: 100%;
     height: 100%;
   }
-  canvas:last-child {
+  /* The wet stroke under the nib blends the same way dried ink does. */
+  /* Ink sits in the paper: guidelines stay visible through it. */
+  canvas[data-ink] {
+    mix-blend-mode: multiply;
+  }
+  canvas[data-live] {
+    opacity: ${INK_OPACITY};
+    mix-blend-mode: multiply;
+    pointer-events: none;
+  }
+  canvas[data-input] {
     touch-action: none;
     cursor: crosshair;
   }
 `
 
-function strokeSegment(ctx: CanvasRenderingContext2D, a: Pt, b: Pt, c: Pt) {
-  // Quadratic through midpoints keeps the line smooth at any sampling rate.
-  ctx.lineWidth = (a.w + b.w + c.w) / 3
-  ctx.beginPath()
-  ctx.moveTo((a.x + b.x) / 2, (a.y + b.y) / 2)
-  ctx.quadraticCurveTo(b.x, b.y, (b.x + c.x) / 2, (b.y + c.y) / 2)
-  ctx.stroke()
-}
+const PAPER = theme.color.paper
 
-function drawStroke(ctx: CanvasRenderingContext2D, s: Stroke) {
-  if (s.length === 1) {
-    ctx.beginPath()
-    ctx.arc(s[0].x, s[0].y, s[0].w / 2, 0, Math.PI * 2)
-    ctx.fill()
-    return
-  }
-  const pts = [s[0], ...s, s[s.length - 1]]
-  for (let i = 1; i < pts.length - 1; i++) strokeSegment(ctx, pts[i - 1], pts[i], pts[i + 1])
-}
-
-export function Sheet({ pageKey, showModel, build, onInkChange, ref }: Props) {
+export function Sheet({ pageKey, showModel, pen, build, onInkChange, ref }: Props) {
   const wrapRef = useRef<HTMLDivElement>(null)
   const guideRef = useRef<HTMLCanvasElement>(null)
   const inkRef = useRef<HTMLCanvasElement>(null)
+  const liveRef = useRef<HTMLCanvasElement>(null)
+  const bufferRef = useRef<HTMLCanvasElement | null>(null)
   const layoutRef = useRef<SheetLayout | null>(null)
   const [metrics, setMetrics] = useState<Metrics | null>(null)
   const [size, setSize] = useState({ w: 0, h: 0 })
-  const live = useRef<{ stroke: Stroke; w: number } | null>(null)
+  const live = useRef<{ stroke: InkStroke; w: number; d: number; t: number } | null>(null)
 
   const strokes = useCallback(() => {
     if (!inkByPage.has(pageKey)) inkByPage.set(pageKey, [])
@@ -80,37 +73,46 @@ export function Sheet({ pageKey, showModel, build, onInkChange, ref }: Props) {
   }, [])
 
   useEffect(() => {
-    const el = wrapRef.current!
     const ro = new ResizeObserver(([e]) => {
       setSize({ w: Math.round(e.contentRect.width), h: Math.round(e.contentRect.height) })
     })
-    ro.observe(el)
+    ro.observe(wrapRef.current!)
     return () => ro.disconnect()
   }, [])
 
-  const inkCtx = useCallback(() => {
-    const ctx = inkRef.current!.getContext('2d')!
-    ctx.strokeStyle = ctx.fillStyle = theme.color.ink
-    ctx.lineCap = ctx.lineJoin = 'round'
-    return ctx
-  }, [])
+  /** Paint one finished stroke and layer it onto the page with multiply, like ink on ink. */
+  const commit = useCallback(
+    (s: InkStroke) => {
+      const ink = inkRef.current?.getContext('2d')
+      const buf = bufferRef.current?.getContext('2d')
+      if (!ink || !buf) return
+      buf.clearRect(0, 0, size.w, size.h)
+      paintStroke(buf, s, PAPER)
+      finishStroke(buf, s, PAPER)
+      ink.save()
+      ink.globalAlpha = INK_OPACITY
+      ink.globalCompositeOperation = 'multiply'
+      ink.drawImage(bufferRef.current!, 0, 0, size.w, size.h)
+      ink.restore()
+    },
+    [size],
+  )
 
   const redrawInk = useCallback(() => {
-    const c = inkRef.current
-    if (!c) return
-    const ctx = inkCtx()
-    ctx.clearRect(0, 0, c.width, c.height)
-    for (const s of strokes()) drawStroke(ctx, s)
+    const ctx = inkRef.current?.getContext('2d')
+    if (!ctx) return
+    ctx.clearRect(0, 0, size.w, size.h)
+    for (const s of strokes()) commit(s)
     onInkChange?.(strokes().length > 0)
-  }, [inkCtx, strokes, onInkChange])
+  }, [commit, strokes, size, onInkChange])
 
-  // Size both canvases for the device pixel ratio, lay out and paint the sheet.
+  // Size the canvases for the device pixel ratio, lay out and paint the sheet.
   useEffect(() => {
     const g = guideRef.current
-    const k = inkRef.current
-    if (!g || !k || !metrics || !size.w || !size.h) return
+    if (!g || !metrics || !size.w || !size.h) return
     const dpr = Math.min(window.devicePixelRatio || 1, 3)
-    for (const c of [g, k]) {
+    bufferRef.current ??= document.createElement('canvas')
+    for (const c of [g, inkRef.current!, liveRef.current!, bufferRef.current]) {
       c.width = size.w * dpr
       c.height = size.h * dpr
       c.getContext('2d')!.setTransform(dpr, 0, 0, dpr, 0, 0)
@@ -123,60 +125,61 @@ export function Sheet({ pageKey, showModel, build, onInkChange, ref }: Props) {
     redrawInk()
   }, [metrics, size, build, showModel, redrawInk])
 
-  // Pointed-pen ink: swell on downstrokes, hairline on upstrokes.
-  const penWidth = (dx: number, dy: number, y: number, pressure: number, isPen: boolean) => {
-    const xh = rowAt(layoutRef.current, y)?.xh ?? 20
-    const hair = Math.max(1, xh * 0.045)
-    const shade = xh * 0.24
-    const len = Math.hypot(dx, dy) || 1
-    const down = Math.max(0, dy / len)
-    let w = hair + shade * Math.pow(down, 1.4)
-    if (isPen && pressure > 0) w *= 0.45 + pressure * 1.1
-    return w
-  }
+  const nib = NIBS.find((n) => n.id === pen.nib) ?? NIBS[1]
+  const color = INKS.find((i) => i.id === pen.ink)?.color ?? INKS[0].color
 
   const onDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
-    if (e.button !== 0) return
+    if (e.button !== 0 || live.current) return
     e.currentTarget.setPointerCapture(e.pointerId)
     const r = e.currentTarget.getBoundingClientRect()
     const x = e.clientX - r.left
     const y = e.clientY - r.top
-    const w = penWidth(0, 0, y, e.pressure, e.pointerType === 'pen')
-    live.current = { stroke: [{ x, y, w }], w }
-    strokes().push(live.current.stroke)
-    const ctx = inkCtx()
-    ctx.beginPath()
-    ctx.arc(x, y, w / 2, 0, Math.PI * 2)
-    ctx.fill()
+    const xh = rowAt(layoutRef.current, y)?.xh ?? 18
+    const { w } = sample(nib, xh, 0, 0, 16, e.pressure, e.pointerType === 'pen')
+    const stroke: InkStroke = { color, pts: [{ x, y, w, d: 1 }] }
+    live.current = { stroke, w, d: 1, t: e.timeStamp }
+    paintStroke(liveRef.current!.getContext('2d')!, stroke, PAPER)
   }
 
   const onMove = (e: React.PointerEvent<HTMLCanvasElement>) => {
     const cur = live.current
     if (!cur) return
     const r = e.currentTarget.getBoundingClientRect()
-    const events = e.nativeEvent.getCoalescedEvents?.() ?? [e.nativeEvent]
-    const ctx = inkCtx()
-    for (const ev of events.length ? events : [e.nativeEvent]) {
+    const coalesced = e.nativeEvent.getCoalescedEvents?.() ?? []
+    const events = coalesced.length ? coalesced : [e.nativeEvent]
+    const from = cur.stroke.pts.length
+    for (const ev of events) {
       const x = ev.clientX - r.left
       const y = ev.clientY - r.top
-      const last = cur.stroke[cur.stroke.length - 1]
+      const last = cur.stroke.pts[cur.stroke.pts.length - 1]
       const dx = x - last.x
       const dy = y - last.y
-      if (dx * dx + dy * dy < 1.5) continue
-      const target = penWidth(dx, dy, y, ev.pressure, ev.pointerType === 'pen')
-      cur.w += (target - cur.w) * 0.32
-      const p = { x, y, w: cur.w }
-      cur.stroke.push(p)
-      const s = cur.stroke
-      const a = s[s.length - 3] ?? s[0]
-      strokeSegment(ctx, a, s[s.length - 2], p)
+      if (dx * dx + dy * dy < 1.2) continue
+      const xh = rowAt(layoutRef.current, y)?.xh ?? 18
+      const target = sample(nib, xh, dx, dy, ev.timeStamp - cur.t, ev.pressure, ev.pointerType === 'pen')
+      cur.t = ev.timeStamp
+      // Ease width and density so the line breathes instead of jittering.
+      cur.w += (target.w - cur.w) * (nib.flex ? 0.32 : 0.22)
+      cur.d += (target.d - cur.d) * 0.2
+      cur.stroke.pts.push({ x, y, w: cur.w, d: cur.d })
     }
+    if (cur.stroke.pts.length > from) paintStroke(liveRef.current!.getContext('2d')!, cur.stroke, PAPER, from)
   }
 
-  const onUp = () => {
-    if (!live.current) return
+  const onUp = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    const cur = live.current
+    if (!cur) return
     live.current = null
-    redrawInk()
+    // Resting before lifting lets ink pool at the end of the stroke.
+    const last = cur.stroke.pts[cur.stroke.pts.length - 1]
+    if (e.timeStamp - cur.t > 140) {
+      last.d = 1
+      cur.stroke.pool = true
+    }
+    liveRef.current!.getContext('2d')!.clearRect(0, 0, size.w, size.h)
+    strokes().push(cur.stroke)
+    commit(cur.stroke)
+    onInkChange?.(true)
   }
 
   useImperativeHandle(
@@ -201,11 +204,12 @@ export function Sheet({ pageKey, showModel, build, onInkChange, ref }: Props) {
         c.width = Math.round(size.w * scale)
         c.height = Math.round(size.h * scale)
         const ctx = c.getContext('2d')!
-        ctx.fillStyle = theme.color.paper
+        ctx.fillStyle = PAPER
         ctx.fillRect(0, 0, c.width, c.height)
         ctx.drawImage(g, 0, 0, c.width, c.height)
+        ctx.globalCompositeOperation = 'multiply'
         ctx.drawImage(k, 0, 0, c.width, c.height)
-        return c.toDataURL('image/jpeg', 0.72)
+        return c.toDataURL('image/jpeg', 0.75)
       },
     }),
     [pageKey, redrawInk, size, strokes],
@@ -214,14 +218,18 @@ export function Sheet({ pageKey, showModel, build, onInkChange, ref }: Props) {
   return (
     <Wrap ref={wrapRef}>
       <canvas ref={guideRef} aria-hidden />
+      <canvas ref={inkRef} data-ink aria-hidden />
+      <canvas ref={liveRef} data-live aria-hidden />
       <canvas
-        ref={inkRef}
+        data-input
         role="img"
-        aria-label="Writing area. Draw with your finger or a stylus."
+        aria-label="Writing area. Write with your finger or a stylus."
         onPointerDown={onDown}
         onPointerMove={onMove}
         onPointerUp={onUp}
         onPointerCancel={onUp}
+        width={1}
+        height={1}
       />
     </Wrap>
   )

@@ -1,9 +1,9 @@
 // The "combined hand": Copperplate capitals (Pinyon Script) with
-// business-cursive lowercase (Sacramento). Text is split into runs so
+// business-cursive lowercase (Ephesis). Text is split into runs so
 // each case gets its own face, both in the DOM and on canvas.
 
 export const CAPS_FONT = 'Pinyon Script'
-export const CURSIVE_FONT = 'Sacramento'
+export const CURSIVE_FONT = 'Ephesis'
 
 export type Run = { text: string; caps: boolean }
 
@@ -39,6 +39,10 @@ export async function loadHand(): Promise<Metrics> {
   metrics = { xRatio, capRatio }
   return metrics
 }
+
+/** Typical metrics (per em) for the DOM renderer; the canvas measures them live. */
+export const CAPS_CAP_EM = 0.69
+export const CURSIVE_X_EM = 0.35
 
 /** How tall capitals stand, in x-heights. Copperplate caps reach ~2× the x-height. */
 export const CAP_IN_X = 2.1

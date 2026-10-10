@@ -1,7 +1,7 @@
 /* eslint-disable react/only-export-components */
 import type { ComponentProps, ReactNode } from 'react'
 import styled, { css, keyframes } from 'styled-components'
-import { CAP_IN_X, splitRuns } from '../lib/hand'
+import { CAP_IN_X, CAPS_CAP_EM, CURSIVE_X_EM, splitRuns } from '../lib/hand'
 
 /* The combined hand, as DOM text. `size` is the x-height in px. */
 export function Hand({ text, size, className }: { text: string; size: number; className?: string }) {
@@ -9,13 +9,11 @@ export function Hand({ text, size, className }: { text: string; size: number; cl
     <span className={className} style={{ lineHeight: 1.15 }}>
       {splitRuns(text).map((r, i) =>
         r.caps ? (
-          // Pinyon's caps are ~0.69 em tall; scale so they stand ~2.1 x-heights.
-          <span key={i} style={{ fontFamily: 'var(--font-caps)', fontSize: (size * CAP_IN_X) / 0.69 }}>
+          <span key={i} style={{ fontFamily: 'var(--font-caps)', fontSize: (size * CAP_IN_X) / CAPS_CAP_EM }}>
             {r.text}
           </span>
         ) : (
-          // Sacramento's x-height is ~0.31 em.
-          <span key={i} style={{ fontFamily: 'var(--font-cursive)', fontSize: size / 0.31 }}>
+          <span key={i} style={{ fontFamily: 'var(--font-cursive)', fontSize: size / CURSIVE_X_EM }}>
             {r.text}
           </span>
         ),
@@ -24,7 +22,7 @@ export function Hand({ text, size, className }: { text: string; size: number; cl
   )
 }
 
-/* Brand mark: a pointed nib in a paper circle, after the avatar in story headers. */
+/* Brand mark: a nib in a paper circle. */
 export function Logo({ size = 36 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 64 64" aria-hidden>
@@ -33,31 +31,6 @@ export function Logo({ size = 36 }: { size?: number }) {
       <path d="M32 30v24" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" />
       <circle cx="32" cy="30" r="3" fill="#fff" />
     </svg>
-  )
-}
-
-/* Story-style segment bar. */
-export type SegState = 'empty' | 'done' | 'current'
-const Segs = styled.div`
-  display: flex;
-  gap: 3px;
-  padding: 10px 16px 0;
-`
-const Seg = styled.span<{ $s: SegState }>`
-  flex: 1;
-  height: 2.5px;
-  border-radius: 2px;
-  background: ${({ $s, theme }) =>
-    $s === 'current' ? theme.color.vermilion : $s === 'done' ? theme.color.ink : theme.color.rule};
-  transition: background 0.2s;
-`
-export function StoryBar({ states, label }: { states: SegState[]; label: string }) {
-  return (
-    <Segs role="img" aria-label={label}>
-      {states.map((s, i) => (
-        <Seg key={i} $s={s} />
-      ))}
-    </Segs>
   )
 }
 
@@ -117,7 +90,6 @@ export const Toolbar = styled.nav`
   justify-content: space-between;
   gap: 4px;
   padding: 6px 10px calc(8px + env(safe-area-inset-bottom));
-  border-top: 1px solid ${({ theme }) => theme.color.rule};
   background: ${({ theme }) => theme.color.paper};
 `
 
@@ -210,4 +182,11 @@ export const Icons = {
     </>,
   ),
   download: icon(<path d="M12 4v11M7 10l5 5 5-5M5 20h14" />),
+  pen: icon(
+    <>
+      <path d="M12 2.5c3 3.5 4.5 7.5 4.5 11 0 2.5-1.8 4.6-4.5 8-2.7-3.4-4.5-5.5-4.5-8 0-3.5 1.5-7.5 4.5-11z" />
+      <path d="M12 11v10" />
+      <circle cx="12" cy="11" r="1.2" />
+    </>,
+  ),
 }

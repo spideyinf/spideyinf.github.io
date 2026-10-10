@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useRoute } from './lib/router'
 import { AbcScreen } from './screens/AbcScreen'
 import { HomeScreen } from './screens/HomeScreen'
+import { LettersScreen } from './screens/LettersScreen'
 import { QuotesScreen } from './screens/QuotesScreen'
 import { WriteScreen } from './screens/WriteScreen'
 
@@ -13,6 +14,8 @@ export default function App() {
   }, [route.name])
 
   switch (route.name) {
+    case 'letters':
+      return <LettersScreen />
     case 'abc':
       return <AbcScreen letter={route.letter} />
     case 'quotes':

@@ -1,19 +1,21 @@
 import { useState } from 'react'
 import styled, { keyframes } from 'styled-components'
-import { Hand, IconButton, Icons, SaveButton, StoryBar, TopBar } from '../components/ui'
+import { Hand, IconButton, Icons, SaveButton, TopBar } from '../components/ui'
 import { go, href } from '../lib/router'
 import { usePractice } from '../state/practice'
 
+// Full-bleed rows that alternate paper tones instead of outlined cards.
 const Card = styled.li<{ $mine?: boolean }>`
   position: relative;
   list-style: none;
-  border-radius: 22px;
-  background: ${({ $mine, theme }) => ($mine ? theme.color.cobalt : '#fff8f3')};
+  background: ${({ $mine, theme }) => ($mine ? theme.color.cobalt : 'transparent')};
   color: ${({ $mine, theme }) => ($mine ? '#fff' : theme.color.ink)};
-  box-shadow: 0 0 0 1px ${({ $mine, theme }) => ($mine ? 'transparent' : theme.color.rule)};
+  &:nth-child(even) {
+    background: ${({ $mine, theme }) => ($mine ? theme.color.cobalt : theme.color.paperDeep)};
+  }
   a {
     display: block;
-    padding: 18px 20px 16px;
+    padding: 20px 14px 18px;
     color: inherit;
     text-decoration: none;
   }
@@ -31,16 +33,16 @@ const Backdrop = styled.div`
 const Drawer = styled.form`
   width: 100%;
   background: ${({ theme }) => theme.color.paper};
-  border-radius: 28px 28px 0 0;
+  
   padding: 18px 18px calc(18px + env(safe-area-inset-bottom));
   animation: ${up} 0.22s ease-out;
   textarea,
   input {
     width: 100%;
     box-sizing: border-box;
-    border: 1px solid ${({ theme }) => theme.color.rule};
-    border-radius: 14px;
-    background: #fff8f3;
+    border: 0;
+    border-radius: 0;
+    background: ${({ theme }) => theme.color.paperDeep};
     padding: 12px 14px;
     font: 17px/1.45 ${({ theme }) => theme.font.serif};
     color: ${({ theme }) => theme.color.ink};
@@ -75,7 +77,6 @@ export function QuotesScreen() {
 
   return (
     <main className="min-h-dvh pb-10" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
-      <StoryBar states={['done', 'current']} label="Paragraph" />
       <TopBar>
         <IconButton label="Back to home" onClick={() => go(href.home)}>
           {Icons.back}
@@ -86,17 +87,17 @@ export function QuotesScreen() {
         </div>
       </TopBar>
 
-      <div className="px-4 pt-3">
+      <div className="pt-2">
         <button
           type="button"
           onClick={() => setAdding(true)}
-          className="flex w-full items-center gap-3 rounded-[22px] border border-dashed border-cobalt/50 bg-transparent px-5 py-4 text-left text-cobalt"
+          className="flex w-full items-center gap-3 border-0 bg-transparent px-[14px] py-4 text-left text-cobalt"
         >
           {Icons.plus}
           <span className="text-[17px]">Write your own quote</span>
         </button>
 
-        <ul className="m-0 mt-3 flex flex-col gap-3 p-0">
+        <ul className="m-0 p-0">
           {quotes.map((q) => (
             <Card key={q.id} $mine={q.custom}>
               <a href={href.write(q.id)}>

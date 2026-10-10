@@ -2,7 +2,7 @@
 ## Projects
 
 #### [Daily Hand](https://spideyinf.github.io/calligraphy/) - Daily calligraphy practice, after William Zinsser's *Writing to Learn*. October 2026
-  - ABC: Copperplate capitals with business-cursive lowercase, traced on proper guidelines with a pointed-pen ink that swells on downstrokes.
+  - ABC: Copperplate capitals with business-cursive lowercase, traced on proper guidelines with a fountain-pen ink (choose nib and ink colour).
   - Paragraph: write quotes or your own words on ruled pages; save pages and keep a daily streak (stored on your device).
   - Mobile-first. React + TypeScript, styled-components and Tailwind CSS, built with Vite. Source in [`_calligraphy-src`](https://github.com/spideyinf/spideyinf.github.io/tree/master/_calligraphy-src); run `npm run build` there to rebuild `calligraphy/`.
 

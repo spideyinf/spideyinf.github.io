@@ -1,56 +1,47 @@
 import { useState } from 'react'
 import styled from 'styled-components'
-import { Hand, IconButton, Icons, Logo, Oval, StoryBar } from '../components/ui'
-import { dayKey, lastDays, longDate, shortDate } from '../lib/date'
-import { LETTERS } from '../lib/letters'
+import { Hand, IconButton, Icons, Logo, Oval } from '../components/ui'
+import { dayKey, longDate, shortDate } from '../lib/date'
 import { href } from '../lib/router'
 import { usePractice, type SavedPage } from '../state/practice'
 
-const StoryCard = styled.a<{ $bg: string }>`
+// Full-bleed bands: no frame, no outline, and the script runs off the screen edge.
+const Band = styled.a<{ $bg: string }>`
   position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 250px;
-  padding: 16px 16px 18px;
-  border-radius: ${({ theme }) => theme.radius.card};
+  display: block;
+  min-height: 230px;
+  padding: 22px 16px 20px;
   background: ${({ $bg }) => $bg};
   color: #fff;
   text-decoration: none;
   overflow: hidden;
-  transition: transform 0.15s;
   &:active {
-    transform: scale(0.98);
+    filter: brightness(0.95);
   }
-  /* The notch, as on the phone-story cards this layout borrows from. */
-  &::before {
-    content: '';
-    position: absolute;
-    top: 9px;
-    left: 50%;
-    width: 54px;
-    height: 15px;
-    margin-left: -27px;
-    border-radius: 10px;
-    background: rgba(0, 0, 0, 0.85);
-  }
+`
+const Bleed = styled.div`
+  position: absolute;
+  right: -18px;
+  bottom: -6px;
+  white-space: nowrap;
+  opacity: 0.95;
+  pointer-events: none;
 `
 
 const Thumb = styled.button`
   flex: none;
-  width: 92px;
+  width: 96px;
   padding: 0;
   border: 0;
   background: none;
   text-align: left;
   img {
     display: block;
-    width: 92px;
-    height: 128px;
+    width: 96px;
+    height: 134px;
     object-fit: cover;
     object-position: top;
     border-radius: ${({ theme }) => theme.radius.thumb};
-    box-shadow: 0 0 0 1px ${({ theme }) => theme.color.rule};
   }
 `
 
@@ -70,25 +61,31 @@ const Viewer = styled.div`
   }
 `
 
+function Strip({ pages, onOpen, dated }: { pages: SavedPage[]; onOpen: (p: SavedPage) => void; dated?: boolean }) {
+  return (
+    <div className="flex gap-2.5 overflow-x-auto px-[14px] pt-3 pb-1">
+      {pages.map((p) => (
+        <Thumb key={p.id} type="button" onClick={() => onOpen(p)} aria-label={`Open page ${p.label}`}>
+          <img src={p.src} alt="" />
+          <div className="mt-1.5 truncate font-sans text-[12px] text-ink-soft">
+            {dated ? `${shortDate(p.day)}, ${p.label}` : p.label}
+          </div>
+        </Thumb>
+      ))}
+    </div>
+  )
+}
+
 export function HomeScreen() {
-  const { days, today, pages, streak, deletePage } = usePractice()
+  const { today, pages, streak, deletePage } = usePractice()
   const [open, setOpen] = useState<SavedPage | null>(null)
   const todayKey = dayKey()
-
-  const week = lastDays(7).map((d) => {
-    const k = dayKey(d)
-    return days[k] ? 'done' : k === todayKey ? 'current' : 'empty'
-  }) as ('done' | 'current' | 'empty')[]
-
-  const nextLetter = LETTERS.find((l) => !today.letters.includes(l)) ?? 'A'
   const todayPages = pages.filter((p) => p.day === todayKey)
   const earlier = pages.filter((p) => p.day !== todayKey)
 
   return (
     <main className="min-h-dvh pb-12" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
-      <StoryBar states={week} label={`Last 7 days. ${streak}-day streak.`} />
-
-      <header className="flex items-center gap-2.5 px-4 pt-3">
+      <header className="flex items-center gap-2.5 px-[14px] pt-3">
         <Logo />
         <div className="leading-tight">
           <div className="text-[15px] font-semibold">Daily Hand</div>
@@ -99,7 +96,7 @@ export function HomeScreen() {
         <div className="ml-auto font-sans text-[12.5px] text-ink-soft">{longDate()}</div>
       </header>
 
-      <section className="px-5 pt-10 pb-4 text-center">
+      <section className="px-[14px] pt-10 pb-6 text-center">
         <h1 className="m-0 font-normal">
           <Hand text="Write to Learn" size={19} />
         </h1>
@@ -114,69 +111,50 @@ export function HomeScreen() {
         </div>
       </section>
 
-      <section className="grid grid-cols-2 gap-3 px-4" aria-label="Practice">
-        <StoryCard href={href.abc(nextLetter)} $bg="var(--color-vermilion)">
-          <div className="pt-8 text-center">
-            <Hand text={nextLetter + nextLetter.toLowerCase()} size={24} />
-          </div>
-          <div>
-            <div className="text-[24px] leading-none">ABC</div>
-            <div className="mt-1.5 font-sans text-[12.5px] leading-snug text-white/85">
+      <nav aria-label="Practice">
+        <Band href={href.letters} $bg="var(--color-vermilion)">
+          <Bleed aria-hidden>
+            <Hand text="Aa Bb" size={34} />
+          </Bleed>
+          <div className="relative max-w-[60%]">
+            <div className="text-[30px] leading-none">ABC</div>
+            <div className="mt-2 font-sans text-[13px] leading-snug text-white/90">
               Copperplate capitals, business cursive letters
             </div>
-            <div className="mt-2.5 font-sans text-[12px] text-white/85">{today.letters.length} of 26 today</div>
           </div>
-        </StoryCard>
-        <StoryCard href={href.quotes} $bg="var(--color-cobalt)">
-          <div className="pt-8 text-center">
-            <Hand text="Little by little" size={9} />
+          <div className="relative mt-3 font-sans text-[12.5px] text-white/75">{today.letters.length} of 26 today</div>
+        </Band>
+        <Band href={href.quotes} $bg="var(--color-cobalt)">
+          <Bleed aria-hidden style={{ right: -60 }}>
+            <Hand text="Little by little" size={17} />
+          </Bleed>
+          <div className="relative max-w-[55%]">
+            <div className="text-[30px] leading-none">Paragraph</div>
+            <div className="mt-2 font-sans text-[13px] leading-snug text-white/90">Quotes to write, or your own words</div>
           </div>
-          <div>
-            <div className="text-[24px] leading-none">Paragraph</div>
-            <div className="mt-1.5 font-sans text-[12.5px] leading-snug text-white/85">
-              Quotes to write, or your own words
-            </div>
-            <div className="mt-2.5 font-sans text-[12px] text-white/85">
-              {today.quotes.length ? `${today.quotes.length} written today` : 'None yet today'}
-            </div>
+          <div className="relative mt-3 font-sans text-[12.5px] text-white/75">
+            {today.quotes.length ? `${today.quotes.length} written today` : 'None yet today'}
           </div>
-        </StoryCard>
-      </section>
+        </Band>
+      </nav>
 
       <section className="pt-9" aria-label="Your pages">
-        <h2 className="m-0 px-5 text-[19px] font-normal">Today's pages</h2>
+        <h2 className="m-0 px-[14px] text-[19px] font-normal">Today's pages</h2>
         {todayPages.length ? (
-          <div className="flex gap-3 overflow-x-auto px-5 pt-3 pb-1">
-            {todayPages.map((p) => (
-              <Thumb key={p.id} type="button" onClick={() => setOpen(p)} aria-label={`Open page ${p.label}`}>
-                <img src={p.src} alt="" />
-                <div className="mt-1.5 truncate font-sans text-[12px] text-ink-soft">{p.label}</div>
-              </Thumb>
-            ))}
-          </div>
+          <Strip pages={todayPages} onOpen={setOpen} />
         ) : (
-          <p className="m-0 px-5 pt-2 font-sans text-[13.5px] leading-relaxed text-ink-soft">
+          <p className="m-0 px-[14px] pt-2 font-sans text-[13.5px] leading-relaxed text-ink-soft">
             Pages you save today appear here.{' '}
-            <a className="text-cobalt underline underline-offset-2" href={href.abc(nextLetter)}>
-              Start with the letter {nextLetter}
+            <a className="text-cobalt underline underline-offset-2" href={href.letters}>
+              Choose a letter to start
             </a>
             .
           </p>
         )}
-
         {earlier.length > 0 && (
           <>
-            <h2 className="m-0 px-5 pt-7 text-[19px] font-normal">Earlier</h2>
-            <div className="flex gap-3 overflow-x-auto px-5 pt-3 pb-1">
-              {earlier.map((p) => (
-                <Thumb key={p.id} type="button" onClick={() => setOpen(p)} aria-label={`Open page ${p.label}`}>
-                  <img src={p.src} alt="" />
-                  <div className="mt-1.5 truncate font-sans text-[12px] text-ink-soft">
-                    {shortDate(p.day)}, {p.label}
-                  </div>
-                </Thumb>
-              ))}
-            </div>
+            <h2 className="m-0 px-[14px] pt-7 text-[19px] font-normal">Earlier</h2>
+            <Strip pages={earlier} onOpen={setOpen} dated />
           </>
         )}
       </section>

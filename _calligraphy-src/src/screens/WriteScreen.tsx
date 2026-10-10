@@ -43,11 +43,10 @@ export function WriteScreen({ quoteId }: { quoteId: string }) {
     <PracticeShell
       pageKey={`quote:${quote.id}:${page}`}
       title={quote.author || 'Your quote'}
-      subtitle={pageCount > 1 ? `Page ${page + 1} of ${pageCount}` : 'Trace it, then write it from memory'}
-      segments={Array.from({ length: pageCount }, (_, i) => (i === page ? 'current' : i < page ? 'done' : 'empty'))}
-      segmentsLabel={`Page ${page + 1} of ${pageCount}`}
+      subtitle={pageCount > 1 ? `Page ${page + 1} of ${pageCount}` : 'Trace, then write from memory'}
       build={build}
       backTo={href.quotes}
+      backLabel="Back to quotes"
       prevLabel="Previous page"
       nextLabel="Next page"
       onPrev={page > 0 ? () => setPage(page - 1) : undefined}
