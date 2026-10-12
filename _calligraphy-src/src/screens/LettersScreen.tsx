@@ -19,10 +19,10 @@ const Cell = styled.a<{ $done: boolean }>`
   aspect-ratio: 1;
   color: ${({ theme }) => theme.color.ink};
   text-decoration: none;
-  background: ${({ $done, theme }) => ($done ? theme.color.paperDeep : 'transparent')};
+  background: ${({ $done, theme }) => ($done ? theme.color.tint : 'transparent')};
   transition: background 0.15s;
   &:active {
-    background: ${({ theme }) => theme.color.rule};
+    background: ${({ theme }) => theme.color.tint};
   }
   &::after {
     content: '';
@@ -33,7 +33,7 @@ const Cell = styled.a<{ $done: boolean }>`
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: ${({ theme }) => theme.color.cobalt};
+    background: ${({ theme }) => theme.color.vermilion};
   }
 `
 

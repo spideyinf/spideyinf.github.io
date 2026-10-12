@@ -6,13 +6,16 @@
   --font-caps: 'Pinyon Script', cursive;
   --font-cursive: 'Ephesis', cursive;
 
-  --color-paper: #f5ece6;
-  --color-paper-deep: #ecdfd6;
-  --color-ink: #2b1d1a;
-  --color-ink-soft: #6b5752;
-  --color-cobalt: #2c33b5;
-  --color-vermilion: #e5453c;
-  --color-rule: #d9c9c0;
+  /* Aged paper and iron-gall inks. */
+  --color-paper: #e9e1d0;
+  --color-paper-deep: #ddd3be;
+  --color-note: #f7f2e7;
+  --color-tint: rgb(120 95 60 / 0.09);
+  --color-ink: #2a221e;
+  --color-ink-soft: #6e6255;
+  --color-cobalt: #2f3e6b;
+  --color-vermilion: #b4432f;
+  --color-rule: #cfc3ac;
 }
 
 html,
@@ -24,11 +27,39 @@ body,
 body {
   margin: 0;
   background: var(--color-paper);
+  isolation: isolate;
   color: var(--color-ink);
   font-family: var(--font-serif);
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
   overscroll-behavior: none;
+}
+
+/* The whole app is one sheet of paper: a real paper scan (grain, specks)
+   multiplied with an aging layer. Fixed so it doesn't scroll or stretch. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-color: var(--color-paper);
+  background-image: url('./assets/paper/natural_paper.png'), url('./assets/paper/age.jpg');
+  background-size: 523px 384px, 100% 100%;
+  background-blend-mode: multiply;
+  pointer-events: none;
+}
+
+/* A fresh note laid on the page: lighter paper, same real grain. */
+.note-paper {
+  background-color: var(--color-note);
+  background-image: url('./assets/paper/lightpaperfibers.png');
+  background-size: 500px 300px;
+  background-blend-mode: multiply;
+}
+
+/* Hand-inked text: slightly rough edges, as ink bleeds into paper fibres. */
+.inked {
+  filter: url('#ink-bleed');
 }
 
 button {

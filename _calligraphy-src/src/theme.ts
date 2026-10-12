@@ -2,13 +2,15 @@
 // Tailwind gets the same values through @theme in index.css.
 export const theme = {
   color: {
-    paper: '#F5ECE6',
-    paperDeep: '#ECDFD6',
-    ink: '#2B1D1A',
-    inkSoft: '#6B5752',
-    cobalt: '#2C33B5',
-    vermilion: '#E5453C',
-    rule: '#D9C9C0',
+    paper: '#E9E1D0',
+    paperDeep: '#DDD3BE',
+    note: '#F7F2E7',
+    tint: 'rgba(120, 95, 60, 0.09)',
+    ink: '#2A221E',
+    inkSoft: '#6E6255',
+    cobalt: '#2F3E6B',
+    vermilion: '#B4432F',
+    rule: '#CFC3AC',
   },
   radius: { card: '28px', thumb: '10px', pill: '999px' },
   font: {

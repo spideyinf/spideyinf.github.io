@@ -3,17 +3,18 @@ import type { ComponentProps, ReactNode } from 'react'
 import styled, { css, keyframes } from 'styled-components'
 import { CAP_IN_X, CAPS_CAP_EM, CURSIVE_X_EM, splitRuns } from '../lib/hand'
 
-/* The combined hand, as DOM text. `size` is the x-height in px. */
-export function Hand({ text, size, className }: { text: string; size: number; className?: string }) {
+/* The combined hand, as DOM text. `size` is the x-height: px, or any CSS length (e.g. cqw). */
+export function Hand({ text, size, className }: { text: string; size: number | string; className?: string }) {
+  const len = typeof size === 'number' ? `${size}px` : size
   return (
     <span className={className} style={{ lineHeight: 1.15 }}>
       {splitRuns(text).map((r, i) =>
         r.caps ? (
-          <span key={i} style={{ fontFamily: 'var(--font-caps)', fontSize: (size * CAP_IN_X) / CAPS_CAP_EM }}>
+          <span key={i} style={{ fontFamily: 'var(--font-caps)', fontSize: `calc(${len} * ${CAP_IN_X / CAPS_CAP_EM})` }}>
             {r.text}
           </span>
         ) : (
-          <span key={i} style={{ fontFamily: 'var(--font-cursive)', fontSize: size / CURSIVE_X_EM }}>
+          <span key={i} style={{ fontFamily: 'var(--font-cursive)', fontSize: `calc(${len} / ${CURSIVE_X_EM})` }}>
             {r.text}
           </span>
         ),
@@ -22,34 +23,34 @@ export function Hand({ text, size, className }: { text: string; size: number; cl
   )
 }
 
-/* Brand mark: a nib in a paper circle. */
-export function Logo({ size = 36 }: { size?: number }) {
+/* SVG filters used by CSS: ink bleeding into paper, and torn (deckle) paper edges. */
+export function PaperFilters() {
   return (
-    <svg width={size} height={size} viewBox="0 0 64 64" aria-hidden>
-      <circle cx="32" cy="32" r="31" fill="#fff" />
-      <path d="M32 10c6 8 9 16 9 24 0 6-4 11-9 20-5-9-9-14-9-20 0-8 3-16 9-24z" fill="var(--color-cobalt)" />
-      <path d="M32 30v24" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" />
-      <circle cx="32" cy="30" r="3" fill="#fff" />
+    <svg width="0" height="0" style={{ position: 'absolute' }} aria-hidden focusable="false">
+      <filter id="ink-bleed" x="-5%" y="-10%" width="110%" height="120%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="2" seed="4" result="n" />
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="1.8" xChannelSelector="R" yChannelSelector="G" result="d" />
+        <feGaussianBlur in="d" stdDeviation="0.25" />
+      </filter>
+      <filter id="deckle" x="-4%" y="-8%" width="108%" height="116%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.04 0.07" numOctaves="3" seed="9" result="n" />
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="8" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
     </svg>
   )
 }
 
-/* Hand-drawn oval with a tail, as in a margin note. */
-export function Oval({ children, color = 'currentColor' }: { children: ReactNode; color?: string }) {
+/* A flourish divider, drawn for this app. */
+export function Flourish({ className }: { className?: string }) {
+  const half = 'M98 12c-6-7-15-7-22-2-9 6-17 9-27 6-8-2-13-8-21-8-7 0-12 4-16 9 6-3 11-4 16-2 9 3 15 9 25 8 12-1 19-11 29-13 6-1 11 0 16 2z'
   return (
-    <div className="relative mx-auto w-[270px] px-10 py-7 text-center">
-      <svg className="absolute inset-0 h-full w-full overflow-visible" viewBox="0 0 270 110" preserveAspectRatio="none" aria-hidden>
-        <path
-          d="M150 104 C 70 108, 4 92, 6 56 C 8 18, 80 3, 140 4 C 210 5, 266 24, 264 58 C 262 92, 205 104, 132 103"
-          fill="none"
-          stroke={color}
-          strokeWidth="1.3"
-          strokeLinecap="round"
-          vectorEffect="non-scaling-stroke"
-        />
-      </svg>
-      <div className="relative">{children}</div>
-    </div>
+    <svg className={className} viewBox="0 0 200 24" width="150" height="18" aria-hidden>
+      <g fill="currentColor">
+        <path d={half} />
+        <path d={half} transform="translate(200 0) scale(-1 1)" />
+        <path d="M100 7l3 5-3 5-3-5z" />
+      </g>
+    </svg>
   )
 }
 
@@ -90,7 +91,6 @@ export const Toolbar = styled.nav`
   justify-content: space-between;
   gap: 4px;
   padding: 6px 10px calc(8px + env(safe-area-inset-bottom));
-  background: ${({ theme }) => theme.color.paper};
 `
 
 export const SaveButton = styled.button`
@@ -98,12 +98,12 @@ export const SaveButton = styled.button`
   padding: 0 22px;
   border: 0;
   border-radius: ${({ theme }) => theme.radius.pill};
-  background: ${({ theme }) => theme.color.cobalt};
-  color: #fff;
+  background: ${({ theme }) => theme.color.ink};
+  color: ${({ theme }) => theme.color.paper};
   font-family: ${({ theme }) => theme.font.serif};
   font-size: 17px;
   &:disabled {
-    background: ${({ theme }) => theme.color.rule};
+    background: ${({ theme }) => theme.color.tint};
     color: ${({ theme }) => theme.color.inkSoft};
   }
   &:active:not(:disabled) {
@@ -182,6 +182,17 @@ export const Icons = {
     </>,
   ),
   download: icon(<path d="M12 4v11M7 10l5 5 5-5M5 20h14" />),
+  play: (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+      <path d="M8 5.5v13a1 1 0 001.5.86l10.5-6.5a1 1 0 000-1.72L9.5 4.64A1 1 0 008 5.5z" />
+    </svg>
+  ),
+  pause: (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+      <rect x="6.5" y="5" width="4" height="14" rx="1" />
+      <rect x="13.5" y="5" width="4" height="14" rx="1" />
+    </svg>
+  ),
   pen: icon(
     <>
       <path d="M12 2.5c3 3.5 4.5 7.5 4.5 11 0 2.5-1.8 4.6-4.5 8-2.7-3.4-4.5-5.5-4.5-8 0-3.5 1.5-7.5 4.5-11z" />

@@ -3,15 +3,15 @@ import styled, { keyframes } from 'styled-components'
 import { Hand, IconButton, Icons, SaveButton, TopBar } from '../components/ui'
 import { go, href } from '../lib/router'
 import { usePractice } from '../state/practice'
+import fibers from '../assets/paper/lightpaperfibers.png'
 
 // Full-bleed rows that alternate paper tones instead of outlined cards.
-const Card = styled.li<{ $mine?: boolean }>`
+const Card = styled.li`
   position: relative;
   list-style: none;
-  background: ${({ $mine, theme }) => ($mine ? theme.color.cobalt : 'transparent')};
-  color: ${({ $mine, theme }) => ($mine ? '#fff' : theme.color.ink)};
+  color: ${({ theme }) => theme.color.ink};
   &:nth-child(even) {
-    background: ${({ $mine, theme }) => ($mine ? theme.color.cobalt : theme.color.paperDeep)};
+    background: ${({ theme }) => theme.color.tint};
   }
   a {
     display: block;
@@ -32,7 +32,11 @@ const Backdrop = styled.div`
 `
 const Drawer = styled.form`
   width: 100%;
-  background: ${({ theme }) => theme.color.paper};
+  background-color: ${({ theme }) => theme.color.note};
+  background-image: url(${fibers});
+  background-size: 500px 300px;
+  background-blend-mode: multiply;
+  box-shadow: 0 -6px 20px rgb(70 50 25 / 0.18);
   
   padding: 18px 18px calc(18px + env(safe-area-inset-bottom));
   animation: ${up} 0.22s ease-out;
@@ -42,7 +46,7 @@ const Drawer = styled.form`
     box-sizing: border-box;
     border: 0;
     border-radius: 0;
-    background: ${({ theme }) => theme.color.paperDeep};
+    background: ${({ theme }) => theme.color.tint};
     padding: 12px 14px;
     font: 17px/1.45 ${({ theme }) => theme.font.serif};
     color: ${({ theme }) => theme.color.ink};
@@ -99,17 +103,18 @@ export function QuotesScreen() {
 
         <ul className="m-0 p-0">
           {quotes.map((q) => (
-            <Card key={q.id} $mine={q.custom}>
+            <Card key={q.id}>
               <a href={href.write(q.id)}>
                 <Hand text={q.text} size={8.5} className="block" />
-                <div className={`mt-2 font-sans text-[12.5px] ${q.custom ? 'text-white/75' : 'text-ink-soft'}`}>
+                <div className="mt-2 font-sans text-[12.5px] text-ink-soft">
+                  {q.custom && <span className="text-vermilion">Yours. </span>}
                   {q.author || 'Your quote'}
                   {today.quotes.includes(q.id) && ', written today'}
                 </div>
               </a>
               {q.custom && (
                 <div className="absolute top-1.5 right-1.5">
-                  <IconButton label="Delete this quote" onClick={() => deleteQuote(q.id)} style={{ color: '#fff' }}>
+                  <IconButton label="Delete this quote" onClick={() => deleteQuote(q.id)}>
                     {Icons.close}
                   </IconButton>
                 </div>

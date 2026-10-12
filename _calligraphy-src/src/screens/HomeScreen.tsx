@@ -1,31 +1,42 @@
 import { useState } from 'react'
 import styled from 'styled-components'
-import { Hand, IconButton, Icons, Logo, Oval } from '../components/ui'
+import { Flourish, Hand, IconButton, Icons } from '../components/ui'
 import { dayKey, longDate, shortDate } from '../lib/date'
 import { href } from '../lib/router'
 import { usePractice, type SavedPage } from '../state/practice'
+import fibers from '../assets/paper/lightpaperfibers.png'
 
-// Full-bleed bands: no frame, no outline, and the script runs off the screen edge.
-const Band = styled.a<{ $bg: string }>`
+// A fresh sheet laid on the page: lighter paper, torn edges, a slight tilt.
+// Its contents size themselves to the note's width (container units).
+const Note = styled.a<{ $tilt: number }>`
   position: relative;
-  display: block;
-  min-height: 230px;
-  padding: 22px 16px 20px;
-  background: ${({ $bg }) => $bg};
-  color: #fff;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 4cqw;
+  margin: 0 14px;
+  padding: 7cqw 6cqw 6cqw;
+  color: ${({ theme }) => theme.color.ink};
   text-decoration: none;
-  overflow: hidden;
+  transform: rotate(${({ $tilt }) => $tilt}deg);
+  transition: transform 0.2s;
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-color: ${({ theme }) => theme.color.note};
+    background-image: url(${fibers});
+    background-size: 500px 300px;
+    background-blend-mode: multiply;
+    filter: url('#deckle') drop-shadow(0 1px 1px rgb(70 50 25 / 0.22)) drop-shadow(0 8px 14px rgb(70 50 25 / 0.12));
+  }
   &:active {
-    filter: brightness(0.95);
+    transform: rotate(0deg) scale(0.985);
   }
 `
-const Bleed = styled.div`
-  position: absolute;
-  right: -18px;
-  bottom: -6px;
-  white-space: nowrap;
-  opacity: 0.95;
-  pointer-events: none;
+const NoteWrap = styled.div`
+  container-type: inline-size;
 `
 
 const Thumb = styled.button`
@@ -41,7 +52,7 @@ const Thumb = styled.button`
     height: 134px;
     object-fit: cover;
     object-position: top;
-    border-radius: ${({ theme }) => theme.radius.thumb};
+    box-shadow: 0 1px 2px rgb(70 50 25 / 0.25);
   }
 `
 
@@ -51,8 +62,15 @@ const Viewer = styled.div`
   z-index: 40;
   display: flex;
   flex-direction: column;
-  background: ${({ theme }) => theme.color.paperDeep};
   padding-top: env(safe-area-inset-top);
+  isolation: isolate;
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: ${({ theme }) => theme.color.paperDeep};
+  }
   img {
     flex: 1;
     min-height: 0;
@@ -63,7 +81,7 @@ const Viewer = styled.div`
 
 function Strip({ pages, onOpen, dated }: { pages: SavedPage[]; onOpen: (p: SavedPage) => void; dated?: boolean }) {
   return (
-    <div className="flex gap-2.5 overflow-x-auto px-[14px] pt-3 pb-1">
+    <div className="flex gap-2.5 overflow-x-auto px-[14px] pt-3 pb-2">
       {pages.map((p) => (
         <Thumb key={p.id} type="button" onClick={() => onOpen(p)} aria-label={`Open page ${p.label}`}>
           <img src={p.src} alt="" />
@@ -85,60 +103,60 @@ export function HomeScreen() {
 
   return (
     <main className="min-h-dvh pb-12" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
-      <header className="flex items-center gap-2.5 px-[14px] pt-3">
-        <Logo />
-        <div className="leading-tight">
-          <div className="text-[15px] font-semibold">Daily Hand</div>
-          <div className="font-sans text-[12.5px] text-ink-soft">
-            {streak > 0 ? `${streak}-day streak` : 'Start your streak today'}
-          </div>
-        </div>
-        <div className="ml-auto font-sans text-[12.5px] text-ink-soft">{longDate()}</div>
+      <div className="flex justify-between px-[14px] pt-3 font-sans text-[12.5px] text-ink-soft">
+        <span>{streak > 0 ? `${streak}-day streak` : 'Start your streak today'}</span>
+        <span>{longDate()}</span>
+      </div>
+
+      {/* The title, written on the page itself. */}
+      <header className="inked px-[14px] pt-[12vw] pb-[10vw] text-center text-ink [container-type:inline-size]">
+        <h1 className="m-0 font-normal">
+          <Hand text="Daily Hand" size="10cqw" />
+        </h1>
+        <p className="m-0 mt-[3cqw] leading-[1.05]">
+          <Hand text="Write to learn," size="4.6cqw" />
+          <br />
+          <Hand text="a line every day" size="4.6cqw" />
+        </p>
+        <Flourish className="mx-auto mt-[5cqw] block w-[42cqw]" />
       </header>
 
-      <section className="px-[14px] pt-10 pb-6 text-center">
-        <h1 className="m-0 font-normal">
-          <Hand text="Write to Learn" size={19} />
-        </h1>
-        <div className="mt-5 text-vermilion">
-          <Oval>
-            <p className="m-0 font-sans text-[13.5px] leading-snug text-ink">
-              Nulla dies sine linea.
-              <br />
-              No day without a line.
-            </p>
-          </Oval>
-        </div>
-      </section>
-
-      <nav aria-label="Practice">
-        <Band href={href.letters} $bg="var(--color-vermilion)">
-          <Bleed aria-hidden>
-            <Hand text="Aa Bb" size={34} />
-          </Bleed>
-          <div className="relative max-w-[60%]">
-            <div className="text-[30px] leading-none">ABC</div>
-            <div className="mt-2 font-sans text-[13px] leading-snug text-white/90">
-              Copperplate capitals, business cursive letters
+      <nav aria-label="Practice" className="flex flex-col gap-6">
+        <NoteWrap>
+          <Note href={href.letters} $tilt={-0.8}>
+            <div className="min-w-0">
+              <div className="text-[clamp(24px,8cqw,32px)] leading-none">ABC</div>
+              <p className="m-0 mt-[2.5cqw] font-sans text-[clamp(12.5px,3.7cqw,15px)] leading-snug text-ink-soft">
+                Copperplate capitals and business cursive, stroke by stroke
+              </p>
+              <p className="m-0 mt-[3cqw] font-sans text-[12px] text-ink-soft">{today.letters.length} of 26 today</p>
             </div>
-          </div>
-          <div className="relative mt-3 font-sans text-[12.5px] text-white/75">{today.letters.length} of 26 today</div>
-        </Band>
-        <Band href={href.quotes} $bg="var(--color-cobalt)">
-          <Bleed aria-hidden style={{ right: -60 }}>
-            <Hand text="Little by little" size={17} />
-          </Bleed>
-          <div className="relative max-w-[55%]">
-            <div className="text-[30px] leading-none">Paragraph</div>
-            <div className="mt-2 font-sans text-[13px] leading-snug text-white/90">Quotes to write, or your own words</div>
-          </div>
-          <div className="relative mt-3 font-sans text-[12.5px] text-white/75">
-            {today.quotes.length ? `${today.quotes.length} written today` : 'None yet today'}
-          </div>
-        </Band>
+            <div className="inked pr-[2cqw]" aria-hidden>
+              <Hand text="Aa" size="11cqw" />
+            </div>
+          </Note>
+        </NoteWrap>
+        <NoteWrap>
+          <Note href={href.quotes} $tilt={0.7}>
+            <div className="min-w-0">
+              <div className="text-[clamp(24px,8cqw,32px)] leading-none">Paragraph</div>
+              <p className="m-0 mt-[2.5cqw] font-sans text-[clamp(12.5px,3.7cqw,15px)] leading-snug text-ink-soft">
+                Quotes to write by hand, or your own words
+              </p>
+              <p className="m-0 mt-[3cqw] font-sans text-[12px] text-ink-soft">
+                {today.quotes.length ? `${today.quotes.length} written today` : 'None yet today'}
+              </p>
+            </div>
+            <div className="inked text-right leading-[1.1]" aria-hidden>
+              <Hand text="Little by" size="4.4cqw" />
+              <br />
+              <Hand text="little" size="4.4cqw" />
+            </div>
+          </Note>
+        </NoteWrap>
       </nav>
 
-      <section className="pt-9" aria-label="Your pages">
+      <section className="pt-10" aria-label="Your pages">
         <h2 className="m-0 px-[14px] text-[19px] font-normal">Today's pages</h2>
         {todayPages.length ? (
           <Strip pages={todayPages} onOpen={setOpen} />
@@ -162,6 +180,13 @@ export function HomeScreen() {
       <footer className="px-6 pt-12 text-center font-sans text-[12.5px] leading-relaxed text-ink-soft">
         After William Zinsser's <i className="font-serif text-[14px]">Writing to Learn</i>: we come to understand
         a thing by writing it out, a little every day.
+        <span className="mt-3 block text-[11px] opacity-80">
+          Paper texture from{' '}
+          <a className="underline underline-offset-2" href="https://github.com/subtlepatterns/SubtlePatterns">
+            Subtle Patterns
+          </a>
+          , CC BY-SA 3.0
+        </span>
       </footer>
 
       {open && (

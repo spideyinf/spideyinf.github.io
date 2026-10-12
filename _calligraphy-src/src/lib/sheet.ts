@@ -1,5 +1,7 @@
 import { theme } from '../theme'
+import { bounds, inkStep, type Glyph } from './ductus'
 import { drawHand, measureHand, wrapHand, type Metrics } from './hand'
+import { paintStroke } from './pen'
 
 // A practice sheet is a stack of ruled rows. Each row has its own
 // x-height; guidelines follow a Copperplate-style ratio around it.
@@ -9,7 +11,8 @@ const PAD = 0.35
 export const ROW_IN_X = ASC + DESC + PAD * 2
 const SLANT = (55 * Math.PI) / 180
 
-export type Segment = { text: string; alpha: number }
+/** A model on a row: either text in the combined hand, or a stroke-built letter. */
+export type Segment = { text: string; alpha: number } | { glyph: Glyph; alpha: number; weight?: number }
 export type RowSpec = { xh: number; segments: Segment[]; align?: 'left' | 'center'; gap?: number }
 export type Row = RowSpec & { top: number; baseline: number; height: number }
 
@@ -57,6 +60,35 @@ export function paginateText(
   return pages.length ? pages : [[]]
 }
 
+/** Ink colour diluted toward the paper: a faint model with no darker overlaps. */
+export function mixHex(hex: string, paper: string, t: number) {
+  const a = parseInt(hex.slice(1), 16)
+  const b = parseInt(paper.slice(1), 16)
+  const ch = (sh: number) => Math.round(((a >> sh) & 255) * t + ((b >> sh) & 255) * (1 - t))
+  return `#${[16, 8, 0].map((sh) => ch(sh).toString(16).padStart(2, '0')).join('')}`
+}
+
+/** Draw a stroke-built letter with its left edge at x (in slanted space, minX at x). */
+export function drawGlyph(
+  ctx: CanvasRenderingContext2D,
+  g: Glyph,
+  ox: number,
+  baseline: number,
+  xh: number,
+  color: string,
+  weight = 1,
+) {
+  for (const st of g.steps) {
+    const pts = inkStep(st, ox, baseline, xh, weight)
+    if (st.dot) {
+      ctx.fillStyle = color
+      ctx.beginPath()
+      ctx.arc(pts[0].x, pts[0].y, pts[0].w / 2, 0, Math.PI * 2)
+      ctx.fill()
+    } else paintStroke(ctx, { color, pts }, theme.color.paper)
+  }
+}
+
 function rgba(hex: string, a: number) {
   const n = parseInt(hex.slice(1), 16)
   return `rgba(${n >> 16},${(n >> 8) & 255},${n & 255},${a})`
@@ -64,7 +96,7 @@ function rgba(hex: string, a: number) {
 
 export function drawSheet(
   ctx: CanvasRenderingContext2D,
-  m: Metrics,
+  m: Metrics | null,
   layout: SheetLayout,
   showModel: boolean,
   guideStrength = 1,
@@ -109,14 +141,19 @@ export function drawSheet(
     line(r.baseline, 0.55)
     line(descY, 0.16, [3, 4])
 
-    if (!showModel || !r.segments.length) continue
+    if (!showModel || !m || !r.segments.length) continue
     const gap = (r.gap ?? 1.4) * r.xh
-    const total =
-      r.segments.reduce((w, s) => w + measureHand(ctx, m, s.text, r.xh), 0) + gap * (r.segments.length - 1)
+    const widthOf = (s: Segment) => ('glyph' in s ? bounds(s.glyph).width * r.xh : measureHand(ctx, m, s.text, r.xh))
+    const total = r.segments.reduce((w, s) => w + widthOf(s), 0) + gap * (r.segments.length - 1)
     let x = r.align === 'center' ? (width - total) / 2 : TEXT_INSET + r.xh * 0.3
     for (const s of r.segments) {
-      ctx.fillStyle = rgba(ink, s.alpha)
-      x += drawHand(ctx, m, s.text, x, r.baseline, r.xh) + gap
+      if ('glyph' in s) {
+        drawGlyph(ctx, s.glyph, x - bounds(s.glyph).minX * r.xh, r.baseline, r.xh, mixHex(ink, theme.color.paper, s.alpha), s.weight)
+        x += widthOf(s) + gap
+      } else {
+        ctx.fillStyle = rgba(ink, s.alpha)
+        x += drawHand(ctx, m, s.text, x, r.baseline, r.xh) + gap
+      }
     }
   }
   ctx.setLineDash([])

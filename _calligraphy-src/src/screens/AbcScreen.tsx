@@ -1,5 +1,7 @@
 import { useCallback } from 'react'
+import { LetterTutorial } from '../components/LetterTutorial'
 import { PracticeShell } from '../components/PracticeShell'
+import { bounds, CAPITALS, LOWERCASE } from '../lib/ductus'
 import type { Metrics } from '../lib/hand'
 import { LETTERS, letterInfo } from '../lib/letters'
 import { go, href } from '../lib/router'
@@ -14,16 +16,22 @@ export function AbcScreen({ letter }: { letter: string }) {
   const info = letterInfo(letter)
   const i = LETTERS.indexOf(letter)
 
+  // Trace the same stroke-built letters the tutorial demonstrates, then the word in the hand.
   const build = useCallback(
     (_ctx: CanvasRenderingContext2D, _m: Metrics, w: number, h: number) => {
-      const big = Math.min(w / 7.2, (h / ROW_IN_X) * 0.34)
-      const md = Math.min(w / 15, (h / ROW_IN_X) * 0.2)
+      const cap = CAPITALS[info.upper]
+      const low = LOWERCASE[info.lower]
+      const md = Math.min(w / 14, (h / ROW_IN_X) * 0.3)
+      // As many copies as fit across the row, up to a limit.
+      const fit = (gw: number, gap: number, max: number) =>
+        Math.max(1, Math.min(max, Math.floor((w - 28 + gap * md) / ((gw + gap) * md))))
+      const nCap = fit(bounds(cap).width, 1.3, 3)
+      const nLow = fit(bounds(low).width, 1.0, 5)
       return stackRows(
         [
-          { xh: big, align: 'center', segments: [{ text: info.upper + info.lower, alpha: 0.3 }] },
-          { xh: md, gap: 2, segments: fade(3, 0.3, 0.07).map((alpha) => ({ text: info.upper, alpha })) },
-          { xh: md, gap: 1.6, segments: fade(5, 0.32, 0.06).map((alpha) => ({ text: info.lower, alpha })) },
-          { xh: md, segments: [{ text: info.word, alpha: 0.28 }] },
+          { xh: md, gap: 1.3, segments: fade(nCap, 0.34, 0.1).map((alpha) => ({ glyph: cap, alpha })) },
+          { xh: md, gap: 1.0, segments: fade(nLow, 0.36, 0.08).map((alpha) => ({ glyph: low, alpha, weight: 0.85 })) },
+          { xh: md, segments: [{ text: info.word, alpha: 0.3 }] },
         ],
         w,
         h,
@@ -38,7 +46,7 @@ export function AbcScreen({ letter }: { letter: string }) {
       pageKey={`abc:${letter}`}
       title={`Letter ${info.upper}`}
       subtitle={`${i + 1} of 26`}
-      note={`${info.capTip} ${info.lowerTip}`}
+      lead={<LetterTutorial key={letter} letter={letter} />}
       build={build}
       backTo={href.letters}
       backLabel="Back to all letters"

@@ -26,7 +26,7 @@ const Chip = styled.button<{ $on: boolean }>`
   padding: 0 14px;
   border: 0;
   border-radius: ${({ theme }) => theme.radius.pill};
-  background: ${({ $on, theme }) => ($on ? theme.color.ink : theme.color.paperDeep)};
+  background: ${({ $on, theme }) => ($on ? theme.color.ink : theme.color.tint)};
   color: ${({ $on, theme }) => ($on ? theme.color.paper : theme.color.ink)};
   font-family: ${({ theme }) => theme.font.sans};
   font-size: 13.5px;
@@ -56,6 +56,8 @@ type Props = {
   title: ReactNode
   subtitle: ReactNode
   note?: ReactNode
+  /** Content between the top bar and the sheet (e.g. the letter tutorial). Not traceable. */
+  lead?: ReactNode
   build: (ctx: CanvasRenderingContext2D, m: Metrics, w: number, h: number) => SheetLayout
   onPrev?: () => void
   onNext?: () => void
@@ -152,6 +154,8 @@ export function PracticeShell(p: Props) {
           </div>
         </Tray>
       )}
+
+      {!tray && p.lead}
 
       {!tray && p.note && (
         <div className="px-[14px] pb-1 font-sans text-[12.5px] leading-snug text-ink-soft">{p.note}</div>

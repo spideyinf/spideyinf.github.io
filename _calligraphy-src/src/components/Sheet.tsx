@@ -4,6 +4,7 @@ import { loadHand, type Metrics } from '../lib/hand'
 import { finishStroke, INK_OPACITY, INKS, NIBS, paintStroke, sample, type InkStroke, type PenSettings } from '../lib/pen'
 import { drawSheet, rowAt, type SheetLayout } from '../lib/sheet'
 import { theme } from '../theme'
+import paperScan from '../assets/paper/natural_paper.png'
 
 // Ink survives moving between letters/pages within a session.
 const inkByPage = new Map<string, InkStroke[]>()
@@ -51,6 +52,9 @@ const Wrap = styled.div`
 `
 
 const PAPER = theme.color.paper
+
+// The same paper scan as the page, so saved pages look like the sheet you wrote on.
+const paperImg = typeof Image !== 'undefined' ? Object.assign(new Image(), { src: paperScan }) : null
 
 export function Sheet({ pageKey, showModel, pen, build, onInkChange, ref }: Props) {
   const wrapRef = useRef<HTMLDivElement>(null)
@@ -206,6 +210,12 @@ export function Sheet({ pageKey, showModel, pen, build, onInkChange, ref }: Prop
         const ctx = c.getContext('2d')!
         ctx.fillStyle = PAPER
         ctx.fillRect(0, 0, c.width, c.height)
+        if (paperImg?.complete && paperImg.naturalWidth) {
+          ctx.globalCompositeOperation = 'multiply'
+          ctx.fillStyle = ctx.createPattern(paperImg, 'repeat')!
+          ctx.fillRect(0, 0, c.width, c.height)
+          ctx.globalCompositeOperation = 'source-over'
+        }
         ctx.drawImage(g, 0, 0, c.width, c.height)
         ctx.globalCompositeOperation = 'multiply'
         ctx.drawImage(k, 0, 0, c.width, c.height)
