@@ -1,9 +1,11 @@
 import { useEffect, useRef } from 'react'
-import { bounds, CAPITALS, inkStep, LOWERCASE, type Glyph } from '../lib/ductus'
+import { bounds, inkStep, type Glyph } from '../lib/ductus'
+import { scriptById } from '../lib/scripts'
 import { paintStroke } from '../lib/pen'
 import { theme } from '../theme'
 
-// Dev-only contact sheet of every letter, for checking letterforms (#/ductus).
+// Dev-only contact sheet of every letter, for checking letterforms.
+// #/ductus shows Copperplate; #/ductus/<scriptId> shows another script.
 const COLORS = ['#2a221e', '#b4432f', '#2f6b3e', '#2f3e6b', '#8a5a00']
 
 export default function DuctusSheet() {
@@ -20,7 +22,8 @@ export default function DuctusSheet() {
     const xh = 26
     const cell = 150
     const cellH = 120
-    const all: [string, Glyph][] = [...Object.entries(CAPITALS), ...Object.entries(LOWERCASE)]
+    const script = scriptById(location.hash.split('/')[2])
+    const all: [string, Glyph][] = [...Object.entries(script.capitals), ...Object.entries(script.lowercase)]
     ctx.font = '12px sans-serif'
     all.forEach(([ch, g], i) => {
       const col = i % 8
@@ -35,10 +38,10 @@ export default function DuctusSheet() {
         ctx.lineTo(x0 + cell - 4, y)
         ctx.stroke()
       }
-      const b = bounds(g)
+      const b = bounds(g, script.style.slant)
       const ox = x0 + (cell - b.width * xh) / 2 - b.minX * xh
       g.steps.forEach((st, k) => {
-        const pts = inkStep(st, ox, base, xh)
+        const pts = inkStep(st, ox, base, xh, script.style)
         const color = COLORS[k % COLORS.length]
         if (st.dot) {
           ctx.fillStyle = color

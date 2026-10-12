@@ -17,6 +17,8 @@ export type SheetHandle = {
 }
 
 type Props = {
+  /** Font of the script being practised, for text models. */
+  font: string
   pageKey: string
   showModel: boolean
   pen: PenSettings
@@ -56,7 +58,7 @@ const PAPER = theme.color.paper
 // The same paper scan as the page, so saved pages look like the sheet you wrote on.
 const paperImg = typeof Image !== 'undefined' ? Object.assign(new Image(), { src: paperScan }) : null
 
-export function Sheet({ pageKey, showModel, pen, build, onInkChange, ref }: Props) {
+export function Sheet({ pageKey, font, showModel, pen, build, onInkChange, ref }: Props) {
   const wrapRef = useRef<HTMLDivElement>(null)
   const guideRef = useRef<HTMLCanvasElement>(null)
   const inkRef = useRef<HTMLCanvasElement>(null)
@@ -73,8 +75,12 @@ export function Sheet({ pageKey, showModel, pen, build, onInkChange, ref }: Prop
   }, [pageKey])
 
   useEffect(() => {
-    loadHand().then(setMetrics)
-  }, [])
+    let live = true
+    loadHand(font).then((m) => live && setMetrics(m))
+    return () => {
+      live = false
+    }
+  }, [font])
 
   useEffect(() => {
     const ro = new ResizeObserver(([e]) => {

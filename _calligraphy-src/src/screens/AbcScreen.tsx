@@ -1,36 +1,37 @@
 import { useCallback } from 'react'
 import { LetterTutorial } from '../components/LetterTutorial'
 import { PracticeShell } from '../components/PracticeShell'
-import { bounds, CAPITALS, LOWERCASE } from '../lib/ductus'
+import { bounds, type Glyph } from '../lib/ductus'
 import type { Metrics } from '../lib/hand'
 import { LETTERS, letterInfo } from '../lib/letters'
 import { go, href } from '../lib/router'
-import { ROW_IN_X, stackRows } from '../lib/sheet'
+import { ROW_IN_X, stackRows, type RowSpec } from '../lib/sheet'
 import { usePractice } from '../state/practice'
 
 const fade = (n: number, from: number, to: number) =>
   Array.from({ length: n }, (_, i) => from + ((to - from) * i) / Math.max(1, n - 1))
 
 export function AbcScreen({ letter }: { letter: string }) {
-  const { savePage } = usePractice()
+  const { savePage, script } = usePractice()
   const info = letterInfo(letter)
   const i = LETTERS.indexOf(letter)
 
-  // Trace the same stroke-built letters the tutorial demonstrates, then the word in the hand.
+  // Trace the same stroke-built letters the tutorial demonstrates, then the word in the script's font.
   const build = useCallback(
     (_ctx: CanvasRenderingContext2D, _m: Metrics, w: number, h: number) => {
-      const cap = CAPITALS[info.upper]
-      const low = LOWERCASE[info.lower]
+      const { style } = script
       const md = Math.min(w / 14, (h / ROW_IN_X) * 0.3)
       // As many copies as fit across the row, up to a limit.
-      const fit = (gw: number, gap: number, max: number) =>
-        Math.max(1, Math.min(max, Math.floor((w - 28 + gap * md) / ((gw + gap) * md))))
-      const nCap = fit(bounds(cap).width, 1.3, 3)
-      const nLow = fit(bounds(low).width, 1.0, 5)
+      const row = (g: Glyph | undefined, gap: number, max: number, from: number): RowSpec => {
+        if (!g?.steps.length) return { xh: md, segments: [] }
+        const gw = bounds(g, style.slant).width
+        const n = Math.max(1, Math.min(max, Math.floor((w - 28 + gap * md) / ((gw + gap) * md))))
+        return { xh: md, gap, segments: fade(n, from, 0.08).map((alpha) => ({ glyph: g, alpha, style })) }
+      }
       return stackRows(
         [
-          { xh: md, gap: 1.3, segments: fade(nCap, 0.34, 0.1).map((alpha) => ({ glyph: cap, alpha })) },
-          { xh: md, gap: 1.0, segments: fade(nLow, 0.36, 0.08).map((alpha) => ({ glyph: low, alpha, weight: 0.85 })) },
+          row(script.capitals[info.upper], 1.3, 3, 0.34),
+          row(script.lowercase[info.lower], 1.0, 5, 0.36),
           { xh: md, segments: [{ text: info.word, alpha: 0.3 }] },
         ],
         w,
@@ -38,15 +39,15 @@ export function AbcScreen({ letter }: { letter: string }) {
         md,
       )
     },
-    [info.upper, info.lower, info.word],
+    [info.upper, info.lower, info.word, script],
   )
 
   return (
     <PracticeShell
-      pageKey={`abc:${letter}`}
+      pageKey={`abc:${script.id}:${letter}`}
       title={`Letter ${info.upper}`}
-      subtitle={`${i + 1} of 26`}
-      lead={<LetterTutorial key={letter} letter={letter} />}
+      subtitle={`${script.name}, ${i + 1} of 26`}
+      lead={<LetterTutorial key={`${script.id}:${letter}`} letter={letter} />}
       build={build}
       backTo={href.letters}
       backLabel="Back to all letters"

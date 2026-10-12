@@ -1,5 +1,5 @@
 import { theme } from '../theme'
-import { bounds, inkStep, type Glyph } from './ductus'
+import { bounds, inkStep, type Glyph, type Style } from './ductus'
 import { drawHand, measureHand, wrapHand, type Metrics } from './hand'
 import { paintStroke } from './pen'
 
@@ -12,7 +12,7 @@ export const ROW_IN_X = ASC + DESC + PAD * 2
 const SLANT = (55 * Math.PI) / 180
 
 /** A model on a row: either text in the combined hand, or a stroke-built letter. */
-export type Segment = { text: string; alpha: number } | { glyph: Glyph; alpha: number; weight?: number }
+export type Segment = { text: string; alpha: number } | { glyph: Glyph; alpha: number; style: Style }
 export type RowSpec = { xh: number; segments: Segment[]; align?: 'left' | 'center'; gap?: number }
 export type Row = RowSpec & { top: number; baseline: number; height: number }
 
@@ -76,10 +76,10 @@ export function drawGlyph(
   baseline: number,
   xh: number,
   color: string,
-  weight = 1,
+  style: Style,
 ) {
   for (const st of g.steps) {
-    const pts = inkStep(st, ox, baseline, xh, weight)
+    const pts = inkStep(st, ox, baseline, xh, style)
     if (st.dot) {
       ctx.fillStyle = color
       ctx.beginPath()
@@ -143,12 +143,13 @@ export function drawSheet(
 
     if (!showModel || !m || !r.segments.length) continue
     const gap = (r.gap ?? 1.4) * r.xh
-    const widthOf = (s: Segment) => ('glyph' in s ? bounds(s.glyph).width * r.xh : measureHand(ctx, m, s.text, r.xh))
+    const widthOf = (s: Segment) =>
+      'glyph' in s ? bounds(s.glyph, s.style.slant).width * r.xh : measureHand(ctx, m, s.text, r.xh)
     const total = r.segments.reduce((w, s) => w + widthOf(s), 0) + gap * (r.segments.length - 1)
     let x = r.align === 'center' ? (width - total) / 2 : TEXT_INSET + r.xh * 0.3
     for (const s of r.segments) {
       if ('glyph' in s) {
-        drawGlyph(ctx, s.glyph, x - bounds(s.glyph).minX * r.xh, r.baseline, r.xh, mixHex(ink, theme.color.paper, s.alpha), s.weight)
+        drawGlyph(ctx, s.glyph, x - bounds(s.glyph, s.style.slant).minX * r.xh, r.baseline, r.xh, mixHex(ink, theme.color.paper, s.alpha), s.style)
         x += widthOf(s) + gap
       } else {
         ctx.fillStyle = rgba(ink, s.alpha)

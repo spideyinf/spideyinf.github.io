@@ -5,6 +5,7 @@ import { INKS, loadPen, NIBS, savePen, type PenSettings } from '../lib/pen'
 import { go } from '../lib/router'
 import type { SheetLayout } from '../lib/sheet'
 import { Sheet, type SheetHandle } from './Sheet'
+import { usePractice } from '../state/practice'
 import { IconButton, Icons, SaveButton, Toast, Toolbar, TopBar } from './ui'
 
 const Screen = styled.main`
@@ -77,6 +78,7 @@ export function PracticeShell(p: Props) {
   const [toast, setToast] = useState<string | null>(null)
   const [pen, setPen] = useState<PenSettings>(loadPen)
   const [tray, setTray] = useState(false)
+  const { script } = usePractice()
 
   useEffect(() => savePen(pen), [pen])
 
@@ -163,6 +165,7 @@ export function PracticeShell(p: Props) {
 
       <Sheet
         ref={sheet}
+        font={script.font}
         pageKey={p.pageKey}
         showModel={showModel}
         pen={pen}

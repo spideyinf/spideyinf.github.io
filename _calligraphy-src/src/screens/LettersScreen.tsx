@@ -3,6 +3,7 @@ import { Hand, IconButton, Icons, TopBar } from '../components/ui'
 import { LETTERS } from '../lib/letters'
 import { go, href } from '../lib/router'
 import { usePractice } from '../state/practice'
+import { ScriptTabs } from '../components/ScriptPicker'
 
 // Edge-to-edge grid: cells touch the screen sides and each other, no outlines.
 const Grid = styled.ul`
@@ -38,8 +39,8 @@ const Cell = styled.a<{ $done: boolean }>`
 `
 
 export function LettersScreen() {
-  const { today } = usePractice()
-  const done = today.letters.length
+  const { lettersToday, script } = usePractice()
+  const done = lettersToday.length
 
   return (
     <main className="min-h-dvh pb-10" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
@@ -50,23 +51,29 @@ export function LettersScreen() {
         <div className="flex-1 leading-tight">
           <div className="text-[17px]">ABC</div>
           <div className="font-sans text-[12.5px] text-ink-soft">
-            {done ? `${done} of 26 written today` : 'Pick any letter to start'}
+            {done ? `${done} of 26 written today in ${script.name}` : 'Pick any letter to start'}
           </div>
         </div>
       </TopBar>
-      <p className="m-0 px-[14px] pt-1 pb-4 font-sans text-[13px] leading-snug text-ink-soft">
-        Copperplate capitals with business cursive lowercase. The point is a hand that inspires you, not perfect
-        strokes.
+      <ScriptTabs />
+      <p className="m-0 px-[14px] pt-3 pb-4 font-sans text-[13px] leading-snug text-ink-soft">
+        {script.blurb} The point is a hand that inspires you, not perfect strokes.
       </p>
       <Grid>
         {LETTERS.map((l) => (
           <li key={l}>
-            <Cell href={href.abc(l)} $done={today.letters.includes(l)} aria-label={`Letter ${l}${today.letters.includes(l) ? ', written today' : ''}`}>
+            <Cell href={href.abc(l)} $done={lettersToday.includes(l)} aria-label={`Letter ${l}${lettersToday.includes(l) ? ', written today' : ''}`}>
               <Hand text={l + l.toLowerCase()} size={14} />
             </Cell>
           </li>
         ))}
       </Grid>
+      <p className="m-0 px-[14px] pt-8 text-center font-sans text-[13px] text-ink-soft">
+        Want to learn from your own handwriting?{' '}
+        <a className="text-cobalt underline underline-offset-2" href={href.record}>
+          Record your hand
+        </a>
+      </p>
     </main>
   )
 }

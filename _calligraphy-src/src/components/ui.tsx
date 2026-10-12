@@ -1,27 +1,39 @@
 /* eslint-disable react/only-export-components */
-import type { ComponentProps, ReactNode } from 'react'
+import { useEffect, useState, type ComponentProps, type ReactNode } from 'react'
 import styled, { css, keyframes } from 'styled-components'
-import { CAP_IN_X, CAPS_CAP_EM, CURSIVE_X_EM, splitRuns } from '../lib/hand'
+import { loadHand } from '../lib/hand'
+import { usePractice } from '../state/practice'
 
-/* The combined hand, as DOM text. `size` is the x-height: px, or any CSS length (e.g. cqw). */
-export function Hand({ text, size, className }: { text: string; size: number | string; className?: string }) {
+/* Text in a script's font. `size` is the x-height: px, or any CSS length (e.g. cqw).
+   Defaults to the script being learned; pass `font` to pin one (e.g. the app title). */
+export function Hand({ text, size, font, className }: { text: string; size: number | string; font?: string; className?: string }) {
+  const { script } = usePractice()
+  const family = font ?? script.font
+  const xEm = useXEm(family)
   const len = typeof size === 'number' ? `${size}px` : size
   return (
-    <span className={className} style={{ lineHeight: 1.15 }}>
-      {splitRuns(text).map((r, i) =>
-        r.caps ? (
-          <span key={i} style={{ fontFamily: 'var(--font-caps)', fontSize: `calc(${len} * ${CAP_IN_X / CAPS_CAP_EM})` }}>
-            {r.text}
-          </span>
-        ) : (
-          <span key={i} style={{ fontFamily: 'var(--font-cursive)', fontSize: `calc(${len} / ${CURSIVE_X_EM})` }}>
-            {r.text}
-          </span>
-        ),
-      )}
+    <span className={className} style={{ fontFamily: `"${family}", cursive`, fontSize: `calc(${len} / ${xEm})`, lineHeight: 1.15 }}>
+      {text}
     </span>
   )
 }
+
+/** x-height per em of a font, measured once it loads (0.35 until then: close for script faces). */
+function useXEm(font: string) {
+  const [x, setX] = useState(() => knownXEm.get(font) ?? 0.35)
+  useEffect(() => {
+    let live = true
+    loadHand(font).then((m) => {
+      knownXEm.set(font, m.xRatio)
+      if (live) setX(m.xRatio)
+    })
+    return () => {
+      live = false
+    }
+  }, [font])
+  return x
+}
+const knownXEm = new Map<string, number>()
 
 /* SVG filters used by CSS: ink bleeding into paper, and torn (deckle) paper edges. */
 export function PaperFilters() {
@@ -201,4 +213,20 @@ export const Icons = {
       <circle cx="12" cy="11" r="1.2" />
     </>,
   ),
+}
+
+/* A loose hand-drawn ring, as if circled with a red pencil. */
+export function Ring({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 200 80" preserveAspectRatio="none" aria-hidden>
+      <path
+        d="M118 6C70 2 18 14 8 38c-9 22 30 36 92 36 58 0 94-14 92-36-2-20-40-32-96-31"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        vectorEffect="non-scaling-stroke"
+      />
+    </svg>
+  )
 }

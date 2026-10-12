@@ -2,6 +2,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { dayKey } from '../lib/date'
 import { BUILT_IN_QUOTES, type Quote } from '../lib/quotes'
+import { DEFAULT_SCRIPT, scriptById, type Script } from '../lib/scripts'
 
 // Everything is kept on this device (localStorage). The shape is versioned
 // so it can later move to a backend without losing anyone's pages.
@@ -11,7 +12,9 @@ const MAX_PAGES = 30
 export type DayLog = { letters: string[]; quotes: string[] }
 export type SavedPage = { id: string; day: string; kind: 'abc' | 'paragraph'; label: string; src: string }
 
-type Stored = { days: Record<string, DayLog>; pages: SavedPage[]; quotes: Quote[] }
+// `script` is the hand being learned. Letters in a DayLog are stored as
+// "<scriptId>:<L>"; plain "L" entries from before scripts existed count as Copperplate.
+type Stored = { days: Record<string, DayLog>; pages: SavedPage[]; quotes: Quote[]; script?: string }
 
 const empty: Stored = { days: {}, pages: [], quotes: [] }
 
@@ -56,7 +59,11 @@ type Ctx = {
   pages: SavedPage[]
   quotes: Quote[]
   today: DayLog
+  /** Capital letters practised today in the current script. */
+  lettersToday: string[]
   streak: number
+  script: Script
+  setScript: (id: string) => void
   savePage: (p: Omit<SavedPage, 'id' | 'day'>, mark: { letter?: string; quoteId?: string }) => void
   deletePage: (id: string) => void
   addQuote: (text: string, author: string) => Quote
@@ -73,13 +80,25 @@ export function PracticeProvider({ children }: { children: ReactNode }) {
   const [todayKey] = useState(dayKey)
   const today = useMemo(() => data.days[todayKey] ?? { letters: [], quotes: [] }, [data.days, todayKey])
   const streak = useMemo(() => computeStreak(data.days, todayKey), [data.days, todayKey])
+  const script = scriptById(data.script)
+  const lettersToday = useMemo(
+    () =>
+      today.letters
+        .map((l) => (l.includes(':') ? l.split(':') : [DEFAULT_SCRIPT.id, l]))
+        .filter(([id]) => id === script.id)
+        .map(([, l]) => l),
+    [today.letters, script.id],
+  )
+
+  const setScript = useCallback((id: string) => setData((prev) => ({ ...prev, script: id })), [])
 
   const savePage = useCallback<Ctx['savePage']>((p, mark) => {
     setData((prev) => {
       const day = dayKey()
       const log = prev.days[day] ?? { letters: [], quotes: [] }
+      const key = mark.letter && `${scriptById(prev.script).id}:${mark.letter}`
       const next: DayLog = {
-        letters: mark.letter && !log.letters.includes(mark.letter) ? [...log.letters, mark.letter] : log.letters,
+        letters: key && !log.letters.includes(key) ? [...log.letters, key] : log.letters,
         quotes: mark.quoteId && !log.quotes.includes(mark.quoteId) ? [...log.quotes, mark.quoteId] : log.quotes,
       }
       const page: SavedPage = { ...p, id: crypto.randomUUID(), day }
@@ -107,13 +126,16 @@ export function PracticeProvider({ children }: { children: ReactNode }) {
       pages: data.pages,
       quotes: [...data.quotes, ...BUILT_IN_QUOTES],
       today,
+      lettersToday,
       streak,
+      script,
+      setScript,
       savePage,
       deletePage,
       addQuote,
       deleteQuote,
     }),
-    [data, today, streak, savePage, deletePage, addQuote, deleteQuote],
+    [data, today, lettersToday, streak, script, setScript, savePage, deletePage, addQuote, deleteQuote],
   )
 
   return <PracticeContext.Provider value={value}>{children}</PracticeContext.Provider>

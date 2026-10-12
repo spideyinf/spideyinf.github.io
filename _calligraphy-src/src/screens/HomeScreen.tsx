@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import styled from 'styled-components'
+import { ScriptPicker } from '../components/ScriptPicker'
 import { Flourish, Hand, IconButton, Icons } from '../components/ui'
 import { dayKey, longDate, shortDate } from '../lib/date'
 import { href } from '../lib/router'
@@ -95,7 +96,7 @@ function Strip({ pages, onOpen, dated }: { pages: SavedPage[]; onOpen: (p: Saved
 }
 
 export function HomeScreen() {
-  const { today, pages, streak, deletePage } = usePractice()
+  const { today, lettersToday, pages, streak, deletePage, script } = usePractice()
   const [open, setOpen] = useState<SavedPage | null>(null)
   const todayKey = dayKey()
   const todayPages = pages.filter((p) => p.day === todayKey)
@@ -109,27 +110,29 @@ export function HomeScreen() {
       </div>
 
       {/* The title, written on the page itself. */}
-      <header className="inked px-[14px] pt-[12vw] pb-[10vw] text-center text-ink [container-type:inline-size]">
+      <header className="inked px-[14px] pt-[12vw] pb-[7vw] text-center text-ink [container-type:inline-size]">
         <h1 className="m-0 font-normal">
-          <Hand text="Daily Hand" size="10cqw" />
+          <Hand text="Daily Hand" size="10cqw" font="Pinyon Script" />
         </h1>
         <p className="m-0 mt-[3cqw] leading-[1.05]">
-          <Hand text="Write to learn," size="4.6cqw" />
+          <Hand text="Write to learn," size="4.6cqw" font="Pinyon Script" />
           <br />
-          <Hand text="a line every day" size="4.6cqw" />
+          <Hand text="a line every day" size="4.6cqw" font="Pinyon Script" />
         </p>
         <Flourish className="mx-auto mt-[5cqw] block w-[42cqw]" />
       </header>
 
-      <nav aria-label="Practice" className="flex flex-col gap-6">
+      <ScriptPicker />
+
+      <nav aria-label="Practice" className="mt-7 flex flex-col gap-6">
         <NoteWrap>
           <Note href={href.letters} $tilt={-0.8}>
             <div className="min-w-0">
               <div className="text-[clamp(24px,8cqw,32px)] leading-none">ABC</div>
               <p className="m-0 mt-[2.5cqw] font-sans text-[clamp(12.5px,3.7cqw,15px)] leading-snug text-ink-soft">
-                Copperplate capitals and business cursive, stroke by stroke
+                {script.name} capitals and lowercase, stroke by stroke
               </p>
-              <p className="m-0 mt-[3cqw] font-sans text-[12px] text-ink-soft">{today.letters.length} of 26 today</p>
+              <p className="m-0 mt-[3cqw] font-sans text-[12px] text-ink-soft">{lettersToday.length} of 26 today</p>
             </div>
             <div className="inked pr-[2cqw]" aria-hidden>
               <Hand text="Aa" size="11cqw" />

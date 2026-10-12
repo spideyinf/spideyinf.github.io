@@ -425,9 +425,148 @@ export const LOWERCASE: Record<string, Glyph> = {
   },
 }
 
+/* ---------- Business cursive capitals ---------- */
+// Simpler, faster capitals in the Palmer tradition: plain stems instead of
+// Copperplate's shaded stem-and-oval, written with an ordinary pen.
+
+const firstArch: P[] = [[0.0, 0.0], [0.12, 1.1], [0.38, 1.95], [0.62, 1.82], [0.6, 0.9], [0.55, 0.0]]
+const plainStem = (x: number): P[] => [[x - 0.35, 1.7], [x - 0.1, 2.0], [x + 0.05, 1.8], [x - 0.05, 0.9], [x - 0.18, 0.0]]
+const entryTop = (x: number): P[] => [[x - 0.4, 1.6], [x - 0.15, 2.0], [x + 0.05, 1.8]]
+
+export const BUSINESS_CAPITALS: Record<string, Glyph> = {
+  A: {
+    steps: [
+      s('Oval', [[1.25, 1.75], [0.85, 2.0], [0.32, 1.6], [0.1, 0.7], [0.35, 0.0], [0.85, 0.2], [1.2, 1.0], [1.35, 2.0]]),
+      s('Stem and exit', [[1.35, 2.0], [1.3, 0.6], [1.32, 0.12], [1.48, 0.0], [1.72, 0.25]], true),
+    ],
+  },
+  B: {
+    steps: [
+      s('Stem', plainStem(0.75)),
+      s('Upper lobe', [[0.8, 2.0], [1.3, 2.05], [1.5, 1.7], [1.25, 1.2], [0.9, 1.08], [1.15, 1.08]]),
+      s('Lower lobe', [[1.15, 1.08], [1.55, 0.8], [1.48, 0.25], [1.0, 0.0], [0.6, 0.1], [0.8, 0.28]], true),
+    ],
+  },
+  C: {
+    steps: [
+      s('Top loop', [[1.0, 1.55], [1.12, 1.95], [0.85, 2.04], [0.55, 1.75]]),
+      s('Curve and exit', [[0.55, 1.75], [0.25, 1.25], [0.15, 0.55], [0.42, 0.02], [0.9, 0.05], [1.22, 0.38]], true),
+    ],
+  },
+  D: {
+    steps: [
+      s('Stem', [[1.0, 2.0], [0.9, 1.0], [0.75, 0.1]]),
+      s('Base loop', [[0.75, 0.1], [0.45, 0.0], [0.42, 0.16], [0.78, 0.15], [1.2, 0.0]], true),
+      s('Bowl', [[1.2, 0.0], [1.7, 0.4], [1.75, 1.4], [1.35, 2.0], [0.8, 2.02], [0.55, 1.78], [0.78, 1.62]], true),
+    ],
+  },
+  E: CAPITALS.E,
+  F: {
+    steps: [
+      s('Cap stroke', [[0.4, 1.82], [0.8, 2.02], [1.3, 1.9], [1.75, 2.02]]),
+      s('Stem', [[1.05, 1.95], [0.95, 1.0], [0.75, 0.12], [0.45, 0.0], [0.25, 0.22]]),
+      s('Crossbar', [[0.62, 1.0], [0.95, 1.06], [1.28, 1.02]]),
+    ],
+  },
+  G: CAPITALS.G,
+  H: {
+    steps: [
+      s('Left stem', plainStem(0.65)),
+      s('Right stem', [[1.62, 2.0], [1.52, 1.0], [1.42, 0.2], [1.56, 0.0], [1.78, 0.16]]),
+      s('Crossbar loop', [[0.55, 0.92], [1.05, 1.05], [1.6, 1.12], [1.7, 0.98], [1.5, 0.96]]),
+    ],
+  },
+  I: CAPITALS.I,
+  J: CAPITALS.J,
+  K: {
+    steps: [
+      s('Stem', plainStem(0.65)),
+      s('Arm and leg', [[1.62, 1.95], [1.15, 1.25], [0.82, 1.02], [1.08, 0.95], [1.3, 0.5], [1.4, 0.05], [1.66, 0.16]]),
+    ],
+  },
+  L: CAPITALS.L,
+  M: {
+    steps: [
+      s('First arch', firstArch),
+      s('Second arch', [[0.58, 0.8], [0.85, 1.8], [1.1, 2.0], [1.27, 1.72], [1.2, 0.0]]),
+      s('Third arch and exit', [[1.22, 0.8], [1.5, 1.8], [1.76, 2.0], [1.92, 1.72], [1.86, 0.3], [1.97, 0.0], [2.17, 0.16]]),
+    ],
+  },
+  N: {
+    steps: [
+      s('First arch', firstArch),
+      s('Second arch and exit', [[0.58, 0.8], [0.85, 1.8], [1.1, 2.0], [1.27, 1.72], [1.22, 0.3], [1.32, 0.0], [1.52, 0.16]]),
+    ],
+  },
+  O: CAPITALS.O,
+  P: {
+    steps: [
+      s('Stem', plainStem(0.72)),
+      s('Bowl', [[0.42, 1.6], [0.72, 2.0], [1.3, 2.05], [1.55, 1.7], [1.3, 1.15], [0.82, 1.0], [0.66, 1.1]]),
+    ],
+  },
+  Q: {
+    steps: [
+      s('Top curve', [[0.3, 1.4], [0.55, 1.95], [1.0, 2.02], [1.22, 1.62], [1.0, 1.0], [0.5, 0.3], [0.2, 0.05]]),
+      s('Base loop and exit', [[0.2, 0.05], [0.36, 0.22], [0.58, 0.1], [1.0, 0.0], [1.42, 0.2]], true),
+    ],
+  },
+  R: {
+    steps: [
+      s('Stem', plainStem(0.72)),
+      s('Bowl', [[0.42, 1.6], [0.72, 2.0], [1.3, 2.05], [1.55, 1.7], [1.3, 1.15], [0.9, 1.0], [0.78, 1.12], [0.98, 1.06]]),
+      s('Leg', [[0.98, 1.06], [1.25, 0.8], [1.35, 0.2], [1.5, 0.0], [1.72, 0.16]], true),
+    ],
+  },
+  S: CAPITALS.S,
+  T: {
+    steps: [
+      s('Cap stroke', [[0.4, 1.82], [0.8, 2.02], [1.3, 1.9], [1.75, 2.02]]),
+      s('Stem', [[1.05, 1.95], [0.95, 1.0], [0.75, 0.12], [0.45, 0.0], [0.25, 0.22]]),
+    ],
+  },
+  U: {
+    steps: [
+      s('Entry and first stem', [...entryTop(0.45), [0.42, 0.5], [0.55, 0.05], [0.9, 0.0], [1.2, 0.4], [1.35, 1.2], [1.4, 2.0]]),
+      s('Second stem and exit', [[1.4, 2.0], [1.35, 0.3], [1.45, 0.0], [1.66, 0.16]], true),
+    ],
+  },
+  V: {
+    steps: [
+      s('Entry and stem', [...entryTop(0.45), [0.5, 0.8], [0.65, 0.0]]),
+      s('Upstroke and finish', [[0.65, 0.0], [1.1, 0.8], [1.4, 1.6], [1.5, 2.0], [1.3, 1.86]], true),
+    ],
+  },
+  W: {
+    steps: [
+      s('Entry and stem', [...entryTop(0.45), [0.5, 0.8], [0.62, 0.0]]),
+      s('Hairline up', [[0.62, 0.0], [0.92, 0.85], [1.12, 1.55]], true),
+      s('Second stem', [[1.12, 1.55], [1.15, 0.8], [1.24, 0.0]], true),
+      s('Upstroke and finish', [[1.24, 0.0], [1.65, 0.8], [1.95, 1.6], [2.03, 2.0], [1.85, 1.86]], true),
+    ],
+  },
+  X: CAPITALS.X,
+  Y: {
+    steps: [
+      s('Entry and first stem', [...entryTop(0.45), [0.42, 0.5], [0.55, 0.05], [0.9, 0.0], [1.2, 0.4], [1.35, 1.2], [1.4, 2.0]]),
+      s('Descending loop', [[1.4, 2.0], [1.36, 0.6], [1.26, -0.5], [1.03, -0.95], [0.76, -0.82], [0.9, -0.4], [1.48, 0.1], [1.68, 0.3]], true),
+    ],
+  },
+  Z: CAPITALS.Z,
+}
+
 /* ---------- Geometry and ink ---------- */
 
-const SLANT = 1 / Math.tan((55 * Math.PI) / 180) // ≈ 0.70
+/** How a script is written: slant of the downstrokes, and how much they swell. */
+export type Style = {
+  /** Degrees from horizontal (55 for Copperplate). */
+  slant: number
+  /** Shading on downstrokes: 1 = pointed pen, ~0.25 = an ordinary pen. */
+  shade: number
+}
+export const COPPERPLATE_STYLE: Style = { slant: 55, shade: 1 }
+
+const shear = (deg: number) => 1 / Math.tan((deg * Math.PI) / 180)
 
 /** Centripetal Catmull-Rom through the points, sampled densely. */
 export function spline(pts: P[], per = 14): P[] {
@@ -449,22 +588,26 @@ export function spline(pts: P[], per = 14): P[] {
   return out
 }
 
-const boundsCache = new WeakMap<Glyph, { minX: number; maxX: number; width: number }>()
+type Bounds = { minX: number; maxX: number; width: number }
+const boundsCache = new WeakMap<Glyph, Map<number, Bounds>>()
 
 /** Bounds of a glyph after slanting, in x-height units. */
-export function bounds(g: Glyph) {
-  const hit = boundsCache.get(g)
+export function bounds(g: Glyph, slant = 55): Bounds {
+  let perSlant = boundsCache.get(g)
+  if (!perSlant) boundsCache.set(g, (perSlant = new Map()))
+  const hit = perSlant.get(slant)
   if (hit) return hit
+  const k = shear(slant)
   let minX = Infinity
   let maxX = -Infinity
   for (const st of g.steps)
     for (const [x, y] of spline(st.pts, 6)) {
-      const sx = x + y * SLANT
+      const sx = x + y * k
       minX = Math.min(minX, sx)
       maxX = Math.max(maxX, sx)
     }
   const b = { minX, maxX, width: maxX - minX }
-  boundsCache.set(g, b)
+  perSlant.set(slant, b)
   return b
 }
 
@@ -474,13 +617,14 @@ export type InkPt = { x: number; y: number; w: number; d: number }
  * Turn one step into screen-space ink points.
  * Downstrokes (moving down the slant) swell; everything else is a hairline.
  */
-export function inkStep(st: Step, ox: number, baseline: number, xh: number, weight = 1): InkPt[] {
+export function inkStep(st: Step, ox: number, baseline: number, xh: number, style: Style = COPPERPLATE_STYLE): InkPt[] {
+  const k = shear(style.slant)
   const hair = Math.max(0.9, xh * 0.035)
-  const shade = xh * 0.17 * weight
+  const shade = xh * 0.17 * style.shade
   if (st.dot) {
     const [x, y] = st.pts[0]
     const r = Math.max(1.6, xh * 0.08)
-    return [{ x: ox + (x + y * SLANT) * xh, y: baseline - y * xh, w: r * 2, d: 1 }]
+    return [{ x: ox + (x + y * k) * xh, y: baseline - y * xh, w: r * 2, d: 1 }]
   }
   const line = spline(st.pts)
   const out: InkPt[] = []
@@ -495,7 +639,7 @@ export function inkStep(st: Step, ox: number, baseline: number, xh: number, weig
     const down = Math.max(0, -dy / len)
     const target = hair + shade * Math.pow(down, 1.8)
     w += (target - w) * 0.35
-    out.push({ x: ox + (x + y * SLANT) * xh, y: baseline - y * xh, w, d: 1 })
+    out.push({ x: ox + (x + y * k) * xh, y: baseline - y * xh, w, d: 1 })
   }
   // Swell in and taper out, as the nib opens and closes.
   if (out.length > 2) out[out.length - 1].w = Math.max(hair, out[out.length - 1].w * 0.7)
@@ -507,8 +651,4 @@ export function pathLength(pts: InkPt[]) {
   let l = 0
   for (let i = 1; i < pts.length; i++) l += Math.hypot(pts[i].x - pts[i - 1].x, pts[i].y - pts[i - 1].y)
   return l
-}
-
-export function glyphFor(ch: string): Glyph | undefined {
-  return CAPITALS[ch] ?? LOWERCASE[ch]
 }

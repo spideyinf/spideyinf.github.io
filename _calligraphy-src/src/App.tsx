@@ -4,6 +4,7 @@ import { AbcScreen } from './screens/AbcScreen'
 import { HomeScreen } from './screens/HomeScreen'
 import { LettersScreen } from './screens/LettersScreen'
 import { QuotesScreen } from './screens/QuotesScreen'
+import { RecordScreen } from './screens/RecordScreen'
 import { WriteScreen } from './screens/WriteScreen'
 
 // Dev-only letterform contact sheet; never shipped in the production bundle.
@@ -16,7 +17,7 @@ export default function App() {
     window.scrollTo(0, 0)
   }, [route.name])
 
-  if (DuctusSheet && location.hash === '#/ductus')
+  if (DuctusSheet && location.hash.startsWith('#/ductus'))
     return (
       <Suspense>
         <DuctusSheet />
@@ -28,6 +29,8 @@ export default function App() {
       return <LettersScreen />
     case 'abc':
       return <AbcScreen letter={route.letter} />
+    case 'record':
+      return <RecordScreen />
     case 'quotes':
       return <QuotesScreen />
     case 'write':

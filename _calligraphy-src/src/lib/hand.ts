@@ -1,67 +1,30 @@
-// The "combined hand": Copperplate capitals (Pinyon Script) with
-// business-cursive lowercase (Ephesis). Text is split into runs so
-// each case gets its own face, both in the DOM and on canvas.
+// Text in a script's font, sized by x-height so it sits on the guidelines.
+// Each script has one font for capitals and lowercase alike.
 
-export const CAPS_FONT = 'Pinyon Script'
-export const CURSIVE_FONT = 'Ephesis'
+/** Font metrics measured once the face has loaded. `xRatio` is x-height per 1px of font size. */
+export type Metrics = { font: string; xRatio: number }
 
-export type Run = { text: string; caps: boolean }
+const cache = new Map<string, Promise<Metrics>>()
 
-const isCap = (c: string) => c !== c.toLowerCase() && c === c.toUpperCase()
-
-export function splitRuns(text: string): Run[] {
-  const runs: Run[] = []
-  for (const ch of text) {
-    const caps = isCap(ch)
-    const last = runs[runs.length - 1]
-    if (last && last.caps === caps) last.text += ch
-    else runs.push({ text: ch, caps })
+export function loadHand(font: string): Promise<Metrics> {
+  let hit = cache.get(font)
+  if (!hit) {
+    hit = document.fonts.load(`100px "${font}"`).then(() => {
+      const ctx = document.createElement('canvas').getContext('2d')!
+      ctx.font = `100px "${font}"`
+      const xRatio = ctx.measureText('x').actualBoundingBoxAscent / 100 || 0.35
+      return { font, xRatio }
+    })
+    cache.set(font, hit)
   }
-  return runs
+  return hit
 }
 
-/** Font metrics measured once the faces have loaded. Ratios are per 1px of font size. */
-export type Metrics = { xRatio: number; capRatio: number }
-
-let metrics: Metrics | null = null
-
-export async function loadHand(): Promise<Metrics> {
-  if (metrics) return metrics
-  await Promise.all([
-    document.fonts.load(`100px "${CAPS_FONT}"`),
-    document.fonts.load(`100px "${CURSIVE_FONT}"`),
-  ])
-  const ctx = document.createElement('canvas').getContext('2d')!
-  ctx.font = `100px "${CURSIVE_FONT}"`
-  const xRatio = ctx.measureText('x').actualBoundingBoxAscent / 100 || 0.28
-  ctx.font = `100px "${CAPS_FONT}"`
-  const capRatio = ctx.measureText('H').actualBoundingBoxAscent / 100 || 0.6
-  metrics = { xRatio, capRatio }
-  return metrics
-}
-
-/** Typical metrics (per em) for the DOM renderer; the canvas measures them live. */
-export const CAPS_CAP_EM = 0.69
-export const CURSIVE_X_EM = 0.35
-
-/** How tall capitals stand, in x-heights. Copperplate caps reach ~2× the x-height. */
-export const CAP_IN_X = 2.1
-
-export function fonts(m: Metrics, xh: number) {
-  return {
-    cursive: `${(xh / m.xRatio).toFixed(2)}px "${CURSIVE_FONT}"`,
-    caps: `${((xh * CAP_IN_X) / m.capRatio).toFixed(2)}px "${CAPS_FONT}"`,
-  }
-}
+const fontAt = (m: Metrics, xh: number) => `${(xh / m.xRatio).toFixed(2)}px "${m.font}"`
 
 export function measureHand(ctx: CanvasRenderingContext2D, m: Metrics, text: string, xh: number) {
-  const f = fonts(m, xh)
-  let w = 0
-  for (const r of splitRuns(text)) {
-    ctx.font = r.caps ? f.caps : f.cursive
-    w += ctx.measureText(r.text).width
-  }
-  return w
+  ctx.font = fontAt(m, xh)
+  return ctx.measureText(text).width
 }
 
 export function drawHand(
@@ -72,18 +35,13 @@ export function drawHand(
   baseline: number,
   xh: number,
 ) {
-  const f = fonts(m, xh)
+  ctx.font = fontAt(m, xh)
   ctx.textBaseline = 'alphabetic'
-  let cx = x
-  for (const r of splitRuns(text)) {
-    ctx.font = r.caps ? f.caps : f.cursive
-    ctx.fillText(r.text, cx, baseline)
-    cx += ctx.measureText(r.text).width
-  }
-  return cx - x
+  ctx.fillText(text, x, baseline)
+  return ctx.measureText(text).width
 }
 
-/** Greedy word wrap using the mixed-face widths. */
+/** Greedy word wrap at the given x-height. */
 export function wrapHand(
   ctx: CanvasRenderingContext2D,
   m: Metrics,

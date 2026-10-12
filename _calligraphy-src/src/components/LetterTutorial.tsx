@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components'
-import { bounds, CAPITALS, inkStep, LOWERCASE, pathLength, type Glyph, type InkPt } from '../lib/ductus'
+import { bounds, inkStep, pathLength, type Glyph, type InkPt } from '../lib/ductus'
+import { usePractice } from '../state/practice'
 import { letterInfo } from '../lib/letters'
 import { paintStroke } from '../lib/pen'
 import { mixHex } from '../lib/sheet'
@@ -75,12 +76,18 @@ const GHOST = mixHex(INK, NOTE, 0.2)
 const TOP = 2.3
 const BOTTOM = 1.15
 
+// A hand you are still recording may not have every letter yet.
+const EMPTY: Glyph = { steps: [] }
+
 const reduced = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false
 
 /** Stroke-by-stroke demonstration of one letter, capital and lowercase. */
 export function LetterTutorial({ letter }: { letter: string }) {
+  const { script } = usePractice()
   const [kase, setKase] = useState<Case>('upper')
-  const glyph: Glyph = kase === 'upper' ? CAPITALS[letter] : LOWERCASE[letter.toLowerCase()]
+  const glyphOf = (k: Case): Glyph =>
+    (k === 'upper' ? script.capitals[letter] : script.lowercase[letter.toLowerCase()]) ?? EMPTY
+  const glyph = glyphOf(kase)
   const n = glyph.steps.length
   // `done` strokes are fully drawn; while animating, stroke `done` is in progress.
   const [done, setDone] = useState(n)
@@ -101,19 +108,25 @@ export function LetterTutorial({ letter }: { letter: string }) {
 
   // Lay the glyph out once per size: same x-height for both cases, so proportions read true.
   const layout = useMemo(() => {
-    if (!size.w) return null
-    const capW = bounds(CAPITALS[letter]).width
+    if (!size.w || !glyph.steps.length) return null
+    const { slant } = script.style
+    const cap = script.capitals[letter]
+    const capW = cap?.steps.length ? bounds(cap, slant).width : 2.5
     const xh = Math.min((size.h - 10) / (TOP + BOTTOM), (size.w - 36) / (capW + 0.4))
     const baseline = 5 + TOP * xh + ((size.h - 10) - (TOP + BOTTOM) * xh) / 2
-    const b = bounds(glyph)
+    const b = bounds(glyph, slant)
     const ox = (size.w - b.width * xh) / 2 - b.minX * xh
-    const strokes: InkPt[][] = glyph.steps.map((st) => inkStep(st, ox, baseline, xh, kase === 'upper' ? 1 : 0.85))
+    const strokes: InkPt[][] = glyph.steps.map((st) => inkStep(st, ox, baseline, xh, script.style))
     return { baseline, strokes, xh }
-  }, [size, glyph, letter, kase])
+  }, [size, glyph, letter, script])
 
   const paint = useCallback(() => {
     const c = canvas.current
-    if (!c || !layout) return
+    if (!c) return
+    if (!layout) {
+      c.getContext('2d')!.clearRect(0, 0, c.width, c.height)
+      return
+    }
     const dpr = Math.min(window.devicePixelRatio || 1, 3)
     if (c.width !== size.w * dpr) {
       c.width = size.w * dpr
@@ -263,12 +276,13 @@ export function LetterTutorial({ letter }: { letter: string }) {
     if (k === kase) return
     stop()
     setKase(k)
-    setDone((k === 'upper' ? CAPITALS[letter] : LOWERCASE[letter.toLowerCase()]).steps.length)
+    setDone(glyphOf(k).steps.length)
   }
 
   const current = anim ? anim.step : done - 1
-  const label =
-    current >= 0
+  const label = !n
+    ? 'No strokes recorded for this letter yet. Add them with the recorder.'
+    : current >= 0
       ? `Step ${current + 1} of ${n}: ${glyph.steps[current].name}`
       : `${n} strokes. Tap next to write the first.`
 
@@ -289,10 +303,10 @@ export function LetterTutorial({ letter }: { letter: string }) {
         <IconButton label="Previous stroke" onClick={prev} disabled={done === 0 && !anim}>
           {Icons.prev}
         </IconButton>
-        <PlayButton type="button" onClick={play} aria-label={playing ? 'Pause' : 'Play all strokes'}>
+        <PlayButton type="button" onClick={play} disabled={!n} aria-label={playing ? 'Pause' : 'Play all strokes'}>
           {playing ? Icons.pause : Icons.play}
         </PlayButton>
-        <IconButton label="Next stroke" onClick={next}>
+        <IconButton label="Next stroke" onClick={next} disabled={!n}>
           {Icons.next}
         </IconButton>
         <p className="m-0 ml-2 min-w-0 flex-1 font-sans text-[12.5px] leading-snug text-ink-soft" aria-live="polite">
