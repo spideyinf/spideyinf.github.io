@@ -95,7 +95,8 @@ export const Toolbar = styled.nav`
 
 export const SaveButton = styled.button`
   height: 46px;
-  padding: 0 22px;
+  padding: 0 clamp(14px, 5vw, 22px);
+  white-space: nowrap;
   border: 0;
   border-radius: ${({ theme }) => theme.radius.pill};
   background: ${({ theme }) => theme.color.ink};

@@ -32,7 +32,8 @@ Error generating stack: `+e.message+`
   padding: 6px 10px calc(8px + env(safe-area-inset-bottom));
 `,di=P.button`
   height: 46px;
-  padding: 0 22px;
+  padding: 0 clamp(14px, 5vw, 22px);
+  white-space: nowrap;
   border: 0;
   border-radius: ${({theme:e})=>e.radius.pill};
   background: ${({theme:e})=>e.color.ink};
