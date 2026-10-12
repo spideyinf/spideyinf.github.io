@@ -10,7 +10,7 @@ import { useChord } from './hooks/useChord'
 import { LanguageSwitch } from './components/LanguageSwitch'
 import { useT } from './i18n'
 import { LEVELS, useQuiz, type Level, type Prompt } from './hooks/useQuiz'
-import { play, playChord, warmUp, type Voice } from './lib/audio'
+import { installAudioUnlock, play, playChord, type Voice } from './lib/audio'
 import {
   clefFor,
   describeStaff,
@@ -47,11 +47,8 @@ export default function App() {
   const { q } = quiz
   const chord = useChord(spelling)
 
-  // Browsers only allow audio after a user gesture; start loading samples then
-  useEffect(() => {
-    window.addEventListener('pointerdown', warmUp, { once: true })
-    return () => window.removeEventListener('pointerdown', warmUp)
-  }, [])
+  // Browsers (iOS especially) only allow audio after a real tap; unlock it on the first one
+  useEffect(() => installAudioUnlock(), [])
 
   const sounding = useCallback((midi: number, voice: Voice) => sound && play(midi, voice), [sound])
 

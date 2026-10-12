@@ -40,7 +40,7 @@ function loadSamples(c: AudioContext) {
     for (const midi of ordered) {
       fetch(`${import.meta.env.BASE_URL}samples/${dir}/${sampleName(midi)}.mp3`)
         .then((r) => (r.ok ? r.arrayBuffer() : Promise.reject(r.status)))
-        .then((data) => c.decodeAudioData(data))
+        .then((data) => decode(c, data))
         .then((buf) => buffers[voice].set(midi, buf))
         // A missing sample just means that range keeps the synthesized fallback
         .catch(() => undefined)
@@ -48,22 +48,108 @@ function loadSamples(c: AudioContext) {
   }
 }
 
+type AudioCtor = typeof AudioContext
+const Ctor: AudioCtor | undefined =
+  window.AudioContext ?? (window as unknown as { webkitAudioContext?: AudioCtor }).webkitAudioContext
+
+/** decodeAudioData as a promise, including older Safari's callback-only version */
+const decode = (c: AudioContext, data: ArrayBuffer) =>
+  new Promise<AudioBuffer>((resolve, reject) => {
+    const p = c.decodeAudioData(data, resolve, reject)
+    if (p && typeof p.then === 'function') p.then(resolve, reject)
+  })
+
+let silentEl: HTMLAudioElement | null = null
+
+/** A tiny silent WAV, used to switch older iOS into "playback" audio */
+function silentWav() {
+  const rate = 8000
+  const n = rate / 10
+  const buf = new ArrayBuffer(44 + n)
+  const v = new DataView(buf)
+  const str = (o: number, s: string) => [...s].forEach((ch, i) => v.setUint8(o + i, ch.charCodeAt(0)))
+  str(0, 'RIFF')
+  v.setUint32(4, 36 + n, true)
+  str(8, 'WAVEfmt ')
+  v.setUint32(16, 16, true)
+  v.setUint16(20, 1, true)
+  v.setUint16(22, 1, true)
+  v.setUint32(24, rate, true)
+  v.setUint32(28, rate, true)
+  v.setUint16(32, 1, true)
+  v.setUint16(34, 8, true)
+  str(36, 'data')
+  v.setUint32(40, n, true)
+  for (let i = 0; i < n; i++) v.setUint8(44 + i, 128)
+  return URL.createObjectURL(new Blob([buf], { type: 'audio/wav' }))
+}
+
+/**
+ * iPhone and iPad mute Web Audio when the device is in Silent mode, unless the
+ * page asks for "playback" audio like a music app. Newer Safari has an API for
+ * that; older versions switch over once an <audio> element is playing.
+ */
+function allowWhenSilent() {
+  const session = (navigator as unknown as { audioSession?: { type: string } }).audioSession
+  if (session) {
+    try {
+      session.type = 'playback'
+    } catch {
+      // Not supported here; nothing else to do
+    }
+    return
+  }
+  if (!/iPad|iPhone|iPod/.test(navigator.userAgent) && !(navigator.maxTouchPoints > 1 && /Mac/.test(navigator.userAgent)))
+    return
+  if (!silentEl) {
+    silentEl = new Audio(silentWav())
+    silentEl.loop = true
+    silentEl.setAttribute('playsinline', '')
+    silentEl.setAttribute('x-webkit-airplay', 'deny')
+  }
+  void silentEl.play().catch(() => undefined)
+}
+
 function audio() {
   if (!ctx) {
-    ctx = new AudioContext()
+    if (!Ctor) throw new Error('Web Audio is not supported in this browser')
+    ctx = new Ctor()
     master = ctx.createGain()
     master.gain.value = 0.7
     const comp = ctx.createDynamicsCompressor()
     master.connect(comp).connect(ctx.destination)
     loadSamples(ctx)
   }
-  if (ctx.state === 'suspended') void ctx.resume()
+  // iOS can also leave the context "interrupted" after a call or switching apps
+  if (ctx.state !== 'running') void ctx.resume().catch(() => undefined)
   return { ctx, out: master! }
 }
 
-/** Starts loading the samples early, e.g. on the first tap anywhere */
-export function warmUp() {
-  audio()
+/**
+ * Must run inside a user gesture (a tap or click). Starts audio, plays one
+ * silent sample, which is what iOS needs to really unlock sound, and begins
+ * loading the instrument samples.
+ */
+export function unlockAudio() {
+  if (!Ctor) return
+  allowWhenSilent()
+  const { ctx: c } = audio()
+  const src = c.createBufferSource()
+  src.buffer = c.createBuffer(1, 1, 22050)
+  src.connect(c.destination)
+  src.start(0)
+}
+
+/** Sets up unlocking on the first real tap, click or key press */
+export function installAudioUnlock() {
+  // iOS only counts these as gestures that may start audio — not touchstart/pointerdown
+  const events = ['touchend', 'click', 'keydown'] as const
+  const handler = () => {
+    unlockAudio()
+    if (ctx?.state === 'running') events.forEach((e) => window.removeEventListener(e, handler, true))
+  }
+  events.forEach((e) => window.addEventListener(e, handler, true))
+  return () => events.forEach((e) => window.removeEventListener(e, handler, true))
 }
 
 /** Closest loaded sample, if one is near enough to sound natural */
