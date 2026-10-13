@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import styled from 'styled-components'
 import type { Metrics } from '../lib/hand'
-import { INKS, loadPen, NIBS, savePen, type PenSettings } from '../lib/pen'
 import { go } from '../lib/router'
 import type { SheetLayout } from '../lib/sheet'
+import { BottomSheet } from './BottomSheet'
+import { PenCase } from './PenCase'
 import { Sheet, type SheetHandle } from './Sheet'
+import { usePen } from '../state/pen'
 import { usePractice } from '../state/practice'
 import { IconButton, Icons, SaveButton, Toast, Toolbar, TopBar } from './ui'
 
@@ -14,42 +16,6 @@ const Screen = styled.main`
   height: 100dvh;
   padding-top: env(safe-area-inset-top);
   overflow: hidden;
-`
-
-const Tray = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 4px 14px 12px;
-`
-const Chip = styled.button<{ $on: boolean }>`
-  height: 34px;
-  padding: 0 14px;
-  border: 0;
-  border-radius: ${({ theme }) => theme.radius.pill};
-  background: ${({ $on, theme }) => ($on ? theme.color.ink : theme.color.tint)};
-  color: ${({ $on, theme }) => ($on ? theme.color.paper : theme.color.ink)};
-  font-family: ${({ theme }) => theme.font.sans};
-  font-size: 13.5px;
-`
-const Swatch = styled.button<{ $color: string; $on: boolean }>`
-  display: grid;
-  place-items: center;
-  width: 34px;
-  height: 34px;
-  border: 0;
-  border-radius: 50%;
-  background: ${({ $color }) => $color};
-  transform: scale(${({ $on }) => ($on ? 1.12 : 1)});
-  transition: transform 0.15s;
-  &::after {
-    content: '';
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: ${({ theme }) => theme.color.paper};
-    opacity: ${({ $on }) => ($on ? 1 : 0)};
-  }
 `
 
 type Props = {
@@ -76,11 +42,9 @@ export function PracticeShell(p: Props) {
   const [showModel, setShowModel] = useState(true)
   const [hasInk, setHasInk] = useState(false)
   const [toast, setToast] = useState<string | null>(null)
-  const [pen, setPen] = useState<PenSettings>(loadPen)
   const [tray, setTray] = useState(false)
   const { script } = usePractice()
-
-  useEffect(() => savePen(pen), [pen])
+  const { pen, nib, ink } = usePen()
 
   useEffect(() => {
     if (!toast) return
@@ -97,8 +61,6 @@ export function PracticeShell(p: Props) {
     setToast(p.savedLabel)
   }
 
-  const nibName = NIBS.find((n) => n.id === pen.nib)?.name
-  const inkName = INKS.find((i) => i.id === pen.ink)?.name
 
   return (
     <Screen>
@@ -110,8 +72,11 @@ export function PracticeShell(p: Props) {
           <div className="truncate text-[17px]">{p.title}</div>
           <div className="truncate font-sans text-[12.5px] text-ink-soft">{p.subtitle}</div>
         </div>
-        <IconButton label={`Pen: ${nibName} nib, ${inkName} ink`} active={tray} onClick={() => setTray((v) => !v)}>
-          {Icons.pen}
+        <IconButton label={`Pen case: ${pen.name}, ${nib.name} nib, ${ink.name}`} onClick={() => setTray(true)}>
+          <span className="relative">
+            {Icons.pen}
+            <span className="absolute -right-1 -bottom-0.5 h-2.5 w-2.5 rounded-full" style={{ background: ink.color }} />
+          </span>
         </IconButton>
         <IconButton
           label={showModel ? 'Hide the model and write from memory' : 'Show the model to trace'}
@@ -122,44 +87,9 @@ export function PracticeShell(p: Props) {
         </IconButton>
       </TopBar>
 
-      {tray && (
-        <Tray aria-label="Pen">
-          <div className="flex flex-wrap gap-1.5" role="radiogroup" aria-label="Nib">
-            {NIBS.map((n) => (
-              <Chip
-                key={n.id}
-                type="button"
-                role="radio"
-                aria-checked={pen.nib === n.id}
-                $on={pen.nib === n.id}
-                onClick={() => setPen({ ...pen, nib: n.id })}
-              >
-                {n.name}
-              </Chip>
-            ))}
-          </div>
-          <div className="flex items-center gap-3" role="radiogroup" aria-label="Ink">
-            {INKS.map((i) => (
-              <Swatch
-                key={i.id}
-                type="button"
-                role="radio"
-                aria-checked={pen.ink === i.id}
-                aria-label={`${i.name} ink`}
-                title={i.name}
-                $color={i.color}
-                $on={pen.ink === i.id}
-                onClick={() => setPen({ ...pen, ink: i.id })}
-              />
-            ))}
-            <span className="ml-1 font-sans text-[12.5px] text-ink-soft">{inkName}</span>
-          </div>
-        </Tray>
-      )}
+      {p.lead}
 
-      {!tray && p.lead}
-
-      {!tray && p.note && (
+      {p.note && (
         <div className="px-[14px] pb-1 font-sans text-[12.5px] leading-snug text-ink-soft">{p.note}</div>
       )}
 
@@ -168,7 +98,6 @@ export function PracticeShell(p: Props) {
         font={script.font}
         pageKey={p.pageKey}
         showModel={showModel}
-        pen={pen}
         build={p.build}
         onInkChange={onInkChange}
       />
@@ -190,6 +119,11 @@ export function PracticeShell(p: Props) {
           {Icons.next}
         </IconButton>
       </Toolbar>
+      {tray && (
+        <BottomSheet title="Pen case" onClose={() => setTray(false)}>
+          <PenCase />
+        </BottomSheet>
+      )}
       <Toast $show={!!toast} role="status" aria-live="polite">
         {toast}
       </Toast>

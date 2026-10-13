@@ -1,6 +1,7 @@
 /* eslint-disable react/only-export-components */
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { dayKey } from '../lib/date'
+import { PREFACES, prefaceText } from '../lib/prefaces'
 import { BUILT_IN_QUOTES, type Quote } from '../lib/quotes'
 import { DEFAULT_SCRIPT, scriptById, type Script } from '../lib/scripts'
 
@@ -10,7 +11,7 @@ const KEY = 'daily-hand:v1'
 const MAX_PAGES = 30
 
 export type DayLog = { letters: string[]; quotes: string[] }
-export type SavedPage = { id: string; day: string; kind: 'abc' | 'paragraph'; label: string; src: string }
+export type SavedPage = { id: string; day: string; kind: 'abc' | 'paragraph'; label: string; src: string; hand?: string }
 
 // `script` is the hand being learned. Letters in a DayLog are stored as
 // "<scriptId>:<L>"; plain "L" entries from before scripts existed count as Copperplate.
@@ -70,6 +71,9 @@ type Ctx = {
   deleteQuote: (id: string) => void
 }
 
+// Prefaces can be copied out by hand like any quote.
+const PREFACE_QUOTES: Quote[] = PREFACES.map((p) => ({ id: `preface-${p.id}`, text: prefaceText(p), author: p.title, preface: true }))
+
 const PracticeContext = createContext<Ctx | null>(null)
 
 export function PracticeProvider({ children }: { children: ReactNode }) {
@@ -101,7 +105,7 @@ export function PracticeProvider({ children }: { children: ReactNode }) {
         letters: key && !log.letters.includes(key) ? [...log.letters, key] : log.letters,
         quotes: mark.quoteId && !log.quotes.includes(mark.quoteId) ? [...log.quotes, mark.quoteId] : log.quotes,
       }
-      const page: SavedPage = { ...p, id: crypto.randomUUID(), day }
+      const page: SavedPage = { ...p, id: crypto.randomUUID(), day, hand: scriptById(prev.script).name }
       return { ...prev, days: { ...prev.days, [day]: next }, pages: [page, ...prev.pages].slice(0, MAX_PAGES) }
     })
   }, [])
@@ -124,7 +128,7 @@ export function PracticeProvider({ children }: { children: ReactNode }) {
     () => ({
       days: data.days,
       pages: data.pages,
-      quotes: [...data.quotes, ...BUILT_IN_QUOTES],
+      quotes: [...data.quotes, ...BUILT_IN_QUOTES, ...PREFACE_QUOTES],
       today,
       lettersToday,
       streak,

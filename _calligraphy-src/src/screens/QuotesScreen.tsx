@@ -101,8 +101,15 @@ export function QuotesScreen() {
           <span className="text-[17px]">Write your own quote</span>
         </button>
 
+        <a
+          href={href.prefaces}
+          className="flex w-full items-center gap-3 px-[14px] pb-4 font-sans text-[14px] text-cobalt underline underline-offset-2"
+        >
+          Or copy out one of the prefaces
+        </a>
+
         <ul className="m-0 p-0">
-          {quotes.map((q) => (
+          {quotes.filter((q) => !q.preface).map((q) => (
             <Card key={q.id}>
               <a href={href.write(q.id)}>
                 <Hand text={q.text} size={8.5} className="block" />

@@ -195,6 +195,7 @@ export const Icons = {
     </>,
   ),
   download: icon(<path d="M12 4v11M7 10l5 5 5-5M5 20h14" />),
+  share: icon(<path d="M12 15V4M8 8l4-4 4 4M6 12v7h12v-7" />),
   play: (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
       <path d="M8 5.5v13a1 1 0 001.5.86l10.5-6.5a1 1 0 000-1.72L9.5 4.64A1 1 0 008 5.5z" />

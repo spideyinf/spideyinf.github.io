@@ -1,4 +1,4 @@
-export type Quote = { id: string; text: string; author: string; custom?: boolean }
+export type Quote = { id: string; text: string; author: string; custom?: boolean; preface?: boolean }
 
 // Short public-domain lines to write by hand. Your own quotes are added from the app.
 export const BUILT_IN_QUOTES: Quote[] = [
@@ -12,4 +12,7 @@ export const BUILT_IN_QUOTES: Quote[] = [
   { id: 'seneca', text: 'While we teach, we learn.', author: 'Seneca' },
   { id: 'aurelius', text: 'The happiness of your life depends upon the quality of your thoughts.', author: 'Marcus Aurelius' },
   { id: 'proverb', text: 'Little by little, one travels far.', author: 'Proverb' },
+  { id: 'vn-net-chu', text: 'Nét chữ nết người.\nYour handwriting shows who you are.', author: 'Vietnamese proverb' },
+  { id: 'vn-mai-sat', text: 'Có công mài sắt, có ngày nên kim.\nGrind iron long enough and it becomes a needle.', author: 'Vietnamese proverb' },
+  { id: 'vn-di-mot-ngay', text: 'Đi một ngày đàng, học một sàng khôn.\nTravel a day, gather a basket of wisdom.', author: 'Vietnamese proverb' },
 ]

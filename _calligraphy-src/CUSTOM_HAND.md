@@ -1,6 +1,6 @@
 # Adding your own handwriting
 
-In Daily Hand, a hand (a "script") has two parts. You can add either one or both:
+In Writing to Learn, a hand (a "script") has two parts. You can add either one or both:
 
 | Part | What it drives | How you make it | Time |
 |---|---|---|---|
@@ -106,6 +106,8 @@ No code changes are needed: the app finds every `src/hands/*/hand.json` and its 
 ---
 
 ## Notes
+
+- **The prefaces in your hand:** once your font is in, set `PREFACE_FONT` in `src/lib/prefaces.ts` to your hand's font family (`Hand <id>`, e.g. `Hand my-hand`), and every letter is written out in your own handwriting.
 
 - **Missing letters are fine.** The tutorial says the letter isn't recorded yet, and the trace rows are left blank for you to write freely.
 - **Re-recording a letter of a published hand:** record it in the recorder, download, and copy that letter's entry (e.g. `"A": { "steps": [...] }`) into your `hand.json`.

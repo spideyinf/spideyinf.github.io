@@ -8,6 +8,10 @@ export type Route =
   | { name: 'quotes' }
   | { name: 'write'; quoteId: string }
   | { name: 'record' }
+  | { name: 'hands' }
+  | { name: 'pens' }
+  | { name: 'prefaces' }
+  | { name: 'preface'; id: string }
 
 export function parse(hash: string): Route {
   const [, a, b] = hash.replace(/^#/, '').split('/')
@@ -15,6 +19,10 @@ export function parse(hash: string): Route {
   if (a === 'paragraph' && b) return { name: 'write', quoteId: decodeURIComponent(b) }
   if (a === 'paragraph') return { name: 'quotes' }
   if (a === 'record') return { name: 'record' }
+  if (a === 'hands') return { name: 'hands' }
+  if (a === 'pens') return { name: 'pens' }
+  if (a === 'prefaces' && b) return { name: 'preface', id: decodeURIComponent(b) }
+  if (a === 'prefaces') return { name: 'prefaces' }
   return { name: 'home' }
 }
 
@@ -25,6 +33,10 @@ export const href = {
   quotes: '#/paragraph',
   write: (id: string) => `#/paragraph/${encodeURIComponent(id)}`,
   record: '#/record',
+  hands: '#/hands',
+  pens: '#/pens',
+  prefaces: '#/prefaces',
+  preface: (id: string) => `#/prefaces/${encodeURIComponent(id)}`,
 }
 
 export const go = (to: string, replace = false) => {

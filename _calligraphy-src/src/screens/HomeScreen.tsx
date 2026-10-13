@@ -1,10 +1,14 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { ScriptPicker } from '../components/ScriptPicker'
+import { PenArt } from '../components/PenArt'
 import { Flourish, Hand, IconButton, Icons } from '../components/ui'
 import { dayKey, longDate, shortDate } from '../lib/date'
 import { href } from '../lib/router'
 import { usePractice, type SavedPage } from '../state/practice'
+import { usePen } from '../state/pen'
+import { go } from '../lib/router'
+import { PREFACE_FONT, prefaceOfTheDay } from '../lib/prefaces'
+import { sharePage } from '../lib/shareCard'
 import fibers from '../assets/paper/lightpaperfibers.png'
 
 // A fresh sheet laid on the page: lighter paper, torn edges, a slight tilt.
@@ -97,7 +101,20 @@ function Strip({ pages, onOpen, dated }: { pages: SavedPage[]; onOpen: (p: Saved
 
 export function HomeScreen() {
   const { today, lettersToday, pages, streak, deletePage, script } = usePractice()
+  const { pen, nib, ink, paper } = usePen()
   const [open, setOpen] = useState<SavedPage | null>(null)
+  const letter = prefaceOfTheDay()
+
+  // The first visit opens on the welcome letter.
+  useEffect(() => {
+    try {
+      if (localStorage.getItem('wtl:welcomed')) return
+      localStorage.setItem('wtl:welcomed', '1')
+      go(href.preface('begin'), true)
+    } catch {
+      /* storage blocked: just show Home */
+    }
+  }, [])
   const todayKey = dayKey()
   const todayPages = pages.filter((p) => p.day === todayKey)
   const earlier = pages.filter((p) => p.day !== todayKey)
@@ -112,19 +129,58 @@ export function HomeScreen() {
       {/* The title, written on the page itself. */}
       <header className="inked px-[14px] pt-[12vw] pb-[7vw] text-center text-ink [container-type:inline-size]">
         <h1 className="m-0 font-normal">
-          <Hand text="Daily Hand" size="10cqw" font="Pinyon Script" />
+          <Hand text="Writing" size="10cqw" font="Pinyon Script" />
+          <br />
+          <Hand text="to Learn" size="10cqw" font="Pinyon Script" />
         </h1>
         <p className="m-0 mt-[3cqw] leading-[1.05]">
-          <Hand text="Write to learn," size="4.6cqw" font="Pinyon Script" />
+          <Hand text="paper, pen and ink," size="4.6cqw" font="Pinyon Script" />
           <br />
           <Hand text="a line every day" size="4.6cqw" font="Pinyon Script" />
         </p>
         <Flourish className="mx-auto mt-[5cqw] block w-[42cqw]" />
       </header>
 
-      <ScriptPicker />
+      {/* Today's letter from the prefaces. */}
+      <NoteWrap>
+        <Note href={href.preface(letter.id)} $tilt={0.4} style={{ display: 'block' }}>
+          <p className="m-0 font-sans text-[12px] text-ink-soft">Today's letter</p>
+          <div className="inked mt-1">
+            <Hand text={letter.title} size="3.4cqw" font={PREFACE_FONT} />
+          </div>
+          <p className="m-0 mt-[1.5cqw] line-clamp-2 font-sans text-[clamp(12.5px,3.6cqw,14.5px)] leading-snug text-ink-soft">
+            {letter.body.find((b) => !b.endsWith(','))}
+          </p>
+          <p className="m-0 mt-[2.5cqw] font-sans text-[13px] text-cobalt underline underline-offset-2">Read it as it's written</p>
+        </Note>
+      </NoteWrap>
 
-      <nav aria-label="Practice" className="mt-7 flex flex-col gap-6">
+      {/* What you're writing with: the hand and the pen. */}
+      <section aria-label="Your hand and pen" className="mt-8 px-[14px]">
+        <a href={href.hands} className="flex items-center justify-between gap-3 py-2 text-ink no-underline">
+          <span className="min-w-0">
+            <span className="block font-sans text-[12px] text-ink-soft">The hand you're learning</span>
+            <span className="inked block truncate">
+              <Hand text={script.name} size={11} />
+            </span>
+          </span>
+          <span className="flex-none font-sans text-[13px] text-cobalt underline underline-offset-2">Change</span>
+        </a>
+        <a href={href.pens} className="mt-2 flex items-center gap-3 py-2 text-ink no-underline">
+          <span className="w-[42%] flex-none">
+            <PenArt pen={pen} ink={ink} className="block h-auto w-full -rotate-6" />
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block text-[16px]">{pen.name}</span>
+            <span className="block font-sans text-[12.5px] leading-snug text-ink-soft">
+              {nib.name} nib, {ink.name}, {paper.name.toLowerCase()} paper
+            </span>
+          </span>
+          <span className="flex-none font-sans text-[13px] text-cobalt underline underline-offset-2">Pen case</span>
+        </a>
+      </section>
+
+      <nav aria-label="Practice" className="mt-8 flex flex-col gap-6">
         <NoteWrap>
           <Note href={href.letters} $tilt={-0.8}>
             <div className="min-w-0">
@@ -181,8 +237,8 @@ export function HomeScreen() {
       </section>
 
       <footer className="px-6 pt-12 text-center font-sans text-[12.5px] leading-relaxed text-ink-soft">
-        After William Zinsser's <i className="font-serif text-[14px]">Writing to Learn</i>: we come to understand
-        a thing by writing it out, a little every day.
+        Named after William Zinsser's <i className="font-serif text-[14px]">Writing to Learn</i>: we come to
+        understand a thing by writing it out, a little every day.
         <span className="mt-3 block text-[11px] opacity-80">
           Paper texture from{' '}
           <a className="underline underline-offset-2" href="https://github.com/subtlepatterns/SubtlePatterns">
@@ -202,9 +258,12 @@ export function HomeScreen() {
               {open.label}
               <span className="ml-2 font-sans text-[12.5px] text-ink-soft">{shortDate(open.day)}</span>
             </div>
+            <IconButton label="Share this page" onClick={() => void sharePage(open)}>
+              {Icons.share}
+            </IconButton>
             <a
               href={open.src}
-              download={`daily-hand-${open.day}-${open.label}.jpg`}
+              download={`writing-to-learn-${open.day}-${open.label}.jpg`}
               aria-label="Download this page"
               className="grid h-[46px] w-[46px] place-items-center text-ink"
             >

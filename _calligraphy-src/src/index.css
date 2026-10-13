@@ -35,8 +35,9 @@ body {
   overscroll-behavior: none;
 }
 
-/* The whole app is one sheet of paper: a real paper scan (grain, specks)
-   multiplied with an aging layer. Fixed so it doesn't scroll or stretch. */
+/* The whole app is one sheet of paper: a real paper scan multiplied with an
+   aging layer. Fixed so it doesn't scroll or stretch. The paper chosen in the
+   pen case sets data-paper on <html>. */
 body::before {
   content: '';
   position: fixed;
@@ -47,6 +48,17 @@ body::before {
   background-size: 523px 384px, 100% 100%;
   background-blend-mode: multiply;
   pointer-events: none;
+  transition: background-color 0.4s;
+}
+:root[data-paper='cream'] body::before {
+  background-color: #f3ecdc;
+  background-image: url('./assets/paper/lightpaperfibers.png'), url('./assets/paper/age.jpg');
+  background-size: 500px 300px, 100% 100%;
+}
+:root[data-paper='smooth'] body::before {
+  background-color: #f6f3ec;
+  background-image: url('./assets/paper/smooth_paper.png');
+  background-size: 276px 276px;
 }
 
 /* A fresh note laid on the page: lighter paper, same real grain. */

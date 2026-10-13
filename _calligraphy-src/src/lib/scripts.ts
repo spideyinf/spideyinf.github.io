@@ -1,10 +1,12 @@
 // The hands you can learn. A script is a font (for words and paragraphs)
 // plus stroke data for A–Z and a–z (for the tutorials and tracing models).
 //
-// Built-in: Copperplate and Business cursive. Your own hands are picked up
-// automatically from src/hands/<id>/ — see CUSTOM_HAND.md.
+// Built-in hands are below. Your own hands are picked up automatically from
+// src/hands/<id>/ — see CUSTOM_HAND.md.
 
 import { BUSINESS_CAPITALS, CAPITALS, LOWERCASE, type Glyph, type Style } from './ductus'
+import { ITALIC_CAPITALS, ITALIC_LOWERCASE, PRINT_CAPITALS, PRINT_LOWERCASE } from './ductus-modern'
+import type { NibId } from './pen'
 
 export type Script = {
   id: string
@@ -15,17 +17,65 @@ export type Script = {
   style: Style
   capitals: Record<string, Glyph>
   lowercase: Record<string, Glyph>
+  /** Where it sits in the picker. */
+  family: 'modern' | 'school' | 'formal' | 'yours'
+  /** The nib it's happiest with, offered in the picker. */
+  nib?: NibId
+  /** A line to show it off, in its own font. */
+  sample?: string
   custom?: boolean
 }
 
-const COPPERPLATE: Script = {
-  id: 'copperplate',
-  name: 'Copperplate',
-  blurb: 'Formal pointed-pen script: shaded downstrokes, hairline upstrokes.',
-  font: 'Pinyon Script',
-  style: { slant: 55, shade: 1 },
-  capitals: CAPITALS,
+const ITALIC: Script = {
+  id: 'italic',
+  name: 'Italic',
+  blurb: 'Simple, fast and legible: pointed ovals and branching arches. Lovely with a stub nib.',
+  font: 'Merienda',
+  style: { slant: 83, shade: 0, edge: { width: 0.2, angle: 40 } },
+  capitals: ITALIC_CAPITALS,
+  lowercase: ITALIC_LOWERCASE,
+  family: 'modern',
+  nib: 'stub',
+  sample: 'Write a little, every day.',
+}
+
+const PRINT: Script = {
+  id: 'print',
+  name: 'Modern print',
+  blurb: 'Neat upright print, the plainest everyday hand. Circles and straight lines.',
+  font: 'Patrick Hand',
+  style: { slant: 90, shade: 0 },
+  capitals: PRINT_CAPITALS,
+  lowercase: PRINT_LOWERCASE,
+  family: 'modern',
+  nib: 'f',
+  sample: 'Write a little, every day.',
+}
+
+const MONOLINE: Script = {
+  id: 'monoline',
+  name: 'Modern monoline',
+  blurb: 'Contemporary joined script with even lines and a relaxed, upright slant.',
+  font: 'Sacramento',
+  style: { slant: 68, shade: 0 },
+  capitals: BUSINESS_CAPITALS,
   lowercase: LOWERCASE,
+  family: 'modern',
+  nib: 'm',
+  sample: 'Write a little, every day.',
+}
+
+const VIETNAMESE: Script = {
+  id: 'vietnamese',
+  name: 'Vietnamese school hand',
+  blurb: 'Chữ mẫu: the upright, looped hand taught in Vietnamese schools, with thick and thin strokes from a fountain pen.',
+  font: 'Playwrite VN',
+  style: { slant: 88, shade: 0.45 },
+  capitals: BUSINESS_CAPITALS,
+  lowercase: LOWERCASE,
+  family: 'school',
+  nib: 'f',
+  sample: 'Nét chữ nết người.',
 }
 
 const BUSINESS: Script = {
@@ -36,6 +86,22 @@ const BUSINESS: Script = {
   style: { slant: 58, shade: 0.28 },
   capitals: BUSINESS_CAPITALS,
   lowercase: LOWERCASE,
+  family: 'formal',
+  nib: 'f',
+  sample: 'Write a little, every day.',
+}
+
+const COPPERPLATE: Script = {
+  id: 'copperplate',
+  name: 'Copperplate',
+  blurb: 'Formal pointed-pen script: shaded downstrokes, hairline upstrokes.',
+  font: 'Pinyon Script',
+  style: { slant: 55, shade: 1 },
+  capitals: CAPITALS,
+  lowercase: LOWERCASE,
+  family: 'formal',
+  nib: 'flex',
+  sample: 'Write a little, every day.',
 }
 
 /* ---------- Your own hands (src/hands/<id>/hand.json + optional font) ---------- */
@@ -82,6 +148,7 @@ function customScripts(): Script[] {
       style: { slant: h.slant ?? 55, shade: h.shade ?? 0.4 },
       capitals: h.capitals ?? {},
       lowercase: h.lowercase ?? {},
+      family: 'yours' as const,
       custom: true,
     }
   })
@@ -104,6 +171,7 @@ function draftScript(): Script[] {
         style: { slant: d.slant ?? 55, shade: d.shade ?? 0.4 },
         capitals: d.capitals ?? {},
         lowercase: d.lowercase ?? {},
+        family: 'yours',
         custom: true,
       },
     ]
@@ -112,7 +180,7 @@ function draftScript(): Script[] {
   }
 }
 
-export const SCRIPTS: Script[] = [COPPERPLATE, BUSINESS, ...customScripts(), ...draftScript()]
+export const SCRIPTS: Script[] = [ITALIC, PRINT, MONOLINE, VIETNAMESE, BUSINESS, COPPERPLATE, ...customScripts(), ...draftScript()]
 export const DEFAULT_SCRIPT = COPPERPLATE
 
 export const scriptById = (id: string | undefined) => SCRIPTS.find((s) => s.id === id) ?? DEFAULT_SCRIPT

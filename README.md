@@ -1,12 +1,11 @@
 # spideyinf.github.io
 ## Projects
 
-#### [Daily Hand](https://spideyinf.github.io/calligraphy/) - Daily calligraphy practice, after William Zinsser's *Writing to Learn*. October 2026
-  - Choose a hand to learn (Copperplate or Business cursive), or record your own handwriting in the app.
-  - ABC: stroke-by-stroke tutorials for every letter, then trace them on proper guidelines with a fountain-pen ink.
-  - Drawn on real paper scans ([Subtle Patterns](https://github.com/subtlepatterns/SubtlePatterns), CC BY-SA 3.0).
-  - Paragraph: write quotes or your own words on ruled pages; save pages and keep a daily streak (stored on your device).
-  - Mobile-first. React + TypeScript, styled-components and Tailwind CSS, built with Vite. Source in [`_calligraphy-src`](https://github.com/spideyinf/spideyinf.github.io/tree/master/_calligraphy-src); run `npm run build` there to rebuild `calligraphy/`.
+#### [Writing to Learn](https://spideyinf.github.io/calligraphy/) - Paper, fountain pen and ink on your phone. October 2026
+  - Six hands to learn (Italic, Modern print, Modern monoline, Vietnamese school hand, Business cursive, Copperplate), each with stroke-by-stroke tutorials; or record your own.
+  - A pen case of original pens, nibs, inks and papers, with ink that shades, sheens and darkens as it dries; prefaces written out live on the page.
+  - Installable and offline; saved pages become share cards. Paper scans from [Subtle Patterns](https://github.com/subtlepatterns/SubtlePatterns) (CC BY-SA 3.0).
+  - React + TypeScript, styled-components and Tailwind CSS, built with Vite. Source in [`_calligraphy-src`](https://github.com/spideyinf/spideyinf.github.io/tree/master/_calligraphy-src); run `npm run build` there to rebuild `calligraphy/`.
 
 #### [Note map](https://spideyinf.github.io/music-notes/) - Piano, staff and guitar note explorer. October 2026
   - See any note or chord on the piano, the grand staff, guitar sheet music and the fretboard at once, hear it, and quiz yourself (read, name or ear).

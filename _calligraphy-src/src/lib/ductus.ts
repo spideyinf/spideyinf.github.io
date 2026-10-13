@@ -559,10 +559,15 @@ export const BUSINESS_CAPITALS: Record<string, Glyph> = {
 
 /** How a script is written: slant of the downstrokes, and how much they swell. */
 export type Style = {
-  /** Degrees from horizontal (55 for Copperplate). */
+  /** Degrees from horizontal (55 for Copperplate, 90 upright). */
   slant: number
-  /** Shading on downstrokes: 1 = pointed pen, ~0.25 = an ordinary pen. */
+  /** Pointed pen: shading on downstrokes, 1 = full flex, ~0.25 = an ordinary pen, 0 = monoline. */
   shade: number
+  /**
+   * Broad-edge (stub/italic) pen instead: line width follows direction against an edge
+   * held at `angle` degrees. `edge` is the nib width in x-heights.
+   */
+  edge?: { width: number; angle: number }
 }
 export const COPPERPLATE_STYLE: Style = { slant: 55, shade: 1 }
 
@@ -619,7 +624,8 @@ export type InkPt = { x: number; y: number; w: number; d: number }
  */
 export function inkStep(st: Step, ox: number, baseline: number, xh: number, style: Style = COPPERPLATE_STYLE): InkPt[] {
   const k = shear(style.slant)
-  const hair = Math.max(0.9, xh * 0.035)
+  // Monoline hands get an even, pen-weight line instead of a hairline.
+  const hair = style.shade === 0 && !style.edge ? Math.max(1.2, xh * 0.06) : Math.max(0.9, xh * 0.035)
   const shade = xh * 0.17 * style.shade
   if (st.dot) {
     const [x, y] = st.pts[0]
@@ -628,6 +634,8 @@ export function inkStep(st: Step, ox: number, baseline: number, xh: number, styl
   }
   const line = spline(st.pts)
   const out: InkPt[] = []
+  const edge = style.edge
+  const edgeAngle = edge ? (edge.angle * Math.PI) / 180 : 0
   let w = hair
   for (let i = 0; i < line.length; i++) {
     const [x, y] = line[i]
@@ -636,9 +644,16 @@ export function inkStep(st: Step, ox: number, baseline: number, xh: number, styl
     const dx = nx - px
     const dy = ny - py
     const len = Math.hypot(dx, dy) || 1
-    const down = Math.max(0, -dy / len)
-    const target = hair + shade * Math.pow(down, 1.8)
-    w += (target - w) * 0.35
+    let target: number
+    if (edge) {
+      // Direction on the page (after slant), y up; thin along the edge, full across it.
+      const dir = Math.atan2(dy, dx + dy * k)
+      target = hair + edge.width * xh * Math.abs(Math.sin(dir - edgeAngle))
+    } else {
+      const down = Math.max(0, -dy / len)
+      target = hair + shade * Math.pow(down, 1.8)
+    }
+    w += (target - w) * (edge ? 0.6 : 0.35)
     out.push({ x: ox + (x + y * k) * xh, y: baseline - y * xh, w, d: 1 })
   }
   // Swell in and taper out, as the nib opens and closes.
