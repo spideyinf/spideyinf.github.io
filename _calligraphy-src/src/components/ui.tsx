@@ -195,6 +195,12 @@ export const Icons = {
     </>,
   ),
   download: icon(<path d="M12 4v11M7 10l5 5 5-5M5 20h14" />),
+  camera: icon(
+    <>
+      <path d="M4 8h3l2-3h6l2 3h3v11H4z" />
+      <circle cx="12" cy="13" r="3.5" />
+    </>,
+  ),
   share: icon(<path d="M12 15V4M8 8l4-4 4 4M6 12v7h12v-7" />),
   play: (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden>

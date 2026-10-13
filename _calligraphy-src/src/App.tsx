@@ -4,8 +4,7 @@ import { AbcScreen } from './screens/AbcScreen'
 import { HomeScreen } from './screens/HomeScreen'
 import { LettersScreen } from './screens/LettersScreen'
 import { HandsScreen } from './screens/HandsScreen'
-import { PensScreen } from './screens/PensScreen'
-import { PrefaceScreen, PrefacesScreen } from './screens/PrefacesScreen'
+import { PrefaceScreen } from './screens/PrefaceScreen'
 import { QuotesScreen } from './screens/QuotesScreen'
 import { RecordScreen } from './screens/RecordScreen'
 import { WriteScreen } from './screens/WriteScreen'
@@ -34,12 +33,8 @@ export default function App() {
       return <AbcScreen letter={route.letter} />
     case 'hands':
       return <HandsScreen />
-    case 'pens':
-      return <PensScreen />
-    case 'prefaces':
-      return <PrefacesScreen />
     case 'preface':
-      return <PrefaceScreen key={route.id} id={route.id} />
+      return <PrefaceScreen />
     case 'record':
       return <RecordScreen />
     case 'quotes':

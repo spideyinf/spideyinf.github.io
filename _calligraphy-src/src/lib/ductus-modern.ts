@@ -194,3 +194,14 @@ const scale = (g: Glyph, k: number): Glyph => ({
 export const ITALIC_CAPITALS: Record<string, Glyph> = Object.fromEntries(
   Object.entries(PRINT_CAPITALS).map(([ch, g]) => [ch, scale(g, 1.6 / CAP)]),
 )
+
+/** Punctuation for writing sentences out (the preface), in the italic hand. */
+export const ITALIC_PUNCTUATION: Record<string, Glyph> = {
+  '.': { steps: [dot(0.1, 0.05)] },
+  ',': { steps: [s('Comma', [[0.14, 0.1], [0.11, -0.05], [0.0, -0.26]])] },
+  ';': { steps: [dot(0.16, 0.85), s('Comma', [[0.14, 0.1], [0.11, -0.05], [0.0, -0.26]])] },
+  ':': { steps: [dot(0.16, 0.85), dot(0.1, 0.05)] },
+  "'": { steps: [s('Apostrophe', [[0.24, 1.62], [0.17, 1.32]])] },
+  '’': { steps: [s('Apostrophe', [[0.24, 1.62], [0.17, 1.32]])] },
+  '-': { steps: [line('Dash', [0.02, 0.48], [0.42, 0.52])] },
+}

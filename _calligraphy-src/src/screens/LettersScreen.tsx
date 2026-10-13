@@ -68,12 +68,6 @@ export function LettersScreen() {
           </li>
         ))}
       </Grid>
-      <p className="m-0 px-[14px] pt-8 text-center font-sans text-[13px] text-ink-soft">
-        Want to learn from your own handwriting?{' '}
-        <a className="text-cobalt underline underline-offset-2" href={href.record}>
-          Record your hand
-        </a>
-      </p>
     </main>
   )
 }

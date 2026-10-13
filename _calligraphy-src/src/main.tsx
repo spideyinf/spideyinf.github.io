@@ -13,7 +13,6 @@ import App from './App.tsx'
 import { PaperFilters } from './components/ui'
 import { theme } from './theme'
 import { PracticeProvider } from './state/practice'
-import { PenProvider } from './state/pen'
 import playwriteVn from '@fontsource/playwrite-vn/files/playwrite-vn-latin-400-normal.woff2?url'
 
 // The packaged stylesheet limits this font to basic Latin, but the file carries every
@@ -24,10 +23,8 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ThemeProvider theme={theme}>
       <PracticeProvider>
-        <PenProvider>
-          <PaperFilters />
-          <App />
-        </PenProvider>
+        <PaperFilters />
+        <App />
       </PracticeProvider>
     </ThemeProvider>
   </StrictMode>,

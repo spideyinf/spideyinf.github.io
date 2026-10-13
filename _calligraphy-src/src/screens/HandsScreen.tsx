@@ -3,7 +3,6 @@ import { Hand, IconButton, Icons, TopBar } from '../components/ui'
 import { nibOf } from '../lib/pen'
 import { go, href } from '../lib/router'
 import { SCRIPTS, type Script } from '../lib/scripts'
-import { usePen } from '../state/pen'
 import { usePractice } from '../state/practice'
 
 const GROUPS: { id: Script['family']; title: string; note: string }[] = [
@@ -40,7 +39,6 @@ const Specimen = styled.div<{ $on: boolean }>`
 
 export function HandsScreen() {
   const { script, setScript } = usePractice()
-  const { nib, set } = usePen()
 
   return (
     <main className="min-h-dvh pb-12" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
@@ -80,17 +78,10 @@ export function HandsScreen() {
                       </div>
                       <p className="m-0 mt-1.5 font-sans text-[13px] leading-snug text-ink-soft">{s.blurb}</p>
                     </button>
-                    {on && best && best.id !== nib.id && (
-                      <button
-                        type="button"
-                        onClick={() => set({ nib: best.id })}
-                        className="mt-2 border-0 bg-transparent p-0 font-sans text-[13px] text-cobalt underline underline-offset-2"
-                      >
-                        Best with a {best.name.toLowerCase()} nib: put one in your pen
-                      </button>
-                    )}
-                    {on && best && best.id === nib.id && (
-                      <p className="m-0 mt-2 font-sans text-[12.5px] text-ink-soft">Your pen has the right nib: {best.name.toLowerCase()}.</p>
+                    {best && (
+                      <p className="m-0 mt-2 font-sans text-[12.5px] text-ink-soft">
+                        Write it with {/^[aeiou]/i.test(best.name) ? 'an' : 'a'} {best.name.toLowerCase()} nib.
+                      </p>
                     )}
                   </Specimen>
                 )
@@ -100,12 +91,6 @@ export function HandsScreen() {
         )
       })}
 
-      <p className="m-0 px-[14px] pt-8 text-center font-sans text-[13px] text-ink-soft">
-        Want to learn from your own handwriting?{' '}
-        <a className="text-cobalt underline underline-offset-2" href={href.record}>
-          Record your hand
-        </a>
-      </p>
     </main>
   )
 }

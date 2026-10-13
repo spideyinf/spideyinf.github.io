@@ -12,11 +12,11 @@ const fade = (n: number, from: number, to: number) =>
   Array.from({ length: n }, (_, i) => from + ((to - from) * i) / Math.max(1, n - 1))
 
 export function AbcScreen({ letter }: { letter: string }) {
-  const { savePage, script } = usePractice()
+  const { savePage, markWritten, lettersToday, script } = usePractice()
   const info = letterInfo(letter)
   const i = LETTERS.indexOf(letter)
 
-  // Trace the same stroke-built letters the tutorial demonstrates, then the word in the script's font.
+  // Models to copy onto paper: the letters as the tutorial writes them, then a word in the hand's font.
   const build = useCallback(
     (_ctx: CanvasRenderingContext2D, _m: Metrics, w: number, h: number) => {
       const { style } = script
@@ -26,13 +26,13 @@ export function AbcScreen({ letter }: { letter: string }) {
         if (!g?.steps.length) return { xh: md, segments: [] }
         const gw = bounds(g, style.slant).width
         const n = Math.max(1, Math.min(max, Math.floor((w - 28 + gap * md) / ((gw + gap) * md))))
-        return { xh: md, gap, segments: fade(n, from, 0.08).map((alpha) => ({ glyph: g, alpha, style })) }
+        return { xh: md, gap, segments: fade(n, from, 0.3).map((alpha) => ({ glyph: g, alpha, style })) }
       }
       return stackRows(
         [
-          row(script.capitals[info.upper], 1.3, 3, 0.34),
-          row(script.lowercase[info.lower], 1.0, 5, 0.36),
-          { xh: md, segments: [{ text: info.word, alpha: 0.3 }] },
+          row(script.capitals[info.upper], 1.3, 3, 0.85),
+          row(script.lowercase[info.lower], 1.0, 5, 0.85),
+          { xh: md, segments: [{ text: info.word, alpha: 0.85 }] },
         ],
         w,
         h,
@@ -44,7 +44,6 @@ export function AbcScreen({ letter }: { letter: string }) {
 
   return (
     <PracticeShell
-      pageKey={`abc:${script.id}:${letter}`}
       title={`Letter ${info.upper}`}
       subtitle={`${script.name}, ${i + 1} of 26`}
       lead={<LetterTutorial key={`${script.id}:${letter}`} letter={letter} />}
@@ -55,8 +54,9 @@ export function AbcScreen({ letter }: { letter: string }) {
       nextLabel="Next letter"
       onPrev={i > 0 ? () => go(href.abc(LETTERS[i - 1]), true) : undefined}
       onNext={i < 25 ? () => go(href.abc(LETTERS[i + 1]), true) : undefined}
-      onSave={(src) => savePage({ kind: 'abc', label: info.upper + info.lower, src }, { letter })}
-      savedLabel={`Saved ${info.upper}${info.lower} to today's pages`}
+      written={lettersToday.includes(letter)}
+      onWritten={() => markWritten({ letter })}
+      onPhoto={(src) => savePage({ kind: 'abc', label: info.upper + info.lower, src }, { letter })}
     />
   )
 }

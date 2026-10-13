@@ -1,13 +1,11 @@
-import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import styled from 'styled-components'
 import type { Metrics } from '../lib/hand'
+import { photoToPage } from '../lib/photo'
 import { go } from '../lib/router'
 import type { SheetLayout } from '../lib/sheet'
-import { BottomSheet } from './BottomSheet'
-import { PenCase } from './PenCase'
-import { Sheet, type SheetHandle } from './Sheet'
-import { usePen } from '../state/pen'
 import { usePractice } from '../state/practice'
+import { ModelSheet } from './ModelSheet'
 import { IconButton, Icons, SaveButton, Toast, Toolbar, TopBar } from './ui'
 
 const Screen = styled.main`
@@ -19,11 +17,9 @@ const Screen = styled.main`
 `
 
 type Props = {
-  pageKey: string
   title: ReactNode
   subtitle: ReactNode
-  note?: ReactNode
-  /** Content between the top bar and the sheet (e.g. the letter tutorial). Not traceable. */
+  /** Content between the top bar and the model (e.g. the letter tutorial). */
   lead?: ReactNode
   build: (ctx: CanvasRenderingContext2D, m: Metrics, w: number, h: number) => SheetLayout
   onPrev?: () => void
@@ -32,35 +28,36 @@ type Props = {
   nextLabel: string
   backTo: string
   backLabel: string
-  onSave: (snapshot: string) => void
-  savedLabel: string
+  /** Already marked as written today? */
+  written: boolean
+  onWritten: () => void
+  onPhoto: (src: string) => void
 }
 
-/** The shared frame for every practice sheet: top bar, pen tray, ruled sheet, thumb toolbar. */
+/**
+ * The model to copy, and what happens after: you write on real paper with a
+ * real pen, then mark it written, or keep a photo of the page.
+ */
 export function PracticeShell(p: Props) {
-  const sheet = useRef<SheetHandle>(null)
-  const [showModel, setShowModel] = useState(true)
-  const [hasInk, setHasInk] = useState(false)
-  const [toast, setToast] = useState<string | null>(null)
-  const [tray, setTray] = useState(false)
   const { script } = usePractice()
-  const { pen, nib, ink } = usePen()
+  const [toast, setToast] = useState<string | null>(null)
+  const file = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     if (!toast) return
-    const t = setTimeout(() => setToast(null), 1800)
+    const t = setTimeout(() => setToast(null), 2000)
     return () => clearTimeout(t)
   }, [toast])
 
-  const onInkChange = useCallback((v: boolean) => setHasInk(v), [])
-
-  const save = () => {
-    const shot = sheet.current?.snapshot()
-    if (!shot) return
-    p.onSave(shot)
-    setToast(p.savedLabel)
+  const onFile = async (f: File | undefined) => {
+    if (!f) return
+    try {
+      p.onPhoto(await photoToPage(f))
+      setToast('Photo kept with today’s pages')
+    } catch {
+      setToast('That photo could not be opened')
+    }
   }
-
 
   return (
     <Screen>
@@ -72,58 +69,48 @@ export function PracticeShell(p: Props) {
           <div className="truncate text-[17px]">{p.title}</div>
           <div className="truncate font-sans text-[12.5px] text-ink-soft">{p.subtitle}</div>
         </div>
-        <IconButton label={`Pen case: ${pen.name}, ${nib.name} nib, ${ink.name}`} onClick={() => setTray(true)}>
-          <span className="relative">
-            {Icons.pen}
-            <span className="absolute -right-1 -bottom-0.5 h-2.5 w-2.5 rounded-full" style={{ background: ink.color }} />
-          </span>
-        </IconButton>
-        <IconButton
-          label={showModel ? 'Hide the model and write from memory' : 'Show the model to trace'}
-          active={!showModel}
-          onClick={() => setShowModel((v) => !v)}
-        >
-          {showModel ? Icons.eye : Icons.eyeOff}
-        </IconButton>
       </TopBar>
 
       {p.lead}
 
-      {p.note && (
-        <div className="px-[14px] pb-1 font-sans text-[12.5px] leading-snug text-ink-soft">{p.note}</div>
-      )}
-
-      <Sheet
-        ref={sheet}
-        font={script.font}
-        pageKey={p.pageKey}
-        showModel={showModel}
-        build={p.build}
-        onInkChange={onInkChange}
-      />
+      <p className="m-0 px-[14px] pb-1 font-sans text-[12.5px] leading-snug text-ink-soft">
+        Copy it onto your paper with your own pen, then come back.
+      </p>
+      <ModelSheet font={script.font} build={p.build} />
 
       <Toolbar>
         <IconButton label={p.prevLabel} onClick={p.onPrev} disabled={!p.onPrev}>
           {Icons.prev}
         </IconButton>
-        <IconButton label="Undo last stroke" onClick={() => sheet.current?.undo()} disabled={!hasInk}>
-          {Icons.undo}
+        <IconButton label="Add a photo of your page" onClick={() => file.current?.click()}>
+          {Icons.camera}
         </IconButton>
-        <SaveButton type="button" onClick={save} disabled={!hasInk}>
-          Save page
+        <SaveButton
+          type="button"
+          disabled={p.written}
+          onClick={() => {
+            p.onWritten()
+            setToast('Marked as written today')
+          }}
+        >
+          {p.written ? 'Written today' : 'I wrote it'}
         </SaveButton>
-        <IconButton label="Clear the page" onClick={() => sheet.current?.clear()} disabled={!hasInk}>
-          {Icons.clear}
-        </IconButton>
+        <span className="w-[46px]" aria-hidden />
         <IconButton label={p.nextLabel} onClick={p.onNext} disabled={!p.onNext}>
           {Icons.next}
         </IconButton>
       </Toolbar>
-      {tray && (
-        <BottomSheet title="Pen case" onClose={() => setTray(false)}>
-          <PenCase />
-        </BottomSheet>
-      )}
+      <input
+        ref={file}
+        type="file"
+        accept="image/*"
+        capture="environment"
+        className="hidden"
+        onChange={(e) => {
+          void onFile(e.target.files?.[0])
+          e.target.value = ''
+        }}
+      />
       <Toast $show={!!toast} role="status" aria-live="polite">
         {toast}
       </Toast>

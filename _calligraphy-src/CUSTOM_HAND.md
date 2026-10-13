@@ -4,7 +4,7 @@ In Writing to Learn, a hand (a "script") has two parts. You can add either one o
 
 | Part | What it drives | How you make it | Time |
 |---|---|---|---|
-| **Strokes** (`hand.json`) | Stroke-by-stroke tutorials and the letters you trace in ABC | Write each letter in the app's recorder | 30–60 min |
+| **Strokes** (`hand.json`) | Stroke-by-stroke tutorials and the model letters in ABC | Write each letter in the app's recorder | 30–60 min |
 | **Font** (`font.woff2`) | Words, paragraphs, quotes, the letter grid | Scan a template with Calligraphr | about 1 hour |
 
 With strokes only, text falls back to the Business cursive font. With a font only, ABC shows "No strokes recorded yet".
@@ -29,7 +29,7 @@ The app can only be as consistent as the model you give it. Spend one session wi
 
 Use a tablet with a stylus if you can (iPad and Apple Pencil). A phone and finger works, but less precisely.
 
-1. Open **ABC → Record your hand**, or go to https://spideyinf.github.io/calligraphy/#/record
+1. Go to https://spideyinf.github.io/calligraphy/#/record (the recorder is not linked from the app menus)
 2. Under **Your hand**, set:
    - **Name**: what appears in the hand picker.
    - **Slant**: your slant from step 0. The guides on the writing card follow it.
@@ -107,8 +107,7 @@ No code changes are needed: the app finds every `src/hands/*/hand.json` and its 
 
 ## Notes
 
-- **The prefaces in your hand:** once your font is in, set `PREFACE_FONT` in `src/lib/prefaces.ts` to your hand's font family (`Hand <id>`, e.g. `Hand my-hand`), and every letter is written out in your own handwriting.
-
-- **Missing letters are fine.** The tutorial says the letter isn't recorded yet, and the trace rows are left blank for you to write freely.
+- **The recorder isn't linked from the app's menus.** Open it directly at `#/record`.
+- **Missing letters are fine.** The tutorial says the letter isn't recorded yet, and the model rows are left blank.
 - **Re-recording a letter of a published hand:** record it in the recorder, download, and copy that letter's entry (e.g. `"A": { "steps": [...] }`) into your `hand.json`.
 - **Privacy:** once pushed, `hand.json` and the font are public, like the rest of the GitHub Pages site.

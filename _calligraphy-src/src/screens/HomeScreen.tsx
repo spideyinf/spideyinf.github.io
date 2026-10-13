@@ -5,9 +5,9 @@ import { Flourish, Hand, IconButton, Icons } from '../components/ui'
 import { dayKey, longDate, shortDate } from '../lib/date'
 import { href } from '../lib/router'
 import { usePractice, type SavedPage } from '../state/practice'
-import { usePen } from '../state/pen'
 import { go } from '../lib/router'
-import { PREFACE_FONT, prefaceOfTheDay } from '../lib/prefaces'
+import { PENS, INKS } from '../lib/pen'
+import { CapBand, NibMark } from '../components/Craft'
 import { sharePage } from '../lib/shareCard'
 import fibers from '../assets/paper/lightpaperfibers.png'
 
@@ -101,16 +101,14 @@ function Strip({ pages, onOpen, dated }: { pages: SavedPage[]; onOpen: (p: Saved
 
 export function HomeScreen() {
   const { today, lettersToday, pages, streak, deletePage, script } = usePractice()
-  const { pen, nib, ink, paper } = usePen()
   const [open, setOpen] = useState<SavedPage | null>(null)
-  const letter = prefaceOfTheDay()
 
   // The first visit opens on the welcome letter.
   useEffect(() => {
     try {
       if (localStorage.getItem('wtl:welcomed')) return
       localStorage.setItem('wtl:welcomed', '1')
-      go(href.preface('begin'), true)
+      go(href.preface, true)
     } catch {
       /* storage blocked: just show Home */
     }
@@ -127,7 +125,9 @@ export function HomeScreen() {
       </div>
 
       {/* The title, written on the page itself. */}
-      <header className="inked px-[14px] pt-[12vw] pb-[7vw] text-center text-ink [container-type:inline-size]">
+      <header className="inked px-[14px] pt-[8vw] pb-[7vw] text-center text-ink [container-type:inline-size]">
+        {/* The maker's mark: an engraved nib. */}
+        <NibMark className="mx-auto mb-[3cqw] block h-auto w-[11cqw] drop-shadow-[0_2px_2px_rgb(70_50_25_/_0.25)]" />
         <h1 className="m-0 font-normal">
           <Hand text="Writing" size="10cqw" font="Pinyon Script" />
           <br />
@@ -141,22 +141,16 @@ export function HomeScreen() {
         <Flourish className="mx-auto mt-[5cqw] block w-[42cqw]" />
       </header>
 
-      {/* Today's letter from the prefaces. */}
-      <NoteWrap>
-        <Note href={href.preface(letter.id)} $tilt={0.4} style={{ display: 'block' }}>
-          <p className="m-0 font-sans text-[12px] text-ink-soft">Today's letter</p>
-          <div className="inked mt-1">
-            <Hand text={letter.title} size="3.4cqw" font={PREFACE_FONT} />
-          </div>
-          <p className="m-0 mt-[1.5cqw] line-clamp-2 font-sans text-[clamp(12.5px,3.6cqw,14.5px)] leading-snug text-ink-soft">
-            {letter.body.find((b) => !b.endsWith(','))}
-          </p>
-          <p className="m-0 mt-[2.5cqw] font-sans text-[13px] text-cobalt underline underline-offset-2">Read it as it's written</p>
-        </Note>
-      </NoteWrap>
+      <p className="m-0 text-center font-sans text-[13px]">
+        <a className="text-cobalt underline underline-offset-2" href={href.preface}>
+          Read the preface
+        </a>
+      </p>
 
-      {/* What you're writing with: the hand and the pen. */}
-      <section aria-label="Your hand and pen" className="mt-8 px-[14px]">
+      <CapBand className="mx-auto mt-8 block h-[10px] w-[60%]" />
+
+      {/* The hand you're learning. Write it with your own pen, on real paper. */}
+      <section aria-label="Your hand" className="mt-6 px-[14px]">
         <a href={href.hands} className="flex items-center justify-between gap-3 py-2 text-ink no-underline">
           <span className="min-w-0">
             <span className="block font-sans text-[12px] text-ink-soft">The hand you're learning</span>
@@ -166,19 +160,15 @@ export function HomeScreen() {
           </span>
           <span className="flex-none font-sans text-[13px] text-cobalt underline underline-offset-2">Change</span>
         </a>
-        <a href={href.pens} className="mt-2 flex items-center gap-3 py-2 text-ink no-underline">
-          <span className="w-[42%] flex-none">
-            <PenArt pen={pen} ink={ink} className="block h-auto w-full -rotate-6" />
-          </span>
-          <span className="min-w-0 flex-1">
-            <span className="block text-[16px]">{pen.name}</span>
-            <span className="block font-sans text-[12.5px] leading-snug text-ink-soft">
-              {nib.name} nib, {ink.name}, {paper.name.toLowerCase()} paper
-            </span>
-          </span>
-          <span className="flex-none font-sans text-[13px] text-cobalt underline underline-offset-2">Pen case</span>
-        </a>
+        <p className="m-0 mt-1 font-sans text-[12.5px] leading-snug text-ink-soft">
+          The app shows you how. The writing happens on paper, with your own pen and ink.
+        </p>
       </section>
+
+      {/* A pen at rest on the page. */}
+      <div className="mx-auto mt-6 w-[78%]" aria-hidden>
+        <PenArt pen={PENS[0]} ink={INKS[0]} className="block h-auto w-full -rotate-[4deg] drop-shadow-[0_8px_5px_rgb(60_40_20_/_0.22)]" />
+      </div>
 
       <nav aria-label="Practice" className="mt-8 flex flex-col gap-6">
         <NoteWrap>
@@ -215,13 +205,15 @@ export function HomeScreen() {
         </NoteWrap>
       </nav>
 
-      <section className="pt-10" aria-label="Your pages">
+      <CapBand className="mx-auto mt-10 block h-[10px] w-[60%]" />
+
+      <section className="pt-6" aria-label="Your pages">
         <h2 className="m-0 px-[14px] text-[19px] font-normal">Today's pages</h2>
         {todayPages.length ? (
           <Strip pages={todayPages} onOpen={setOpen} />
         ) : (
           <p className="m-0 px-[14px] pt-2 font-sans text-[13.5px] leading-relaxed text-ink-soft">
-            Pages you save today appear here.{' '}
+            Photograph a page you wrote and it appears here.{' '}
             <a className="text-cobalt underline underline-offset-2" href={href.letters}>
               Choose a letter to start
             </a>

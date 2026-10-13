@@ -6,7 +6,7 @@ import { paginateText, stackRows } from '../lib/sheet'
 import { usePractice } from '../state/practice'
 
 export function WriteScreen({ quoteId }: { quoteId: string }) {
-  const { quotes, savePage } = usePractice()
+  const { quotes, savePage, markWritten, today } = usePractice()
   const quote = quotes.find((q) => q.id === quoteId)
   const [page, setPage] = useState(0)
   const [pageCount, setPageCount] = useState(1)
@@ -18,7 +18,7 @@ export function WriteScreen({ quoteId }: { quoteId: string }) {
     (ctx: CanvasRenderingContext2D, m: Metrics, w: number, h: number) => {
       const xh = Math.min(w / 21, 26)
       const body = author ? `${text}\n${author}` : text
-      const pages = paginateText(ctx, m, body, xh, w, h, 0.3)
+      const pages = paginateText(ctx, m, body, xh, w, h, 0.85)
       if (pages.length !== pageCount) queueMicrotask(() => setPageCount(pages.length))
       const current = pages[Math.min(page, pages.length - 1)]
       return stackRows(current, w, h, xh)
@@ -41,9 +41,8 @@ export function WriteScreen({ quoteId }: { quoteId: string }) {
 
   return (
     <PracticeShell
-      pageKey={`quote:${quote.id}:${page}`}
       title={quote.author || 'Your quote'}
-      subtitle={pageCount > 1 ? `Page ${page + 1} of ${pageCount}` : 'Trace, then write from memory'}
+      subtitle={pageCount > 1 ? `Page ${page + 1} of ${pageCount}` : 'Copy it out by hand'}
       build={build}
       backTo={href.quotes}
       backLabel="Back to quotes"
@@ -51,10 +50,9 @@ export function WriteScreen({ quoteId }: { quoteId: string }) {
       nextLabel="Next page"
       onPrev={page > 0 ? () => setPage(page - 1) : undefined}
       onNext={page < pageCount - 1 ? () => setPage(page + 1) : undefined}
-      onSave={(src) =>
-        savePage({ kind: 'paragraph', label: quote.author || 'Quote', src }, { quoteId: quote.id })
-      }
-      savedLabel="Saved to today's pages"
+      written={today.quotes.includes(quote.id)}
+      onWritten={() => markWritten({ quoteId: quote.id })}
+      onPhoto={(src) => savePage({ kind: 'paragraph', label: quote.author || 'Quote', src }, { quoteId: quote.id })}
     />
   )
 }

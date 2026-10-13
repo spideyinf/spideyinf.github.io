@@ -1,7 +1,6 @@
 /* eslint-disable react/only-export-components */
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { dayKey } from '../lib/date'
-import { PREFACES, prefaceText } from '../lib/prefaces'
 import { BUILT_IN_QUOTES, type Quote } from '../lib/quotes'
 import { DEFAULT_SCRIPT, scriptById, type Script } from '../lib/scripts'
 
@@ -55,6 +54,8 @@ function computeStreak(days: Record<string, DayLog>, todayKey: string) {
   return n
 }
 
+type Mark = { letter?: string; quoteId?: string }
+
 type Ctx = {
   days: Record<string, DayLog>
   pages: SavedPage[]
@@ -65,14 +66,25 @@ type Ctx = {
   streak: number
   script: Script
   setScript: (id: string) => void
-  savePage: (p: Omit<SavedPage, 'id' | 'day'>, mark: { letter?: string; quoteId?: string }) => void
+  /** Mark a letter or quote as written today, on real paper. */
+  markWritten: (mark: Mark) => void
+  /** Keep a photo of a page written on paper (also marks it written). */
+  savePage: (p: Omit<SavedPage, 'id' | 'day'>, mark: Mark) => void
   deletePage: (id: string) => void
   addQuote: (text: string, author: string) => Quote
   deleteQuote: (id: string) => void
 }
 
-// Prefaces can be copied out by hand like any quote.
-const PREFACE_QUOTES: Quote[] = PREFACES.map((p) => ({ id: `preface-${p.id}`, text: prefaceText(p), author: p.title, preface: true }))
+function withMark(prev: Stored, mark: Mark): Stored {
+  const day = dayKey()
+  const log = prev.days[day] ?? { letters: [], quotes: [] }
+  const key = mark.letter && `${scriptById(prev.script).id}:${mark.letter}`
+  const next: DayLog = {
+    letters: key && !log.letters.includes(key) ? [...log.letters, key] : log.letters,
+    quotes: mark.quoteId && !log.quotes.includes(mark.quoteId) ? [...log.quotes, mark.quoteId] : log.quotes,
+  }
+  return { ...prev, days: { ...prev.days, [day]: next } }
+}
 
 const PracticeContext = createContext<Ctx | null>(null)
 
@@ -96,17 +108,13 @@ export function PracticeProvider({ children }: { children: ReactNode }) {
 
   const setScript = useCallback((id: string) => setData((prev) => ({ ...prev, script: id })), [])
 
+  const markWritten = useCallback((mark: Mark) => setData((prev) => withMark(prev, mark)), [])
+
   const savePage = useCallback<Ctx['savePage']>((p, mark) => {
     setData((prev) => {
-      const day = dayKey()
-      const log = prev.days[day] ?? { letters: [], quotes: [] }
-      const key = mark.letter && `${scriptById(prev.script).id}:${mark.letter}`
-      const next: DayLog = {
-        letters: key && !log.letters.includes(key) ? [...log.letters, key] : log.letters,
-        quotes: mark.quoteId && !log.quotes.includes(mark.quoteId) ? [...log.quotes, mark.quoteId] : log.quotes,
-      }
-      const page: SavedPage = { ...p, id: crypto.randomUUID(), day, hand: scriptById(prev.script).name }
-      return { ...prev, days: { ...prev.days, [day]: next }, pages: [page, ...prev.pages].slice(0, MAX_PAGES) }
+      const next = withMark(prev, mark)
+      const page: SavedPage = { ...p, id: crypto.randomUUID(), day: dayKey(), hand: scriptById(prev.script).name }
+      return { ...next, pages: [page, ...prev.pages].slice(0, MAX_PAGES) }
     })
   }, [])
 
@@ -128,18 +136,19 @@ export function PracticeProvider({ children }: { children: ReactNode }) {
     () => ({
       days: data.days,
       pages: data.pages,
-      quotes: [...data.quotes, ...BUILT_IN_QUOTES, ...PREFACE_QUOTES],
+      quotes: [...data.quotes, ...BUILT_IN_QUOTES],
       today,
       lettersToday,
       streak,
       script,
       setScript,
+      markWritten,
       savePage,
       deletePage,
       addQuote,
       deleteQuote,
     }),
-    [data, today, lettersToday, streak, script, setScript, savePage, deletePage, addQuote, deleteQuote],
+    [data, today, lettersToday, streak, script, setScript, markWritten, savePage, deletePage, addQuote, deleteQuote],
   )
 
   return <PracticeContext.Provider value={value}>{children}</PracticeContext.Provider>

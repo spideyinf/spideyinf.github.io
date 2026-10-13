@@ -1,6 +1,8 @@
-// The pen case: pens, nibs, inks and papers, and how they put ink on the page.
+// Pens, nibs, inks and papers, and how ink sits on the page. The app no longer
+// writes with them (you write on real paper); they draw the models, the
+// tutorials, the preface and the original pens that decorate the app.
 //
-// What a fountain pen feels like, as a model:
+// What a fountain pen does, as a model:
 // - A round nib lays a near-even line that swells a little on downstrokes
 //   (nib spring) and runs wetter, so wider and darker, when you slow down.
 // - A stub nib has a flat edge: the line is thick or thin by direction.
@@ -125,39 +127,9 @@ export const PENS: Pen[] = [
   { id: 'tidewater', name: 'Tidewater', blurb: 'Mottled red-black ebonite, warm in the hand, with a flex nib.', nib: 'flex', material: 'ebonite', body: ['#2a1412', '#8c2f1f'], trim: 'rose', ends: 'round' },
 ]
 
-/* ---------------- Settings ---------------- */
-
-export type PenSettings = { pen: PenId; nib: NibId; ink: InkId; paper: PaperId; sound: boolean }
-
-const KEY = 'daily-hand:pen'
-export const DEFAULT_PEN: PenSettings = { pen: 'harbor', nib: 'm', ink: 'ledger', paper: 'cream', sound: false }
-
-export function loadPen(): PenSettings {
-  try {
-    const p = { ...DEFAULT_PEN, ...JSON.parse(localStorage.getItem(KEY) ?? '{}') }
-    // Settings saved before the pen case existed used other ink ids.
-    if (!INKS.some((i) => i.id === p.ink)) p.ink = DEFAULT_PEN.ink
-    if (!NIBS.some((n) => n.id === p.nib)) p.nib = DEFAULT_PEN.nib
-    if (!PENS.some((n) => n.id === p.pen)) p.pen = DEFAULT_PEN.pen
-    if (!PAPERS.some((n) => n.id === p.paper)) p.paper = DEFAULT_PEN.paper
-    return p
-  } catch {
-    return DEFAULT_PEN
-  }
-}
-
-export function savePen(p: PenSettings) {
-  try {
-    localStorage.setItem(KEY, JSON.stringify(p))
-  } catch {
-    /* storage unavailable: the choice lasts for this visit */
-  }
-}
-
 export const nibOf = (id: NibId) => NIBS.find((n) => n.id === id) ?? NIBS[1]
 export const inkOf = (id: InkId) => INKS.find((n) => n.id === id) ?? INKS[0]
-export const paperOf = (id: PaperId) => PAPERS.find((n) => n.id === id) ?? PAPERS[1]
-export const penOf = (id: PenId) => PENS.find((n) => n.id === id) ?? PENS[1]
+export const paperOf = (id: PaperId) => PAPERS.find((n) => n.id === id) ?? PAPERS[0]
 
 /* ---------------- Strokes ---------------- */
 
@@ -175,59 +147,7 @@ export type InkStroke = {
   born?: number
 }
 
-export const strokeInk = (ink: Ink): Pick<InkStroke, 'color' | 'wet' | 'sheen' | 'shading'> => ({
-  color: ink.color,
-  wet: ink.wet,
-  sheen: ink.sheen,
-  shading: ink.shading,
-})
-
 const clamp = (v: number, a: number, b: number) => Math.min(b, Math.max(a, v))
-
-/**
- * Target width and density for the next sample.
- * `xh` scales the line a little with the row so big model letters don't look scratchy.
- */
-export function sample(
-  nib: Nib,
-  ink: Ink,
-  paper: Paper,
-  xh: number,
-  dx: number,
-  dy: number,
-  dt: number,
-  pressure: number,
-  isPen: boolean,
-) {
-  const len = Math.hypot(dx, dy) || 1
-  const down = Math.max(0, dy / len)
-  const speed = len / Math.max(dt, 4) // px per ms
-  const scale = clamp(xh / 18, 1, 2.2)
-  const p = isPen && pressure > 0 ? pressure : 0.5
-  const spread = 1 + paper.absorb * 0.14 // ink wicks into absorbent paper
-  const wet = ink.flow
-  // Slow = wetter and darker; fast = drier and lighter. Wet inks shade less.
-  // Calibrated to finger and stylus speeds: ~0.1 px/ms slow, ~0.3 typical, ~0.8 a quick flourish.
-  const d = clamp(1.08 - speed * 0.55 * (2 - wet), 0.6, 1)
-
-  if (nib.kind === 'flex') {
-    const hair = Math.max(1, xh * 0.045)
-    const shade = xh * 0.24 * (isPen ? 0.4 + p * 1.2 : 1)
-    return { w: (hair + shade * Math.pow(down, 1.4)) * spread, d: clamp(d + 0.05, 0.7, 1) }
-  }
-  if (nib.kind === 'stub') {
-    // Width follows direction against the edge held at `angle`.
-    const dir = Math.atan2(-dy, dx)
-    const a = ((nib.angle ?? 40) * Math.PI) / 180
-    const edge = (nib.edge ?? 4) * scale
-    const hair = 0.9 * scale
-    return { w: (hair + (edge - hair) * Math.abs(Math.sin(dir - a))) * spread * (0.92 + wet * 0.08), d }
-  }
-  const flow = clamp(1.14 - speed * 0.14, 0.82, 1.14) * (0.9 + wet * 0.1)
-  const press = isPen ? 0.8 + p * 0.45 : 1
-  const w = nib.base * scale * (1 + nib.spring * Math.pow(down, 1.5)) * flow * press * spread
-  return { w, d }
-}
 
 /* ---------------- Painting ---------------- */
 
