@@ -3,6 +3,7 @@ import { useRoute } from './lib/router'
 import { AbcScreen } from './screens/AbcScreen'
 import { HomeScreen } from './screens/HomeScreen'
 import { LettersScreen } from './screens/LettersScreen'
+import { GuideScreen } from './screens/GuideScreen'
 import { HandsScreen } from './screens/HandsScreen'
 import { PrefaceScreen } from './screens/PrefaceScreen'
 import { QuotesScreen } from './screens/QuotesScreen'
@@ -33,6 +34,8 @@ export default function App() {
       return <AbcScreen letter={route.letter} />
     case 'hands':
       return <HandsScreen />
+    case 'guide':
+      return <GuideScreen />
     case 'preface':
       return <PrefaceScreen />
     case 'record':

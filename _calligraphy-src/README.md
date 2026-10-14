@@ -15,6 +15,7 @@ npm run build   # writes the production build to ../calligraphy
 - **ABC**: stroke-by-stroke tutorials (play, previous, next), then model letters and a word on guidelines to copy onto your paper. **I wrote it** marks the day; the camera button keeps a photo of your page.
 - **Paragraph**: quotes (including Vietnamese proverbs), or your own words, laid out on ruled pages to copy by hand.
 - **Craft ornament** (`src/components/Craft.tsx`): an engraved nib as the maker's mark, cap-band rules between sections, and an original pen at rest on Home. Original drawings, not any maker's design.
+- **Pens & inks** (`#/pens`, `src/lib/fieldGuide.ts`, `src/components/InkArt.tsx`): a small field guide to well-known pens and inks, names and plain facts only, each with a faded ink drawing of generic pen parts or bottles behind it (not pictures of the products).
 - **Preface** (`src/lib/prefaces.ts`, `src/components/DiaryWriter.tsx`, `#/preface`): one short letter, written onto the page stroke by stroke by an unseen hand in the italic hand's real strokes. The ink goes on wet and blue and darkens as each line dries; closing the letter lets it sink into the paper. It opens the app on first visit; tap the page to skip.
 - **Installable and offline** (vite-plugin-pwa), and **share cards**: any saved page becomes a 9:16 image for stories.
 - Paper: real scans from [Subtle Patterns](https://github.com/subtlepatterns/SubtlePatterns) (CC BY-SA 3.0) with a generated aging layer; see `src/assets/paper/CREDITS.md`.
@@ -33,7 +34,7 @@ src/lib/photo.ts     photos of your pages, scaled down
 src/lib/prefaces.ts  the preface
 src/lib/shareCard.ts 9:16 share images
 src/lib/ductus*.ts   stroke order and shapes for A–Z, a–z
-src/screens/         Home, Hands, Preface, Letters, Abc, Quotes, Write, Record
+src/screens/         Home, Hands, Guide, Preface, Letters, Abc, Quotes, Write, Record
 src/hands/           your own hands (hand.json + font)
 src/state/           practice (pages, streak, hand); swap for an API later
 ```

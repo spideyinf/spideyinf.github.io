@@ -165,10 +165,13 @@ export function HomeScreen() {
         </p>
       </section>
 
-      {/* A pen at rest on the page. */}
-      <div className="mx-auto mt-6 w-[78%]" aria-hidden>
+      {/* A pen at rest on the page; it opens the field guide to pens and inks. */}
+      <a href={href.guide} className="mx-auto mt-6 block w-[78%] text-center no-underline">
         <PenArt pen={PENS[0]} ink={INKS[0]} className="block h-auto w-full -rotate-[4deg] drop-shadow-[0_8px_5px_rgb(60_40_20_/_0.22)]" />
-      </div>
+        <span className="mt-2 inline-block font-sans text-[13px] text-cobalt underline underline-offset-2">
+          Pens &amp; inks, a field guide
+        </span>
+      </a>
 
       <nav aria-label="Practice" className="mt-8 flex flex-col gap-6">
         <NoteWrap>
