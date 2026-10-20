@@ -57,7 +57,10 @@ export function LettersScreen() {
       </TopBar>
       <ScriptTabs />
       <p className="m-0 px-[14px] pt-3 pb-4 font-sans text-[13px] leading-snug text-ink-soft">
-        {script.blurb} The point is a hand that inspires you, not perfect strokes.
+        {script.blurb} The point is a hand that inspires you, not perfect strokes.{' '}
+        <a className="text-cobalt underline underline-offset-2" href={href.trace}>
+          Trace any letter, or your own SVG
+        </a>
       </p>
       <Grid>
         {LETTERS.map((l) => (

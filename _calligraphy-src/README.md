@@ -12,6 +12,7 @@ npm run build   # writes the production build to ../calligraphy
 
 - **Hands** (`src/lib/scripts.ts`): Italic, Modern print, Modern monoline, Vietnamese school hand, Business cursive and Copperplate. A hand = a font + stroke data for A–Z and a–z + a slant and pen style (pointed, broad-edge or monoline). Stroke data: `src/lib/ductus.ts` (cursive and Copperplate) and `src/lib/ductus-modern.ts` (print and italic), authored upright in x-height units. Contact sheet in dev: `#/ductus/<handId>`.
 - **Your own hand**: record strokes in the app (`#/record`, unlinked in the UI), make a font from a scanned template, drop both into `src/hands/<id>/`. Step by step: [CUSTOM_HAND.md](CUSTOM_HAND.md).
+- **Tracing** (`src/lib/trace/`, the key feature): every tutorial shows the hand's real letter, exactly as the font (or an SVG) draws it, revealed stroke by stroke. The letter is drawn onto a small grid, thinned to its centre lines, and split into strokes. Order and direction come from the hand's ductus fitted onto the letter, from the SVG's own paths, or, when neither exists, from a writing heuristic. Each inked pixel then gets the moment the pen passes it. The **Trace studio** (`#/trace`) traces any character in any hand, or any SVG you upload or paste. Dev contact sheet: `#/tracesheet/<handId>`.
 - **ABC**: stroke-by-stroke tutorials (play, previous, next), then model letters and a word on guidelines to copy onto your paper. **I wrote it** marks the day; the camera button keeps a photo of your page.
 - **Paragraph**: quotes (including Vietnamese proverbs), or your own words, laid out on ruled pages to copy by hand.
 - **Craft ornament** (`src/components/Craft.tsx`): an engraved nib as the maker's mark, cap-band rules between sections, and an original pen at rest on Home. Original drawings, not any maker's design.
@@ -28,13 +29,14 @@ src/lib/scripts.ts   the hands: built-in + src/hands/*
 src/lib/hand.ts      script fonts: measuring, wrapping
 src/lib/recording.ts recorder → hand.json
 src/lib/sheet.ts     guideline layout and drawing
-src/components/      ModelSheet, PracticeShell, DiaryWriter, Craft, ui
+src/lib/trace/       tracing: sources (font, SVG), skeleton, stroke order, reveal timing
+src/components/      TraceView (the player), LetterTutorial, ModelSheet, PracticeShell, DiaryWriter, Craft, ui
 src/lib/pen.ts       the ink model (wet-to-dry colour, pooling) used to draw the models
 src/lib/photo.ts     photos of your pages, scaled down
 src/lib/prefaces.ts  the preface
 src/lib/shareCard.ts 9:16 share images
-src/lib/ductus*.ts   stroke order and shapes for A–Z, a–z
-src/screens/         Home, Hands, Guide, Preface, Letters, Abc, Quotes, Write, Record
+src/lib/ductus*.ts   authored stroke order for A–Z, a–z (guides the tracing; draws the diary letter)
+src/screens/         Home, Hands, Guide, Trace, Preface, Letters, Abc, Quotes, Write, Record
 src/hands/           your own hands (hand.json + font)
 src/state/           practice (pages, streak, hand); swap for an API later
 ```

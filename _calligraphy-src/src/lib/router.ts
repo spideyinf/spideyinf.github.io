@@ -11,6 +11,7 @@ export type Route =
   | { name: 'hands' }
   | { name: 'preface' }
   | { name: 'guide' }
+  | { name: 'trace' }
 
 export function parse(hash: string): Route {
   const [, a, b] = hash.replace(/^#/, '').split('/')
@@ -19,6 +20,7 @@ export function parse(hash: string): Route {
   if (a === 'paragraph') return { name: 'quotes' }
   if (a === 'record') return { name: 'record' }
   if (a === 'hands') return { name: 'hands' }
+  if (a === 'trace') return { name: 'trace' }
   if (a === 'pens' || a === 'inks') return { name: 'guide' }
   if (a === 'preface' || a === 'prefaces') return { name: 'preface' }
   return { name: 'home' }
@@ -34,6 +36,7 @@ export const href = {
   hands: '#/hands',
   preface: '#/preface',
   guide: '#/pens',
+  trace: '#/trace',
 }
 
 export const go = (to: string, replace = false) => {

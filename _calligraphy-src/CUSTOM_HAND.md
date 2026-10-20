@@ -4,10 +4,11 @@ In Writing to Learn, a hand (a "script") has two parts. You can add either one o
 
 | Part | What it drives | How you make it | Time |
 |---|---|---|---|
-| **Strokes** (`hand.json`) | Stroke-by-stroke tutorials and the model letters in ABC | Write each letter in the app's recorder | 30–60 min |
-| **Font** (`font.woff2`) | Words, paragraphs, quotes, the letter grid | Scan a template with Calligraphr | about 1 hour |
+| **Font** (`font.woff2`) | Everything: the tutorials trace your font's own letters, and the models, words and quotes use it | Scan a template with Calligraphr | about 1 hour |
+| **Strokes** (`hand.json`) | The stroke order and direction the tutorials follow | Write each letter in the app's recorder | 30–60 min |
+| **SVG letters** (`svg/A.svg`…), optional | Overrides the font for tracing one letter, with your exact strokes | Draw each stroke as a path in any vector app | a few minutes a letter |
 
-With strokes only, text falls back to the Business cursive font. With a font only, ABC shows "No strokes recorded yet".
+The tutorial always shows the real letter, pixel for pixel, from your font or SVG. Your recorded strokes only decide the order and direction it is written in. With a font but no strokes, the order is worked out from the letter's shape. With strokes only (no font and no SVGs), the tutorial falls back to drawing the recorded strokes themselves.
 
 ---
 
@@ -85,6 +86,7 @@ Other ways to make the font:
    _calligraphy-src/src/hands/my-hand/
      hand.json     ← from the recorder
      font.woff2    ← from Calligraphr; must match "font" in hand.json
+     svg/          ← optional: one SVG per letter, e.g. A-upper.svg, a-lower.svg
    ```
    If your font file has another name or extension, change the `"font"` field in `hand.json` to match, e.g. `"font": "MyHand.ttf"`.
 2. Check it locally:
@@ -93,7 +95,8 @@ Other ways to make the font:
    npm run dev
    ```
    - Home: your hand appears in **The hand you're learning**.
-   - http://localhost:5173/calligraphy/#/ductus/my-hand shows every recorded letter at once, with stroke order. This is the quickest way to spot a stray stroke.
+   - http://localhost:5173/calligraphy/#/tracesheet/my-hand shows every letter as traced, coloured and numbered by stroke, with arrows for direction. This is the quickest way to spot a wrong order.
+   - http://localhost:5173/calligraphy/#/ductus/my-hand shows your recorded strokes on their own.
 3. Publish it:
    ```bash
    npm run build
@@ -105,9 +108,18 @@ No code changes are needed: the app finds every `src/hands/*/hand.json` and its 
 
 ---
 
+## SVG letters
+
+The Trace studio in the app (`#/trace`, linked from ABC) traces any SVG you give it, so you can try a letter there before adding it.
+
+- **Exact order:** draw each stroke as its own `<path>` with a stroke and `fill="none"`, in the order you write them, each one starting where the pen goes down. The tutorial follows the paths in file order. `data-name="Oval"` on a path names that step.
+- **Filled shapes** (a letter exported from a font editor, an outlined drawing) work too. They are traced from their outline and the order is worked out.
+- **Placing it on the guidelines:** add `data-baseline` and `data-xheight` to the `<svg>`, in viewBox units, e.g. `<svg viewBox="0 0 120 120" data-baseline="90" data-xheight="50">`. Without them, the drawing's bottom sits on the baseline and it stands two x-heights tall.
+- **File names:** `A.svg` for a capital and `a.svg` for lowercase. On Mac and Windows, where those two names would clash, use `A-upper.svg` and `a-lower.svg`.
+
 ## Notes
 
 - **The recorder isn't linked from the app's menus.** Open it directly at `#/record`.
-- **Missing letters are fine.** The tutorial says the letter isn't recorded yet, and the model rows are left blank.
+- **Missing letters are fine.** Without recorded strokes, the order is worked out from the font's letter.
 - **Re-recording a letter of a published hand:** record it in the recorder, download, and copy that letter's entry (e.g. `"A": { "steps": [...] }`) into your `hand.json`.
 - **Privacy:** once pushed, `hand.json` and the font are public, like the rest of the GitHub Pages site.

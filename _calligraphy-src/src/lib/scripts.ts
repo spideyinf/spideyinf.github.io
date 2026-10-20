@@ -24,6 +24,8 @@ export type Script = {
   /** A line to show it off, in its own font. */
   sample?: string
   custom?: boolean
+  /** Per-letter SVGs that override the font for tracing (custom hands: src/hands/<id>/svg/<letter>.svg). */
+  svgs?: Record<string, string>
 }
 
 const ITALIC: Script = {
@@ -125,6 +127,22 @@ const fontFiles = import.meta.glob<string>('../hands/*/*.{woff2,woff,ttf,otf}', 
   import: 'default',
 })
 
+const svgFiles = import.meta.glob<string>('../hands/*/svg/*.svg', { eager: true, query: '?raw', import: 'default' })
+
+/** SVG letters shipped with a custom hand, keyed by the character (file name, e.g. A.svg or a.svg). */
+function svgsFor(dir: string) {
+  const out: Record<string, string> = {}
+  for (const [path, svg] of Object.entries(svgFiles)) {
+    if (!path.startsWith(`${dir}/svg/`)) continue
+    const name = decodeURIComponent(path.split('/').pop()!.replace(/\.svg$/, ''))
+    // Case-insensitive file systems can't hold A.svg beside a.svg: "a-lower.svg" and "A-upper.svg" work too.
+    const m = /^(.+)-(lower|upper)$/.exec(name)
+    const ch = m ? (m[2] === 'lower' ? m[1].toLowerCase() : m[1].toUpperCase()) : name
+    out[ch] = svg
+  }
+  return Object.keys(out).length ? out : undefined
+}
+
 const FALLBACK_FONT = BUSINESS.font
 
 function customScripts(): Script[] {
@@ -150,6 +168,7 @@ function customScripts(): Script[] {
       lowercase: h.lowercase ?? {},
       family: 'yours' as const,
       custom: true,
+      svgs: svgsFor(dir),
     }
   })
 }
