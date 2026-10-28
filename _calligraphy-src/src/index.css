@@ -1,21 +1,21 @@
 @import 'tailwindcss';
 
 @theme {
-  --font-serif: 'Fraunces Variable', Georgia, serif;
-  --font-sans: 'Inter Variable', system-ui, sans-serif;
+  --font-serif: 'Newsreader Variable', Georgia, serif;
+  --font-sans: 'Bricolage Grotesque Variable', system-ui, sans-serif;
   --font-caps: 'Pinyon Script', cursive;
   --font-cursive: 'Ephesis', cursive;
 
-  /* Aged paper and iron-gall inks. */
-  --color-paper: #e9e1d0;
-  --color-paper-deep: #ddd3be;
-  --color-note: #f7f2e7;
-  --color-tint: rgb(120 95 60 / 0.09);
-  --color-ink: #2a221e;
-  --color-ink-soft: #6e6255;
-  --color-cobalt: #2f3e6b;
-  --color-vermilion: #b4432f;
-  --color-rule: #cfc3ac;
+  /* Design B: cream ground, navy ink, one amber accent. */
+  --color-paper: #fbf6ea;
+  --color-paper-deep: #f1e8d4;
+  --color-note: #fffbf2;
+  --color-tint: rgb(120 98 60 / 0.1);
+  --color-ink: #1c2433;
+  --color-ink-soft: #57534e;
+  --color-cobalt: #1e3a5f;
+  --color-vermilion: #92400e;
+  --color-rule: #e3d9c4;
 }
 
 html,
@@ -29,36 +29,29 @@ body {
   background: var(--color-paper);
   isolation: isolate;
   color: var(--color-ink);
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
   overscroll-behavior: none;
 }
 
-/* The whole app is one sheet of paper: a real paper scan multiplied with an
-   aging layer. Fixed so it doesn't scroll or stretch. The paper chosen in the
-   pen case sets data-paper on <html>. */
+/* The ground: flat cream with a faint grain, fixed so it doesn't scroll. */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
   z-index: -1;
   background-color: var(--color-paper);
-  background-image: url('./assets/paper/natural_paper.png'), url('./assets/paper/age.jpg');
-  background-size: 523px 384px, 100% 100%;
-  background-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .38 0 0 0 0 .25 0 0 0 .2 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23g)' opacity='.35'/%3E%3C/svg%3E");
   pointer-events: none;
-  transition: background-color 0.4s;
 }
-:root[data-paper='cream'] body::before {
-  background-color: #f3ecdc;
-  background-image: url('./assets/paper/lightpaperfibers.png'), url('./assets/paper/age.jpg');
-  background-size: 500px 300px, 100% 100%;
-}
-:root[data-paper='smooth'] body::before {
-  background-color: #f6f3ec;
-  background-image: url('./assets/paper/smooth_paper.png');
-  background-size: 276px 276px;
+
+/* Real paper, for the parts of the app that are paper. */
+.paper-sheet {
+  background-color: var(--color-note);
+  background-image: url('./assets/paper/natural_paper.png');
+  background-size: 523px 384px;
+  background-blend-mode: multiply;
 }
 
 /* A fresh note laid on the page: lighter paper, same real grain. */
@@ -74,16 +67,48 @@ body::before {
   filter: url('#ink-bleed');
 }
 
-button {
+button,
+input,
+textarea {
   font: inherit;
   color: inherit;
+}
+button {
   cursor: pointer;
+}
+
+/* Hide scrollbars on horizontal strips; they still scroll. */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Liquid glass: the tab bar and floating controls. */
+.glass {
+  background: linear-gradient(135deg, rgb(255 255 255 / 0.58), rgb(255 255 255 / 0.24));
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgb(255 255 255 / 0.75);
+  box-shadow:
+    inset 0 1px 1px rgb(255 255 255 / 0.95),
+    inset 0 -1px 1px rgb(28 36 51 / 0.06),
+    0 12px 32px rgb(28 36 51 / 0.16),
+    0 2px 6px rgb(28 36 51 / 0.08);
+}
+
+.press {
+  transition: transform 0.18s ease, background-color 0.2s ease, color 0.2s ease;
+}
+.press:active {
+  transform: scale(0.97);
 }
 
 :focus-visible {
   outline: 2px solid var(--color-cobalt);
   outline-offset: 3px;
-  border-radius: 6px;
+  border-radius: 8px;
 }
 
 @media (prefers-reduced-motion: reduce) {

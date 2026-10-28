@@ -4,21 +4,20 @@ import type { Script } from '../lib/scripts'
 import type { Trace } from '../lib/trace'
 import { letterTrace, traceable } from '../lib/trace/letters'
 import { usePractice } from '../state/practice'
-import { Card, DuctusTutorial, Tab, Tabs } from './DuctusTutorial'
+import { Card, DuctusTutorial } from './DuctusTutorial'
 import { TraceView, type Frame } from './TraceView'
 
-type Case = 'upper' | 'lower'
+export type Case = 'upper' | 'lower'
 
 /** Stroke-by-stroke demonstration of one letter, capital and lowercase, traced from the hand itself. */
-export function LetterTutorial({ letter }: { letter: string }) {
+export function LetterTutorial({ letter, kase }: { letter: string; kase: Case }) {
   const { script } = usePractice()
   if (!traceable(script)) return <DuctusTutorial letter={letter} />
-  return <FontTutorial letter={letter} script={script} />
+  return <FontTutorial letter={letter} script={script} kase={kase} />
 }
 
-function FontTutorial({ letter, script }: { letter: string; script: Script }) {
+function FontTutorial({ letter, script, kase }: { letter: string; script: Script; kase: Case }) {
   const info = letterInfo(letter)
-  const [kase, setKase] = useState<Case>('upper')
   const [traces, setTraces] = useState<{ upper: Trace | null; lower: Trace | null }>({ upper: null, lower: null })
   const [error, setError] = useState<string | null>(null)
 
@@ -46,14 +45,6 @@ function FontTutorial({ letter, script }: { letter: string; script: Script }) {
 
   return (
     <Card aria-label={`How to write ${kase === 'upper' ? info.upper : info.lower}`}>
-      <Tabs role="tablist">
-        <Tab type="button" role="tab" aria-selected={kase === 'upper'} $on={kase === 'upper'} onClick={() => setKase('upper')}>
-          Capital {info.upper}
-        </Tab>
-        <Tab type="button" role="tab" aria-selected={kase === 'lower'} $on={kase === 'lower'} onClick={() => setKase('lower')}>
-          Lowercase {info.lower}
-        </Tab>
-      </Tabs>
       <TraceView trace={frame ? traces[kase] : null} frame={frame} slant={script.style.slant} status={error ?? undefined} />
     </Card>
   )

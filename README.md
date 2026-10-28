@@ -3,7 +3,7 @@
 
 #### [Writing to Learn](https://spideyinf.github.io/calligraphy/) - A daily handwriting companion for real pen and paper. October 2026
   - Six hands to learn (Italic, Modern print, Modern monoline, Vietnamese school hand, Business cursive, Copperplate). Each tutorial traces the font's real letter stroke by stroke, and any character or SVG can be traced in the Trace studio.
-  - The app shows the model; you write it on paper with your own pen, mark it written, and photograph the page. A one-page preface writes itself onto the paper in ink that darkens as it dries.
+  - The app shows the model; you write it on paper with your own pen, mark it written, and photograph the page into My pages. Mobile-first design with a liquid-glass tab bar, modern type, and real paper where the paper is.
   - Installable and offline; saved pages become share cards. Paper scans from [Subtle Patterns](https://github.com/subtlepatterns/SubtlePatterns) (CC BY-SA 3.0).
   - React + TypeScript, styled-components and Tailwind CSS, built with Vite. Source in [`_calligraphy-src`](https://github.com/spideyinf/spideyinf.github.io/tree/master/_calligraphy-src); run `npm run build` there to rebuild `calligraphy/`.
 

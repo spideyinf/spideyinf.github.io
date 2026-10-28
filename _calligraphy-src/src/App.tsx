@@ -1,17 +1,18 @@
 import { lazy, Suspense, useEffect } from 'react'
+import { TabBar, TAB_ROUTES } from './components/b'
 import { useRoute } from './lib/router'
 import { AbcScreen } from './screens/AbcScreen'
-import { HomeScreen } from './screens/HomeScreen'
-import { LettersScreen } from './screens/LettersScreen'
-import { TraceScreen } from './screens/TraceScreen'
 import { GuideScreen } from './screens/GuideScreen'
 import { HandsScreen } from './screens/HandsScreen'
+import { HomeScreen } from './screens/HomeScreen'
+import { PagesScreen } from './screens/PagesScreen'
+import { ParagraphScreen } from './screens/ParagraphScreen'
 import { PrefaceScreen } from './screens/PrefaceScreen'
-import { QuotesScreen } from './screens/QuotesScreen'
 import { RecordScreen } from './screens/RecordScreen'
-import { WriteScreen } from './screens/WriteScreen'
+import { SettingsScreen } from './screens/SettingsScreen'
+import { TraceScreen } from './screens/TraceScreen'
 
-// Dev-only letterform contact sheet; never shipped in the production bundle.
+// Dev-only contact sheets; never shipped in the production bundle.
 const DuctusSheet = import.meta.env.DEV ? lazy(() => import('./dev/DuctusSheet')) : null
 const TraceSheet = import.meta.env.DEV ? lazy(() => import('./dev/TraceSheet')) : null
 
@@ -35,11 +36,28 @@ export default function App() {
       </Suspense>
     )
 
+  return (
+    <>
+      {screen(route)}
+      {TAB_ROUTES.includes(route.name) && <TabBar />}
+    </>
+  )
+}
+
+function screen(route: ReturnType<typeof useRoute>) {
   switch (route.name) {
     case 'letters':
-      return <LettersScreen />
+      return <AbcScreen />
     case 'abc':
       return <AbcScreen letter={route.letter} />
+    case 'quotes':
+      return <ParagraphScreen />
+    case 'write':
+      return <ParagraphScreen quoteId={route.quoteId} />
+    case 'pages':
+      return <PagesScreen />
+    case 'settings':
+      return <SettingsScreen />
     case 'hands':
       return <HandsScreen />
     case 'trace':
@@ -50,10 +68,6 @@ export default function App() {
       return <PrefaceScreen />
     case 'record':
       return <RecordScreen />
-    case 'quotes':
-      return <QuotesScreen />
-    case 'write':
-      return <WriteScreen key={route.quoteId} quoteId={route.quoteId} />
     default:
       return <HomeScreen />
   }

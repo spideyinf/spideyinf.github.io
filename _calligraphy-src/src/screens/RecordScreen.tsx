@@ -312,7 +312,7 @@ export function RecordScreen() {
       )}
 
       <section className="px-[14px] pt-7" aria-label="Hand settings">
-        <h2 className="m-0 text-[19px] font-normal">Your hand</h2>
+        <h2 className="m-0 text-[22px] font-extrabold tracking-[-0.02em]">Your hand</h2>
         <Field>
           Name
           <input type="text" value={draft.name} onChange={(e) => setDraft({ ...draft, name: e.target.value })} />

@@ -25,7 +25,7 @@ export function PrefaceScreen() {
   }
 
   return (
-    <main className="min-h-dvh pb-16" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
+    <main className="paper-sheet min-h-dvh pb-16" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
       <div className="flex justify-end px-1.5 pt-1.5">
         <IconButton label="Close the letter" onClick={close}>
           {Icons.close}

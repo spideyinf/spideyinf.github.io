@@ -18,14 +18,14 @@ export default defineConfig({
       manifest: {
         name: 'Writing to Learn',
         short_name: 'Writing to Learn',
-        description: 'Paper, fountain pen and ink on your phone. Learn a hand stroke by stroke and write a line every day.',
+        description: 'Paper, pen and ink. Learn a hand stroke by stroke, then write a line every day on real paper.',
         lang: 'en',
         start_url: '/calligraphy/',
         scope: '/calligraphy/',
         display: 'standalone',
         orientation: 'portrait',
-        background_color: '#E9E1D0',
-        theme_color: '#E9E1D0',
+        background_color: '#FBF6EA',
+        theme_color: '#FBF6EA',
         categories: ['education', 'lifestyle', 'productivity'],
         icons: [
           { src: 'icon-192.png', sizes: '192x192', type: 'image/png' },

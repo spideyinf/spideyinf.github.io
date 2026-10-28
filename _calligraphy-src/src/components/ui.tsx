@@ -6,13 +6,25 @@ import { usePractice } from '../state/practice'
 
 /* Text in a script's font. `size` is the x-height: px, or any CSS length (e.g. cqw).
    Defaults to the script being learned; pass `font` to pin one (e.g. the app title). */
-export function Hand({ text, size, font, className }: { text: string; size: number | string; font?: string; className?: string }) {
+export function Hand({
+  text,
+  size,
+  font,
+  className,
+  lineHeight = 1.15,
+}: {
+  text: string
+  size: number | string
+  font?: string
+  className?: string
+  lineHeight?: number | string
+}) {
   const { script } = usePractice()
   const family = font ?? script.font
   const xEm = useXEm(family)
   const len = typeof size === 'number' ? `${size}px` : size
   return (
-    <span className={className} style={{ fontFamily: `"${family}", cursive`, fontSize: `calc(${len} / ${xEm})`, lineHeight: 1.15 }}>
+    <span className={className} style={{ fontFamily: `"${family}", cursive`, fontSize: `calc(${len} / ${xEm})`, lineHeight }}>
       {text}
     </span>
   )
@@ -74,7 +86,7 @@ const IconBtnBase = styled.button<{ $active?: boolean }>`
   height: 46px;
   border-radius: 50%;
   border: 0;
-  background: ${({ $active, theme }) => ($active ? theme.color.ink : 'transparent')};
+  background: ${({ $active, theme }) => ($active ? theme.color.cobalt : 'transparent')};
   color: ${({ $active, theme }) => ($active ? theme.color.paper : theme.color.ink)};
   transition: background 0.15s, transform 0.1s;
   &:active {
@@ -110,11 +122,12 @@ export const SaveButton = styled.button`
   padding: 0 clamp(14px, 5vw, 22px);
   white-space: nowrap;
   border: 0;
-  border-radius: ${({ theme }) => theme.radius.pill};
-  background: ${({ theme }) => theme.color.ink};
+  border-radius: ${({ theme }) => theme.radius.control};
+  background: ${({ theme }) => theme.color.cobalt};
   color: ${({ theme }) => theme.color.paper};
-  font-family: ${({ theme }) => theme.font.serif};
+  font-family: ${({ theme }) => theme.font.sans};
   font-size: 17px;
+  font-weight: 700;
   &:disabled {
     background: ${({ theme }) => theme.color.tint};
     color: ${({ theme }) => theme.color.inkSoft};
@@ -128,8 +141,20 @@ export const SaveButton = styled.button`
 export const TopBar = styled.header`
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 12px 4px 6px;
+  gap: 8px;
+  padding: 14px 16px 6px 10px;
+  /* Design B: bold title, the subtitle in the bookish italic. */
+  & > div > div:first-child {
+    font-size: 24px !important;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+  & > div > div + div {
+    font-family: ${({ theme }) => theme.font.serif} !important;
+    font-style: italic;
+    font-size: 16px !important;
+  }
 `
 
 /* Toast that confirms an action. */
@@ -142,6 +167,7 @@ export const Toast = styled.div<{ $show: boolean }>`
   left: 50%;
   bottom: calc(86px + env(safe-area-inset-bottom));
   transform: translateX(-50%);
+  z-index: 50;
   padding: 10px 18px;
   border-radius: ${({ theme }) => theme.radius.pill};
   background: ${({ theme }) => theme.color.ink};

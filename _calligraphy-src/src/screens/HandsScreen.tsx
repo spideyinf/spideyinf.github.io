@@ -57,7 +57,7 @@ export function HandsScreen() {
         if (!hands.length) return null
         return (
           <section key={g.id} aria-label={g.title} className="pt-5">
-            <h2 className="m-0 px-[14px] text-[19px] font-normal">{g.title}</h2>
+            <h2 className="m-0 px-[14px] text-[22px] font-extrabold tracking-[-0.02em]">{g.title}</h2>
             <p className="m-0 px-[14px] pt-0.5 pb-1 font-sans text-[12.5px] text-ink-soft">{g.note}</p>
             <div role="radiogroup" aria-label={g.title}>
               {hands.map((s) => {

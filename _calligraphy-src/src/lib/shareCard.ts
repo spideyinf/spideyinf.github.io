@@ -20,7 +20,7 @@ const loadImage = (src: string) =>
   })
 
 export async function makeShareCard(page: { src: string; day: string; label: string; hand?: string }) {
-  await Promise.all([loadHand('Pinyon Script'), document.fonts.load('40px "Inter Variable"')])
+  await Promise.all([loadHand('Pinyon Script'), document.fonts.load('40px "Bricolage Grotesque Variable"')])
   const c = document.createElement('canvas')
   c.width = W
   c.height = H
@@ -70,10 +70,10 @@ export async function makeShareCard(page: { src: string; day: string; label: str
   // What it is, and where to find the app.
   const y = Math.min(H - 220, 420 + ph + 110)
   ctx.fillStyle = '#4a3f38'
-  ctx.font = '40px "Inter Variable", system-ui, sans-serif'
+  ctx.font = '40px "Bricolage Grotesque Variable", system-ui, sans-serif'
   ctx.fillText([page.label, page.hand, shortDate(page.day)].filter(Boolean).join(', '), W / 2, y)
   ctx.fillStyle = '#6e6255'
-  ctx.font = '34px "Inter Variable", system-ui, sans-serif'
+  ctx.font = '34px "Bricolage Grotesque Variable", system-ui, sans-serif'
   ctx.fillText(APP_URL, W / 2, H - 120)
 
   return new Promise<Blob>((resolve) => c.toBlob((b) => resolve(b!), 'image/jpeg', 0.9))
