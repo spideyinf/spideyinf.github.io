@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { Screen } from '../components/b'
 import { href } from '../lib/router'
+import { usePrefs } from '../lib/notify'
 import { usePractice } from '../state/practice'
 
 const Chevron = () => (
@@ -34,6 +35,7 @@ function Row({ to, label, value }: { to: string; label: string; value?: string }
 
 export function SettingsScreen() {
   const { streak, lettersToday, days, script } = usePractice()
+  const prefs = usePrefs()
   const quotesWritten = Object.values(days).reduce((n, d) => n + d.quotes.length, 0)
 
   return (
@@ -74,6 +76,8 @@ export function SettingsScreen() {
 
       <Group id="practice-h" title="Practice">
         <Row to={href.hands} label="Letter style" value={script.name} />
+        <Row to={href.pages} label="My pages" />
+        <Row to={href.notifications} label="Notifications" value={prefs.enabled ? (prefs.remind ? `daily at ${prefs.time}` : 'on') : 'off'} />
         <Row to={href.trace} label="Trace any letter or SVG" />
         <Row to={href.guide} label="Pens and inks" />
       </Group>

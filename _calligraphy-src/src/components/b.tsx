@@ -264,14 +264,14 @@ const TABS: Tab[] = [
     ),
   },
   {
-    to: href.pages,
-    label: 'My pages',
-    match: ['pages'],
+    to: href.achievement,
+    label: 'The greatest achievement',
+    match: ['achievement', 'feed'],
     icon: (on) => (
       <g fill="none" stroke={ink(on)} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M10 7.5 L22.5 4.5 L27 23.5 L14.5 26.5" />
-        <rect x="5" y="9" width="13" height="19" rx="2.5" fill={on ? 'rgb(217 170 70 / 0.35)' : '#FBF6EA'} />
-        <path d="M8.5 15 H14.5 M8.5 19 H14.5 M8.5 23 H12" stroke={on ? '#92400E' : ink(on)} />
+        <circle cx="16" cy="12.5" r="7.5" fill={on ? 'rgb(217 170 70 / 0.35)' : 'none'} />
+        <path d="M11.6 18.6 L9.5 29 L16 25.5 L22.5 29 L20.4 18.6" />
+        <path d="M16 8.6 L17.1 10.9 L19.6 11.2 L17.8 12.9 L18.2 15.4 L16 14.2 L13.8 15.4 L14.2 12.9 L12.4 11.2 L14.9 10.9 Z" fill="#92400E" stroke="#92400E" strokeWidth="1" />
       </g>
     ),
   },
@@ -353,4 +353,63 @@ export function TabBar() {
 }
 
 /** Routes that show the tab bar. */
-export const TAB_ROUTES: Route['name'][] = ['home', 'letters', 'abc', 'quotes', 'write', 'pages', 'settings']
+export const TAB_ROUTES: Route['name'][] = ['home', 'letters', 'abc', 'quotes', 'write', 'pages', 'settings', 'achievement', 'feed', 'inbox', 'notifications']
+
+/** An on/off switch row (a real button with role="switch"). */
+export function SwitchRow({ label, note, checked, onChange, disabled }: { label: ReactNode; note?: ReactNode; checked: boolean; onChange: (v: boolean) => void; disabled?: boolean }) {
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={checked}
+      disabled={disabled}
+      onClick={() => onChange(!checked)}
+      className="flex min-h-[56px] w-full items-center justify-between gap-4 border-0 bg-transparent p-0 py-1.5 text-left text-[18px] text-ink disabled:opacity-45"
+    >
+      <span className="flex min-w-0 flex-col">
+        {label}
+        {note && <span className="text-[14.5px] leading-snug text-ink-soft">{note}</span>}
+      </span>
+      <span aria-hidden className="relative h-[30px] w-[50px] flex-none rounded-[15px] transition-colors" style={{ background: checked ? '#1E3A5F' : '#A8A196' }}>
+        <span
+          className="absolute top-[3px] left-[3px] h-6 w-6 rounded-full bg-paper shadow-[0_1px_2px_rgb(0_0_0/0.25)] transition-transform"
+          style={{ transform: checked ? 'translateX(20px)' : 'none' }}
+        />
+      </span>
+    </button>
+  )
+}
+
+/** Chips to pick one or several values. */
+export function Chips<T extends string | number>({
+  label,
+  options,
+  isOn,
+  onPick,
+}: {
+  label: string
+  options: { value: T; label: string; aria?: string }[]
+  isOn: (v: T) => boolean
+  onPick: (v: T) => void
+}) {
+  return (
+    <div role="group" aria-label={label} className="flex flex-wrap gap-2">
+      {options.map((o) => {
+        const on = isOn(o.value)
+        return (
+          <button
+            key={String(o.value)}
+            type="button"
+            aria-pressed={on}
+            aria-label={o.aria}
+            onClick={() => onPick(o.value)}
+            className="press min-h-[44px] min-w-[44px] rounded-[12px] border-0 px-3 text-[16px]"
+            style={{ background: on ? '#1E3A5F' : 'rgb(120 98 60 / 0.1)', color: on ? '#FBF6EA' : '#1C2433' }}
+          >
+            {o.label}
+          </button>
+        )
+      })}
+    </div>
+  )
+}

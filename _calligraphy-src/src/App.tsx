@@ -1,7 +1,16 @@
 import { lazy, Suspense, useEffect } from 'react'
+import { NotificationBanner } from './components/NotificationBanner'
+import { progressChanged, startNotifications } from './lib/notify'
+import { usePractice } from './state/practice'
+import { InboxScreen } from './screens/InboxScreen'
+import { NotificationsScreen } from './screens/NotificationsScreen'
+import { NotifyStartScreen } from './screens/NotifyStartScreen'
 import { TabBar, TAB_ROUTES } from './components/b'
 import { useRoute } from './lib/router'
 import { AbcScreen } from './screens/AbcScreen'
+import { AchievementScreen } from './screens/AchievementScreen'
+import { FeedScreen } from './screens/FeedScreen'
+import { UnlockScreen } from './screens/UnlockScreen'
 import { GuideScreen } from './screens/GuideScreen'
 import { HandsScreen } from './screens/HandsScreen'
 import { HomeScreen } from './screens/HomeScreen'
@@ -18,6 +27,11 @@ const TraceSheet = import.meta.env.DEV ? lazy(() => import('./dev/TraceSheet')) 
 
 export default function App() {
   const route = useRoute()
+  const { today } = usePractice()
+
+  // Notifications: start once; tonight's reminder follows today's progress.
+  useEffect(startNotifications, [])
+  useEffect(progressChanged, [today])
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -40,6 +54,7 @@ export default function App() {
     <>
       {screen(route)}
       {TAB_ROUTES.includes(route.name) && <TabBar />}
+      <NotificationBanner />
     </>
   )
 }
@@ -54,6 +69,18 @@ function screen(route: ReturnType<typeof useRoute>) {
       return <ParagraphScreen />
     case 'write':
       return <ParagraphScreen quoteId={route.quoteId} />
+    case 'achievement':
+      return <AchievementScreen />
+    case 'feed':
+      return <FeedScreen />
+    case 'inbox':
+      return <InboxScreen />
+    case 'notifications':
+      return <NotificationsScreen />
+    case 'notify-start':
+      return <NotifyStartScreen />
+    case 'unlock':
+      return <UnlockScreen />
     case 'pages':
       return <PagesScreen />
     case 'settings':

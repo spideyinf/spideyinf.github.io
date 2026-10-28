@@ -5,6 +5,7 @@ import { dayKey, longDate } from '../lib/date'
 import { LETTERS } from '../lib/letters'
 import { go, href } from '../lib/router'
 import { SCRIPTS } from '../lib/scripts'
+import { useInbox } from '../lib/notify'
 import { usePractice } from '../state/practice'
 
 const SHORT: Record<string, string> = {
@@ -24,6 +25,7 @@ const Chevron = () => (
 
 export function HomeScreen() {
   const { lettersToday, today, streak, script, setScript, quotes, pages } = usePractice()
+  const unread = useInbox().filter((n) => !n.read).length
 
   // The first visit opens on the welcome letter.
   useEffect(() => {
@@ -57,14 +59,14 @@ export function HomeScreen() {
           </p>
         </div>
         <a
-          href={href.preface}
-          aria-label="Read the preface"
-          title="Read the preface"
-          className="press grid h-11 w-11 place-items-center rounded-[14px] bg-tint"
+          href={href.inbox}
+          aria-label={unread ? `Notifications, ${unread} unread` : 'Notifications'}
+          className="press relative grid h-11 w-11 place-items-center rounded-[14px] bg-tint"
         >
           <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden>
-            <path d="M5 4.5 H15.5 L19 8 V19.5 H5 Z M15.5 4.5 V8 H19 M8.5 11.5 H15.5 M8.5 15 H13" fill="none" stroke="#1C2433" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M6 16.5 V11 A6 6 0 0 1 18 11 V16.5 L19.5 18 H4.5 Z M10 20.5 A2.2 2.2 0 0 0 14 20.5" fill="none" stroke="#1C2433" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
+          {unread > 0 && <span aria-hidden className="absolute top-[9px] right-[10px] h-[9px] w-[9px] rounded-full border-2 border-paper bg-vermilion" />}
         </a>
       </header>
 

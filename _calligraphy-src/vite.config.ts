@@ -6,11 +6,17 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 // Built into ../calligraphy so GitHub Pages serves it at
 // https://spideyinf.github.io/calligraphy/
-export default defineConfig({
-  base: '/calligraphy/',
+// `npm run build:app` (mode "app") builds the same app for the iOS and
+// Android wrappers (Capacitor): relative paths, no service worker, into
+// dist-app/. See capacitor.config.ts.
+export default defineConfig(({ mode }) => {
+  const app = mode === 'app'
+  return {
+  base: app ? './' : '/calligraphy/',
   plugins: [
     react(),
     tailwindcss(),
+    !app &&
     // Installable on the home screen, and works offline once opened.
     VitePWA({
       registerType: 'autoUpdate',
@@ -34,6 +40,8 @@ export default defineConfig({
         ],
       },
       workbox: {
+        // Notification taps and the background reminder check (public/notify-sw.js).
+        importScripts: ['notify-sw.js'],
         // Fonts, paper scans and the app itself, so writing works on a plane.
         globPatterns: ['**/*.{js,css,html,svg,png,jpg,woff2}'],
         maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
@@ -42,7 +50,8 @@ export default defineConfig({
     }),
   ],
   build: {
-    outDir: fileURLToPath(new URL('../calligraphy', import.meta.url)),
+    outDir: fileURLToPath(new URL(app ? './dist-app' : '../calligraphy', import.meta.url)),
     emptyOutDir: true,
   },
+  }
 })

@@ -14,6 +14,12 @@ export type Route =
   | { name: 'trace' }
   | { name: 'pages' }
   | { name: 'settings' }
+  | { name: 'achievement' }
+  | { name: 'feed' }
+  | { name: 'unlock' }
+  | { name: 'inbox' }
+  | { name: 'notifications' }
+  | { name: 'notify-start' }
 
 export function parse(hash: string): Route {
   const [, a, b] = hash.replace(/^#/, '').split('/')
@@ -24,7 +30,13 @@ export function parse(hash: string): Route {
   if (a === 'hands') return { name: 'hands' }
   if (a === 'trace') return { name: 'trace' }
   if (a === 'pages') return { name: 'pages' }
+  if (a === 'settings' && b === 'notifications') return { name: 'notifications' }
   if (a === 'settings') return { name: 'settings' }
+  if (a === 'achievement' && b === 'all') return { name: 'feed' }
+  if (a === 'achievement') return { name: 'achievement' }
+  if (a === 'unlock') return { name: 'unlock' }
+  if (a === 'inbox') return { name: 'inbox' }
+  if (a === 'notifications') return { name: 'notify-start' }
   if (a === 'pens' || a === 'inks') return { name: 'guide' }
   if (a === 'preface' || a === 'prefaces') return { name: 'preface' }
   return { name: 'home' }
@@ -43,6 +55,12 @@ export const href = {
   trace: '#/trace',
   pages: '#/pages',
   settings: '#/settings',
+  achievement: '#/achievement',
+  feed: '#/achievement/all',
+  unlock: '#/unlock',
+  inbox: '#/inbox',
+  notifications: '#/settings/notifications',
+  notifyStart: '#/notifications',
 }
 
 export const go = (to: string, replace = false) => {
