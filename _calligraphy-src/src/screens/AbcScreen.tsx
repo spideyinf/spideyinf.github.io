@@ -1,9 +1,8 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { DoneToggle, PageHeader, PaperSheet, ProgressRing, RoundButton, Segmented, Screen, TintButton, ruled } from '../components/b'
 import { LetterTutorial, type Case } from '../components/LetterTutorial'
 import { Hand, Icons, Toast } from '../components/ui'
 import { LETTERS, letterInfo } from '../lib/letters'
-import { photoToPage } from '../lib/photo'
 import { go, href } from '../lib/router'
 import { usePractice } from '../state/practice'
 
@@ -13,10 +12,9 @@ import { usePractice } from '../state/practice'
  * Without a letter in the address, it opens on the first one not yet written today.
  */
 export function AbcScreen({ letter }: { letter?: string }) {
-  const { lettersToday, markWritten, savePage, script } = usePractice()
+  const { lettersToday, markWritten, script } = usePractice()
   const [kase, setKase] = useState<Case>('lower')
   const [toast, setToast] = useState<string | null>(null)
-  const file = useRef<HTMLInputElement>(null)
   const [first] = useState(() => LETTERS.find((l) => !lettersToday.includes(l)) ?? 'A')
   const cur = letter ?? first
   const i = LETTERS.indexOf(cur)
@@ -32,16 +30,6 @@ export function AbcScreen({ letter }: { letter?: string }) {
     const t = setTimeout(() => setToast(null), 2000)
     return () => clearTimeout(t)
   }, [toast])
-
-  const onFile = async (f: File | undefined) => {
-    if (!f) return
-    try {
-      savePage({ kind: 'abc', label: info.upper + info.lower, src: await photoToPage(f) }, { letter: cur })
-      setToast('Photo kept in My pages')
-    } catch {
-      setToast('That photo could not be opened')
-    }
-  }
 
   return (
     <Screen>
@@ -104,10 +92,9 @@ export function AbcScreen({ letter }: { letter?: string }) {
 
       <div className="mt-4 flex gap-2">
         <DoneToggle done={done} onClick={() => markWritten({ letter: cur })} todo="I wrote a line" doneText="Written on paper" />
-        <TintButton label="Keep a photo of your page" onClick={() => file.current?.click()}>
+        <TintButton label="Photograph your page" onClick={() => go(href.capture('abc', cur))}>
           {Icons.camera}
         </TintButton>
-        <input ref={file} type="file" accept="image/*" capture="environment" hidden onChange={(e) => onFile(e.target.files?.[0])} />
       </div>
 
       <div role="group" aria-label="Alphabet" className="mt-5 grid grid-cols-7 gap-0.5">

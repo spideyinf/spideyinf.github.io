@@ -5,11 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "node scripts/copy-ocr.mjs && tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "build:app": "tsc -b && vite build --mode app",
-    "cap:sync": "npm run build:app && cap sync"
+    "build:app": "node scripts/copy-ocr.mjs && tsc -b && vite build --mode app",
+    "cap:sync": "npm run build:app && cap sync",
+    "ocr": "node scripts/copy-ocr.mjs",
+    "predev": "node scripts/copy-ocr.mjs"
   },
   "dependencies": {
     "@capacitor/core": "^8.5.3",
@@ -23,10 +25,13 @@
     "@fontsource/playwrite-vn": "^5.3.0",
     "@fontsource/sacramento": "^5.3.0",
     "@tailwindcss/vite": "^4.3.3",
+    "@tesseract.js-data/eng": "^1.0.0",
+    "@tesseract.js-data/vie": "^1.0.0",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "styled-components": "^6.5.3",
-    "tailwindcss": "^4.3.3"
+    "tailwindcss": "^4.3.3",
+    "tesseract.js": "^7.0.0"
   },
   "devDependencies": {
     "@capacitor/cli": "^8.5.3",

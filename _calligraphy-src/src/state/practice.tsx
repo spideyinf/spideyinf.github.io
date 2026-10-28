@@ -10,7 +10,17 @@ const KEY = 'daily-hand:v1'
 const MAX_PAGES = 30
 
 export type DayLog = { letters: string[]; quotes: string[] }
-export type SavedPage = { id: string; day: string; kind: 'abc' | 'paragraph'; label: string; src: string; hand?: string }
+export type SavedPage = {
+  id: string
+  day: string
+  kind: 'abc' | 'paragraph'
+  label: string
+  src: string
+  hand?: string
+  /** The words read from the photo, as corrected by the writer. */
+  text?: string
+  tools?: { pen?: string; ink?: string; paper?: string }
+}
 
 // `script` is the hand being learned. Letters in a DayLog are stored as
 // "<scriptId>:<L>"; plain "L" entries from before scripts existed count as Copperplate.

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import styled from 'styled-components'
-import { PageHeader, Screen, SectionTitle, Voice } from '../components/b'
+import { PageHeader, PrimaryLink, Screen, SectionTitle, Voice } from '../components/b'
 import { IconButton, Icons } from '../components/ui'
 import { dayKey, shortDate } from '../lib/date'
 import { href } from '../lib/router'
@@ -35,12 +35,16 @@ export function PagesScreen() {
     <Screen>
       <PageHeader title="My pages" />
       <p className="m-0 font-serif text-[19px] leading-snug text-ink-soft italic">Every page you wrote, kept on this phone.</p>
+      <PrimaryLink href={href.capture()} className="mt-4">
+        {Icons.camera}
+        Photograph a page
+      </PrimaryLink>
 
       {!pages.length && (
         <div className="mt-8 flex flex-col items-start gap-3 rounded-[16px] bg-[rgb(120_98_60/0.08)] p-5">
           <p className="m-0 text-[19px] leading-snug">No pages yet.</p>
           <p className="m-0 text-[15px] leading-relaxed text-ink-soft">
-            Write a line on paper, then tap the camera beside <b className="font-semibold text-ink">I wrote a line</b> to keep a photo of it here.
+            Write a line on paper, then photograph it: the camera finds your handwriting and reads it.
           </p>
           <a href={href.letters} className="text-[17px] text-cobalt underline underline-offset-4">
             Start with a letter
@@ -107,7 +111,15 @@ export function PagesScreen() {
               {Icons.clear}
             </IconButton>
           </div>
-          <img src={open.src} alt={`Your handwritten page: ${open.label}`} />
+          <img src={open.src} alt={`Your handwritten page: ${open.label}${open.text ? `. ${open.text}` : ''}`} />
+          {(open.text || open.tools) && (
+            <div className="max-h-[34vh] overflow-y-auto bg-paper px-5 py-4">
+              {open.text && <p className="m-0 font-serif text-[18px] leading-snug whitespace-pre-line italic">{open.text}</p>}
+              {open.tools && (
+                <p className="m-0 mt-2 text-[14.5px] text-ink-soft">{[open.tools.pen, open.tools.ink, open.tools.paper].filter(Boolean).join(' · ')}</p>
+              )}
+            </div>
+          )}
         </Viewer>
       )}
     </Screen>

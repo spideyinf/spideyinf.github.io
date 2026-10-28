@@ -1,7 +1,6 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { DoneToggle, PageHeader, PaperSheet, RoundButton, Segmented, Screen, TintButton, ruled } from '../components/b'
 import { Hand, Icons, Toast } from '../components/ui'
-import { photoToPage } from '../lib/photo'
 import { go, href } from '../lib/router'
 import { usePractice } from '../state/practice'
 
@@ -10,11 +9,10 @@ const LINE = 54
 
 /** Paragraph: a quote, or your own words, in the hand you're learning, to copy onto paper. */
 export function ParagraphScreen({ quoteId }: { quoteId?: string }) {
-  const { quotes, today, markWritten, savePage, addQuote, deleteQuote, script } = usePractice()
+  const { quotes, today, markWritten, addQuote, deleteQuote, script } = usePractice()
   const [mode, setMode] = useState<Mode>('quotes')
   const [own, setOwn] = useState('')
   const [toast, setToast] = useState<string | null>(null)
-  const file = useRef<HTMLInputElement>(null)
   // Default: today's quote, the same for everyone on a given day.
   const [daily] = useState(() => {
     const d = new Date()
@@ -58,17 +56,10 @@ export function ParagraphScreen({ quoteId }: { quoteId?: string }) {
     markWritten({ quoteId: q.id })
   }
 
-  const onFile = async (f: File | undefined) => {
-    if (!f) return
-    try {
-      const src = await photoToPage(f)
-      const target = isOwn ? ownQuote() : q
-      if (!target) return
-      savePage({ kind: 'paragraph', label: target.author || 'My words', src }, { quoteId: target.id })
-      setToast('Photo kept in My pages')
-    } catch {
-      setToast('That photo could not be opened')
-    }
+  /** Photograph the page: own words become a line of yours first, so the photo belongs to it. */
+  const photograph = () => {
+    const target = isOwn ? ownQuote() : q
+    if (target) go(href.capture('paragraph', target.id))
   }
 
   return (
@@ -156,10 +147,9 @@ export function ParagraphScreen({ quoteId }: { quoteId?: string }) {
       <p className="m-0 mt-4 font-serif text-[19px] leading-snug text-ink-soft italic">Copy it once, slowly, on your own paper.</p>
       <div className="mt-2 flex gap-2">
         <DoneToggle done={done} onClick={written} todo="I’ve written it" doneText="Written on paper" />
-        <TintButton label="Keep a photo of your page" onClick={() => file.current?.click()} disabled={isOwn && !own.trim()}>
+        <TintButton label="Photograph your page" onClick={photograph} disabled={isOwn && !own.trim()}>
           {Icons.camera}
         </TintButton>
-        <input ref={file} type="file" accept="image/*" capture="environment" hidden onChange={(e) => onFile(e.target.files?.[0])} />
       </div>
 
       <Toast $show={!!toast} role="status" style={{ bottom: 'calc(104px + env(safe-area-inset-bottom))' }}>

@@ -42,6 +42,9 @@ export default defineConfig(({ mode }) => {
       workbox: {
         // Notification taps and the background reminder check (public/notify-sw.js).
         importScripts: ['notify-sw.js'],
+        // The text reader is big: not precached, but kept once fetched, so it works offline after first use.
+        globIgnores: ['ocr/**'],
+        runtimeCaching: [{ urlPattern: /\/ocr\//, handler: 'CacheFirst', options: { cacheName: 'wtl-ocr', expiration: { maxEntries: 12 } } }],
         // Fonts, paper scans and the app itself, so writing works on a plane.
         globPatterns: ['**/*.{js,css,html,svg,png,jpg,woff2}'],
         maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,

@@ -20,9 +20,11 @@ export type Route =
   | { name: 'inbox' }
   | { name: 'notifications' }
   | { name: 'notify-start' }
+  | { name: 'capture'; kind?: 'abc' | 'paragraph'; ref?: string }
 
 export function parse(hash: string): Route {
-  const [, a, b] = hash.replace(/^#/, '').split('/')
+  const [, a, b, c] = hash.replace(/^#/, '').split('/')
+  if (a === 'capture') return { name: 'capture', kind: b === 'abc' || b === 'paragraph' ? b : undefined, ref: c ? decodeURIComponent(c) : undefined }
   if (a === 'abc') return /^[A-Z]$/.test(b ?? '') ? { name: 'abc', letter: b } : { name: 'letters' }
   if (a === 'paragraph' && b) return { name: 'write', quoteId: decodeURIComponent(b) }
   if (a === 'paragraph') return { name: 'quotes' }
@@ -61,6 +63,7 @@ export const href = {
   inbox: '#/inbox',
   notifications: '#/settings/notifications',
   notifyStart: '#/notifications',
+  capture: (kind?: 'abc' | 'paragraph', ref?: string) => (kind && ref ? `#/capture/${kind}/${encodeURIComponent(ref)}` : '#/capture'),
 }
 
 export const go = (to: string, replace = false) => {

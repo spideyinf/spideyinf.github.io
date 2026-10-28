@@ -8,6 +8,7 @@ import { NotifyStartScreen } from './screens/NotifyStartScreen'
 import { TabBar, TAB_ROUTES } from './components/b'
 import { useRoute } from './lib/router'
 import { AbcScreen } from './screens/AbcScreen'
+import { CaptureScreen } from './screens/CaptureScreen'
 import { AchievementScreen } from './screens/AchievementScreen'
 import { FeedScreen } from './screens/FeedScreen'
 import { UnlockScreen } from './screens/UnlockScreen'
@@ -73,6 +74,8 @@ function screen(route: ReturnType<typeof useRoute>) {
       return <AchievementScreen />
     case 'feed':
       return <FeedScreen />
+    case 'capture':
+      return <CaptureScreen key={`${route.kind}:${route.ref}`} kind={route.kind} refId={route.ref} />
     case 'inbox':
       return <InboxScreen />
     case 'notifications':
