@@ -44,7 +44,7 @@ export default defineConfig(({ mode }) => {
         importScripts: ['notify-sw.js'],
         // The text reader is big: not precached, but kept once fetched, so it works offline after first use.
         globIgnores: ['ocr/**'],
-        runtimeCaching: [{ urlPattern: /\/ocr\//, handler: 'CacheFirst', options: { cacheName: 'wtl-ocr', expiration: { maxEntries: 12 } } }],
+        runtimeCaching: [{ urlPattern: /\/ocr\/|\.wasm$/, handler: 'CacheFirst', options: { cacheName: 'wtl-ocr', expiration: { maxEntries: 16 } } }],
         // Fonts, paper scans and the app itself, so writing works on a plane.
         globPatterns: ['**/*.{js,css,html,svg,png,jpg,woff2}'],
         maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
@@ -52,6 +52,9 @@ export default defineConfig(({ mode }) => {
       },
     }),
   ],
+  // ONNX Runtime brings its own WebAssembly loader; let Vite leave it unbundled in dev.
+  optimizeDeps: { exclude: ['onnxruntime-web'] },
+  worker: { format: 'es' },
   build: {
     outDir: fileURLToPath(new URL(app ? './dist-app' : '../calligraphy', import.meta.url)),
     emptyOutDir: true,

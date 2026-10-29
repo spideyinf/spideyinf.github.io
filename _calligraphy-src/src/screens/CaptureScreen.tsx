@@ -2,7 +2,9 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import styled, { keyframes } from 'styled-components'
 import { PrimaryButton } from '../components/b'
 import { INKS, PENS } from '../lib/fieldGuide'
-import { detectLines, type Box } from '../lib/inkDetect'
+import { detectLines } from '../lib/inkDetect'
+import { LineTracker, type Box } from '../lib/lineTracker'
+import { detect, groupLines, initPaddle } from '../lib/paddle/client'
 import { letterInfo } from '../lib/letters'
 import { readPage, warmUp, type Reading } from '../lib/ocr'
 import { go, href } from '../lib/router'
@@ -141,11 +143,10 @@ function Camera({ onShot, onClose }: { onShot: (s: Shot) => void; onClose: () =>
   const [size, setSize] = useState({ w: 0, h: 0 })
   const [state, setState] = useState<'starting' | 'live' | 'nocamera'>('starting')
   const [why, setWhy] = useState('')
-  const [lines, setLines] = useState<Box[]>([])
-  const [stable, setStable] = useState(0)
+  const [lines, setLines] = useState<(Box & { id: number })[]>([])
+  const [found, setFound] = useState(false)
   const [torch, setTorch] = useState<boolean | null>(null)
   const [waited, setWaited] = useState(false)
-  const found = stable >= 2 && lines.length > 0
 
   // The frame for the page, inside the camera view.
   const frame: Rect = { x: 24, y: 76, w: Math.max(0, size.w - 48), h: Math.max(0, size.h - 76 - 28) }
@@ -190,27 +191,56 @@ function Camera({ onShot, onClose }: { onShot: (s: Shot) => void; onClose: () =>
     }
   }, [])
 
-  // Look for handwriting a few times a second.
+  // Look for handwriting about twice a second: one detection at a time, in a
+  // worker, with a short rest between; a tracker keeps the outlines steady.
   useEffect(() => {
     if (state !== 'live' || !size.w) return
-    const c = document.createElement('canvas')
-    const ctx = c.getContext('2d', { willReadFrequently: true })!
-    let last = -1
-    const id = setInterval(() => {
+    let stop = false
+    let timer = 0
+    const tracker = new LineTracker()
+    const scratch = document.createElement('canvas')
+    const sctx = scratch.getContext('2d', { willReadFrequently: true })!
+    let useModel = true
+    initPaddle().catch(() => (useModel = false))
+
+    const look = async () => {
       const v = video.current
-      if (!v || !v.videoWidth) return
-      const crop = videoCrop(v, size.w, size.h, frame)
-      const W = 300
-      const H = Math.round((W * crop.sh) / crop.sw)
-      c.width = W
-      c.height = H
-      ctx.drawImage(v, crop.sx, crop.sy, crop.sw, crop.sh, 0, 0, W, H)
-      const boxes = detectLines(ctx.getImageData(0, 0, W, H))
-      setLines(boxes)
-      setStable((n) => (boxes.length && Math.abs(boxes.length - last) <= 1 ? n + 1 : 0))
-      last = boxes.length
-    }, 350)
-    return () => clearInterval(id)
+      if (stop) return
+      if (v?.videoWidth && document.visibilityState === 'visible') {
+        const crop = videoCrop(v, size.w, size.h, frame)
+        let boxes: Box[] = []
+        try {
+          if (!useModel) throw new Error('fallback')
+          const found = await detect(v, 416, crop.sw, crop.sh, crop.sx, crop.sy)
+          // Keep line-like boxes of a sensible size; join words into lines.
+          boxes = groupLines(found.filter((b) => b.score >= 0.6))
+            .map((l) => ({
+              x0: Math.min(...l.map((b) => b.x0)) / crop.sw,
+              y0: Math.min(...l.map((b) => b.y0)) / crop.sh,
+              x1: Math.max(...l.map((b) => b.x1)) / crop.sw,
+              y1: Math.max(...l.map((b) => b.y1)) / crop.sh,
+            }))
+            .filter((b) => b.x1 - b.x0 > 0.08 && b.y1 - b.y0 > 0.02 && b.y1 - b.y0 < 0.3)
+        } catch {
+          // The model couldn't load here: the quick ink check stands in.
+          const W = 300
+          const H = Math.round((W * crop.sh) / crop.sw)
+          scratch.width = W
+          scratch.height = H
+          sctx.drawImage(v, crop.sx, crop.sy, crop.sw, crop.sh, 0, 0, W, H)
+          boxes = detectLines(sctx.getImageData(0, 0, W, H))
+        }
+        if (stop) return
+        setLines(tracker.update(boxes))
+        setFound(tracker.found)
+      }
+      timer = window.setTimeout(look, 300)
+    }
+    void look()
+    return () => {
+      stop = true
+      clearTimeout(timer)
+    }
   }, [state, size.w, size.h]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const toggleTorch = async () => {
@@ -261,11 +291,11 @@ function Camera({ onShot, onClose }: { onShot: (s: Shot) => void; onClose: () =>
         )}
 
         {/* Each line of handwriting, outlined. */}
-        {lines.map((b, i) => (
+        {lines.map((b) => (
           <span
-            key={i}
+            key={b.id}
             aria-hidden
-            className="absolute rounded-[10px] border-2 border-[#D97706] bg-[rgb(251_191_36/0.14)] transition-all duration-300"
+            className="absolute rounded-[10px] border-2 border-[#D97706] bg-[rgb(251_191_36/0.14)] transition-[left,top,width,height,opacity] duration-500 ease-out motion-reduce:transition-none"
             style={{
               left: frame.x + b.x0 * frame.w - 6,
               top: frame.y + b.y0 * frame.h - 4,
